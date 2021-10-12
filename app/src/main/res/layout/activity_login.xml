@@ -20,25 +20,13 @@
         app:layout_constraintVertical_bias="0.507"
         custom:srcCompat="@drawable/bg" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="347dp"
-        android:layout_height="641dp"
-        android:background="#000000"
-        android:backgroundTint="#BFEFE6FF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/login"
         android:layout_width="285dp"
         android:layout_height="57dp"
-        android:backgroundTint="#673AB7"
+        android:backgroundTint="@color/green_500"
         android:text="Login"
-        android:textColor="@android:color/white"
+        android:textColor="@color/blue_900"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,8 +41,9 @@
         android:layout_height="55dp"
         android:hint="Enter email"
         android:inputType="textEmailAddress"
-        android:textColor="#000000"
-        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:backgroundTint="@color/green_100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.512"
@@ -68,8 +57,9 @@
         android:layout_height="55dp"
         android:hint="Enter password"
         android:inputType="textPassword"
-        android:textColor="#000000"
-        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:backgroundTint="@color/green_100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.512"
@@ -82,39 +72,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:textColor="#000000"
-        android:textSize="30sp"
+        android:textColor="@color/green_100"
+        android:textSize="38sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.205" />
+        app:layout_constraintVertical_bias="0.194" />
+
+    <Button
+        android:id="@+id/viewSignup"
+        android:layout_width="198dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/blue_900"
+        android:text="Signup Now"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.841" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Don't have an account yet?"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.778" />
-
-    <Button
-        android:id="@+id/viewSignup"
-        android:layout_width="144dp"
-        android:layout_height="40dp"
-        android:backgroundTint="#2C125A"
-        android:text="Signup Now"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.839" />
+        app:layout_constraintVertical_bias="0.759" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
