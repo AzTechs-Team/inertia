@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,10 +15,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -75,6 +85,33 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    private void storeFireStore(FirebaseUser user_){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Create a new user with a first and last name
+        Map<String, Object> user = new HashMap<>();
+        user.put("name", user_.getDisplayName());
+        user.put("email", user_.getEmail());
+        user.put("bio", "Some Bio");
+
+        // Add a new document with a generated ID
+        db.collection("users")
+                .document(user_.getUid())
+                .set(user)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("", "Error adding document", e);
+                    }
+                })
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.w("RUNNING", "FUCKING RUNNING");
+                    }
+                });
+    }
+
+
     private void signupUser(){
         if(validateInput()) {
             mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
@@ -83,7 +120,22 @@ public class SignupActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Toast.makeText(SignupActivity.this, "Authentication successful.",
                                         Toast.LENGTH_SHORT).show();
-//                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    FirebaseUser user = mAuth.getCurrentUser();
+
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(name.getText().toString())
+                                        .build();
+
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    storeFireStore(user);
+                                                }
+                                            }
+                                        });
+
                                 Intent intent = new Intent(SignupActivity.this, MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
                                 startActivity(intent);
