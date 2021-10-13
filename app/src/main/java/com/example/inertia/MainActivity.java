@@ -7,20 +7,33 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private Button signOut;
     private BottomNavigationView bottomNavigationView;
+    public static UserProfile userProfile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setUserProfile();
         setContentView(R.layout.activity_main);
         signOut = findViewById(R.id.signOut);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -72,5 +85,28 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-
+    private void setUserProfile(){
+        DatabaseReference mDatabase;
+        FirebaseAuth mAuth;
+        FirebaseUser user;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").document(user.getUid()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            Map<String, Object> docSnap = documentSnapshot.getData();
+                            userProfile = new UserProfile(docSnap);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("ERROR", "Error getting data", e);
+            }
+        });
+    }
 }
