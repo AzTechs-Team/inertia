@@ -20,6 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,19 +33,23 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
-
 
     private static int RC_SIGN_IN=100;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     private Button signup, viewLogin;
     private EditText name, email, password, password2;
-
+    private Uri photoURI;
+    private FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,8 +162,9 @@ public class SignupActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Success: ", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            storeFireStore(user);
+                            user = mAuth.getCurrentUser();
+//                            storeFireStore(user);
+                            uploadPhotoToFirebase();
                             redirectToDashboard();
 //                            updateUI(user);
                         } else {
@@ -171,12 +177,14 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void storeFireStore(FirebaseUser user_){
+//        uploadPhotoToFirebase();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Create a new user with a first and last name
         Map<String, Object> user = new HashMap<>();
         user.put("name", user_.getDisplayName());
         user.put("email", user_.getEmail());
         user.put("bio", "Some Bio");
+        user.put("photoURI",photoURI.toString());
 
         // Add a new document with a generated ID
         db.collection("users")
@@ -211,18 +219,19 @@ public class SignupActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Toast.makeText(SignupActivity.this, "Authentication successful.",
                                         Toast.LENGTH_SHORT).show();
-                                    FirebaseUser user = mAuth.getCurrentUser();
+
+                                user = mAuth.getCurrentUser();
 
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setDisplayName(name.getText().toString())
                                         .build();
-
                                 user.updateProfile(profileUpdates)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    storeFireStore(user);
+                                                    uploadPhotoToFirebase();
+//                                                    storeFireStore(user);
                                                 }
                                             }
                                         });
@@ -265,5 +274,31 @@ public class SignupActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void uploadPhotoToFirebase(){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        user = mAuth.getCurrentUser();
+        final StorageReference ref = storageRef.child("images/" + user.getUid() + ".jpg");
+        Uri imageUri = Uri.parse("android.resource://com.example.inertia/" + R.drawable.maxresdefault);
+        UploadTask uploadTask = ref.putFile(imageUri);
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    photoURI = task.getResult();
+                    storeFireStore(user);
+                }
+            }
+        });
     }
 }
