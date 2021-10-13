@@ -1,14 +1,12 @@
 package com.example.inertia;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             case R.id.action_feed:
                                 item.setChecked(true);
-                                fragment = new FeedFragment();
+                                fragment = new MapFragment();
                                 loadFragment(fragment);
                                 break;
                             case R.id.action_profile:
