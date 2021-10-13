@@ -59,7 +59,9 @@ public class SignupActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        // TODO:
+        // 1. Add toast to remind please login
+        // 2. Login with Google on Google Login Page
 //        updateUI(account);
 
 
@@ -189,7 +191,7 @@ public class SignupActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.w("RUNNING", "FUCKING RUNNING");
+                        Log.w("RUNNING", "Firebase user stored, yey!");
                     }
                 });
     }
