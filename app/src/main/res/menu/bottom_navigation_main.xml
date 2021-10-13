@@ -2,7 +2,7 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_feed"
+        android:id="@+id/action_map"
         android:icon="@drawable/ic_baseline_explore_24"
         android:checked="false"
         tools:ignore="MenuTitle" />

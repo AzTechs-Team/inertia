@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         signOut = findViewById(R.id.signOut);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        loadFragment(new HomeFragment());
+        loadFragment(new MapFragment());
         signOut.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                                 fragment = new HomeFragment();
                                 loadFragment(fragment);
                                 break;
-                            case R.id.action_feed:
+                            case R.id.action_map:
                                 item.setChecked(true);
                                 fragment = new MapFragment();
                                 loadFragment(fragment);

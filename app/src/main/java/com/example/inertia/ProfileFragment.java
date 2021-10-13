@@ -3,6 +3,8 @@ package com.example.inertia;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +23,12 @@ public class ProfileFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         TextView userName = (TextView) rootView.findViewById(R.id.userName);
         TextView bio = (TextView) rootView.findViewById(R.id.bio);
-        userName.setText(MainActivity.userProfile.user.get("name").toString());
-        bio.setText(MainActivity.userProfile.user.get("bio").toString());
+        try {
+            userName.setText(MainActivity.userProfile.user.get("name").toString());
+            bio.setText(MainActivity.userProfile.user.get("bio").toString());
+        }catch (Throwable t){
+            Log.d("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1","nai chal raha :_)");
+        }
         return rootView;
     }
 }
