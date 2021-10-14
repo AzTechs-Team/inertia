@@ -42,39 +42,38 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//makesure user cant go back
+                Intent intent = new Intent(MainActivity.this, SplashScreen.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
 
         });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Fragment fragment;
-                        switch (item.getItemId()) {
-                            case R.id.action_home:
-                                item.setChecked(true);
-                                fragment = new HomeFragment();
-                                loadFragment(fragment);
-                                break;
-                            case R.id.action_map:
-                                item.setChecked(true);
-                                fragment = new MapFragment();
-                                loadFragment(fragment);
-                                break;
-                            case R.id.action_profile:
-                                item.setChecked(true);
-                                fragment = new ProfileFragment();
-                                loadFragment(fragment);
-                                break;
-                        }
-                        return true;
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment fragment;
+                    switch (item.getItemId()) {
+                        case R.id.action_home:
+                            item.setChecked(true);
+                            fragment = new HomeFragment();
+                            loadFragment(fragment);
+                            break;
+                        case R.id.action_map:
+                            item.setChecked(true);
+                            fragment = new MapFragment();
+                            loadFragment(fragment);
+                            break;
+                        case R.id.action_profile:
+                            item.setChecked(true);
+                            fragment = new ProfileFragment();
+                            loadFragment(fragment);
+                            break;
                     }
-                });
+                    return true;
+                }
+            });
 
     }
     private void loadFragment(Fragment fragment) {
