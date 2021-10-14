@@ -50,30 +50,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Fragment fragment;
-                        switch (item.getItemId()) {
-                            case R.id.action_home:
-                                item.setChecked(true);
-                                fragment = new HomeFragment();
-                                loadFragment(fragment);
-                                break;
-                            case R.id.action_map:
-                                item.setChecked(true);
-                                fragment = new MapFragment();
-                                loadFragment(fragment);
-                                break;
-                            case R.id.action_profile:
-                                item.setChecked(true);
-                                fragment = new ProfileFragment();
-                                loadFragment(fragment);
-                                break;
-                        }
-                        return true;
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment fragment;
+                    switch (item.getItemId()) {
+                        case R.id.action_home:
+                            item.setChecked(true);
+                            fragment = new HomeFragment();
+                            loadFragment(fragment);
+                            break;
+                        case R.id.action_map:
+                            item.setChecked(true);
+                            fragment = new MapFragment();
+                            loadFragment(fragment);
+                            break;
+                        case R.id.action_profile:
+                            item.setChecked(true);
+                            fragment = new ProfileFragment();
+                            loadFragment(fragment);
+                            break;
                     }
-                });
+                    return true;
+                }
+            });
 
     }
     private void loadFragment(Fragment fragment) {

@@ -3,7 +3,6 @@ package com.example.inertia;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -11,17 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class SignupActivity extends AppCompatActivity {
 
     private static int RC_SIGN_IN=100;
-    private static FirebaseAuth mAuth;
-    private static FirebaseUser user;
-    private static Uri photoURI;
-    private GoogleSignInClient mGoogleSignInClient;
+    private FirebaseAuth mAuth;
     private Button signup, viewLogin;
     private EditText name, email, password, password2;
 

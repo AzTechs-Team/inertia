@@ -24,7 +24,6 @@ public class SplashScreen extends AppCompatActivity {
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     private Button loginBtn, signupBtn;
-    private GoogleSignIn account;
     private SignInButton signInWithGoogleBtn;
     private static int RC_SIGN_IN=100;
 
