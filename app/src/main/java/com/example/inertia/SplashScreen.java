@@ -6,87 +6,97 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class SplashScreen extends AppCompatActivity {
 
-    FirebaseUser currentUser;
+    private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
-
-    private Button button, button2;
+    private Button loginBtn, signupBtn;
+    private GoogleSignIn account;
+    private SignInButton signInWithGoogleBtn;
+    private static int RC_SIGN_IN=100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        try {
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(SplashScreen.this);
-            if(account != null){
-                Log.w("WAS ALREADY LOGGED IN: ", account.toString());
-                Toast.makeText(SplashScreen.this, "You were logged in, sucker!", Toast.LENGTH_SHORT).show();
-                redirectToDashboard();
+        loginBtn = findViewById(R.id.loginBtn);
+        signupBtn = findViewById(R.id.signupBtn);
+        signInWithGoogleBtn = findViewById(R.id.sign_in_button);
+
+        loginBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent mainIntent = new Intent(SplashScreen.this, LoginActivity.class);
+                startActivity(mainIntent);
             }
-            else {
-                Toast.makeText(SplashScreen.this, "You were logged in with google", Toast.LENGTH_SHORT).show();
-                Log.w("WAS NOT LOGGED IN: ", account.toString());
+        });
+
+        signupBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent mainIntent = new Intent(SplashScreen.this, SignupActivity.class);
+                startActivity(mainIntent);
             }
-        }
-        catch (Throwable t){
-            Log.w("THROW KIYA: ", t.toString());
-        }
-        button = findViewById(R.id.button);
-        button2 = findViewById(R.id.button2);
+        });
+
+        signInWithGoogleBtn.setSize(SignInButton.SIZE_STANDARD);
+        signInWithGoogleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GoogleSignInClient mGoogleSignInClient;
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build();
+
+                mGoogleSignInClient = GoogleSignIn.getClient(SplashScreen.this, gso);
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
         if (mAuth != null) {
             currentUser = mAuth.getCurrentUser();
         }
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 FirebaseUser user = mAuth.getCurrentUser();
-                if (user == null) {
-//                    Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
-//                    startActivity(intent);
-//                    finish();
-                    button.setOnClickListener(new View.OnClickListener(){
-                        @Override
-                        public void onClick(View view){
-                            Intent mainIntent = new Intent(SplashScreen.this, LoginActivity.class);
-                            startActivity(mainIntent);
-                        }
-                    });
-
-                    button2.setOnClickListener(new View.OnClickListener(){
-                        @Override
-                        public void onClick(View view){
-                            Intent mainIntent = new Intent(SplashScreen.this, SignupActivity.class);
-                            startActivity(mainIntent);
-                        }
-                    });
-
-                } else {
-                    Intent mainIntent = new Intent(SplashScreen.this, MainActivity.class);
-                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(mainIntent);
-                    finish();
+                if (user != null) {
+                   new StoreUserData().redirectToDashboard(SplashScreen.this);
                 }
             }
         }, 1000);
     }
 
-    private void redirectToDashboard(){
-        Intent mainIntent = new Intent(SplashScreen.this, MainActivity.class);
-        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(mainIntent);
-        finish();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            GoogleSignInAccount account = null;
+            try {
+                account = task.getResult(ApiException.class);
+                Log.d("Success: "  , "firebaseAuthWithGoogle: " + account.getIdToken());
+                new GoogleSignUp(mAuth, SplashScreen.this, account.getIdToken());
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
