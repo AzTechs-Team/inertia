@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -26,6 +28,8 @@ public class SplashScreen extends AppCompatActivity {
     private Button loginBtn, signupBtn;
     private SignInButton signInWithGoogleBtn;
     private static int RC_SIGN_IN=100;
+    private CircularProgressIndicator spinner;
+    private TextView altTextSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,16 @@ public class SplashScreen extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginBtn);
         signupBtn = findViewById(R.id.signupBtn);
         signInWithGoogleBtn = findViewById(R.id.sign_in_button);
+        spinner = findViewById(R.id.spinner);
+        altTextSignIn = findViewById(R.id.altTextSignIn);
+
+        spinner.setIndicatorSize(180);
+        spinner.setTrackThickness(15);
+
+        loginBtn.setVisibility(View.GONE);
+        signupBtn.setVisibility(View.GONE);
+        signInWithGoogleBtn.setVisibility(View.GONE);
+        altTextSignIn.setVisibility(View.GONE);
 
         loginBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -79,6 +93,12 @@ public class SplashScreen extends AppCompatActivity {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
                    new StoreUserData().redirectToDashboard(SplashScreen.this);
+                }else {
+                    loginBtn.setVisibility(View.VISIBLE);
+                    signupBtn.setVisibility(View.VISIBLE);
+                    signInWithGoogleBtn.setVisibility(View.VISIBLE);
+                    altTextSignIn.setVisibility(View.VISIBLE);
+                    spinner.setVisibility(View.GONE);
                 }
             }
         }, 1000);
