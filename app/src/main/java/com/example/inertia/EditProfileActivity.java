@@ -44,7 +44,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(selectedImageUri == null) {
-                    selectedImageUri = Uri.parse("android.resource://com.example.inertia/" + R.drawable.dp);
+                    selectedImageUri = Uri.parse("android.resource://com.example.inertia/" + R.drawable.dpp);
                 }
                 if (validateInput()) {
                     new StoreUserData().uploadPhotoToFirebase(user, selectedImageUri, updateUsername.getText().toString(), updateBio.getText().toString());
