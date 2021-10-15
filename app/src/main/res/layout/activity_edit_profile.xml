@@ -88,15 +88,27 @@
 
     <ImageView
         android:id="@+id/uploadDP"
-        android:layout_width="126dp"
-        android:layout_height="134dp"
-        android:src="@drawable/dp"
+        android:layout_width="247dp"
+        android:layout_height="258dp"
+        android:src="@drawable/dpp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.286" />
+        app:layout_constraintVertical_bias="0.236" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="52dp"
+        android:layout_height="46dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.635"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.389"
+        custom:srcCompat="@drawable/ic_baseline_add_a_photo_24" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
