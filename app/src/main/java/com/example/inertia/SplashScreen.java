@@ -92,7 +92,10 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
-                   new StoreUserData().redirectToDashboard(SplashScreen.this);
+                    Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                    SplashScreen.this.startActivity(intent);
+                    SplashScreen.this.finish();
                 }else {
                     loginBtn.setVisibility(View.VISIBLE);
                     signupBtn.setVisibility(View.VISIBLE);

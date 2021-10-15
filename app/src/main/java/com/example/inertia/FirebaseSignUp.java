@@ -30,16 +30,13 @@ public class FirebaseSignUp {
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                new StoreUserData().uploadPhotoToFirebase(user);
-                                            }
+                                            if (task.isSuccessful()) { }
                                         }
                                     });
-                            new StoreUserData().redirectToDashboard(context);
+                           new StoreUserData().redirectToEditProfile(context);
 
                         } else {
-                            Toast.makeText(context, "User already exists!",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "User already exists!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

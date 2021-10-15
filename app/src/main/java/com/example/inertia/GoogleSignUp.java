@@ -28,8 +28,7 @@ public class GoogleSignUp {
                         if (task.isSuccessful()) {
                             Log.d("Success: ", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            new StoreUserData().uploadPhotoToFirebase(user);
-                            new StoreUserData().redirectToDashboard(context);
+                            new StoreUserData().redirectToEditProfile(context);
                         } else {
                             Log.w("Error: ", "signInWithCredential:failure", task.getException());
                         }

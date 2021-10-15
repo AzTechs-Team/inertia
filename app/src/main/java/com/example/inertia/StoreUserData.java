@@ -23,19 +23,18 @@ import java.util.Map;
 public class StoreUserData {
     public StoreUserData(){}
 
-    public void redirectToDashboard(Activity context){
-        Intent intent = new Intent(context, MainActivity.class);
+    public void redirectToEditProfile(Activity context){
+        Intent intent = new Intent(context, EditProfileActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
         context.startActivity(intent);
         context.finish();
     }
 
-    public void uploadPhotoToFirebase(FirebaseUser user){
+    public void uploadPhotoToFirebase(FirebaseUser user, Uri selectedImageUri, String userName, String bio){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         final StorageReference ref = storageRef.child("images/" + user.getUid() + ".jpg");
-        Uri imageUri = Uri.parse("android.resource://com.example.inertia/" + R.drawable.maxresdefault);
-        UploadTask uploadTask = ref.putFile(imageUri);
+        UploadTask uploadTask = ref.putFile(selectedImageUri);
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -49,21 +48,21 @@ public class StoreUserData {
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     Uri photoURI = task.getResult();
-                    storeFireStore(user, photoURI);
+                    storeFireStore(user, photoURI ,userName,bio);
                 }
             }
         });
     }
 
-    private boolean storeFireStore(FirebaseUser user_, Uri photoURI){
+    private boolean storeFireStore(FirebaseUser user_, Uri photoURI , String userName, String bio){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> user = new HashMap<>();
         user.put("name", user_.getDisplayName());
+        user.put("username",userName);
         user.put("email", user_.getEmail());
-        user.put("bio", "Some Bio");
+        user.put("bio", bio);
         user.put("photoURI",photoURI.toString());
 
-        // Add a new document with a generated ID
         db.collection("users")
                 .document(user_.getUid())
                 .set(user)

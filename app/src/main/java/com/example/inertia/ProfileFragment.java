@@ -28,7 +28,7 @@ public class ProfileFragment extends Fragment {
         TextView bio = (TextView) rootView.findViewById(R.id.bio);
         ImageView dp = (ImageView) rootView.findViewById(R.id.dp);
         try {
-            userName.setText(MainActivity.userProfile.user.get("name").toString());
+            userName.setText(MainActivity.userProfile.user.get("username").toString());
             bio.setText(MainActivity.userProfile.user.get("bio").toString());
             Picasso.get().load(MainActivity.userProfile.user.get("photoURI").toString()).into(dp);
         }catch (Throwable t){
