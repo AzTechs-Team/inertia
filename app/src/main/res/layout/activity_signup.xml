@@ -128,7 +128,7 @@
         app:layout_constraintVertical_bias="0.928" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/altTextLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Have an account already?"
@@ -139,6 +139,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.835" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/spinner"
+        android:layout_width="89dp"
+        android:layout_height="83dp"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.743" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

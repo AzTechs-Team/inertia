@@ -30,7 +30,7 @@ public class StoreUserData {
         context.finish();
     }
 
-    public void uploadPhotoToFirebase(FirebaseUser user, Uri selectedImageUri, String userName, String bio){
+    public void uploadPhotoToFirebase(Activity context, FirebaseUser user, Uri selectedImageUri, String userName, String bio){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         final StorageReference ref = storageRef.child("images/" + user.getUid() + ".jpg");
@@ -48,13 +48,13 @@ public class StoreUserData {
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     Uri photoURI = task.getResult();
-                    storeFireStore(user, photoURI ,userName,bio);
+                    storeFireStore(context, user, photoURI ,userName,bio);
                 }
             }
         });
     }
 
-    private boolean storeFireStore(FirebaseUser user_, Uri photoURI , String userName, String bio){
+    private boolean storeFireStore(Activity context, FirebaseUser user_, Uri photoURI , String userName, String bio){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> user = new HashMap<>();
         user.put("name", user_.getDisplayName());
@@ -76,6 +76,10 @@ public class StoreUserData {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.w("RUNNING", "Firebase user stored, yey!");
+                        Intent intent = new Intent(context, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                        context.startActivity(intent);
+                        context.finish();
                     }
                 });
         return true;

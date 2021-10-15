@@ -9,10 +9,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -21,6 +23,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button login, viewSignup;
     private EditText email, password;
+    private CircularProgressIndicator spinner;
+    private TextView altTextSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,14 @@ public class LoginActivity extends AppCompatActivity {
         viewSignup = findViewById(R.id.viewSignup);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+
+        spinner = findViewById(R.id.spinner);
+        altTextSignUp = findViewById(R.id.altTextSignUp);
+
+        spinner.setIndicatorSize(180);
+        spinner.setTrackThickness(15);
+
+        spinner.setVisibility(View.GONE);
 
         password.setOnKeyListener(new View.OnKeyListener()
         {
@@ -56,6 +68,14 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                spinner.setVisibility(View.VISIBLE);
+                login.setVisibility(View.GONE);
+                viewSignup.setVisibility(View.GONE);
+                altTextSignUp.setVisibility(View.GONE);
+                email.setClickable(false);
+                email.setFocusable(false);
+                password.setClickable(false);
+                password.setFocusable(false);
                 loginUser();
             }
         });
@@ -77,8 +97,6 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Login successful.",
-                                        Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
                                 startActivity(intent);

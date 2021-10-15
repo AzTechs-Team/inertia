@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -21,6 +22,8 @@ public class EditProfileActivity extends AppCompatActivity {
     FirebaseUser user;
     private FirebaseAuth mAuth;
     private Uri selectedImageUri;
+    private CircularProgressIndicator spinner;
+    boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +33,20 @@ public class EditProfileActivity extends AppCompatActivity {
         updateBio = findViewById(R.id.updateBio);
         updateUsername = findViewById(R.id.updateUsername);
         editProfile = findViewById(R.id.editProfile);
+        spinner = findViewById(R.id.spinner);
+
+        spinner.setIndicatorSize(180);
+        spinner.setTrackThickness(15);
+        spinner.setVisibility(View.GONE);
+
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
         uploadDP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageChooser();
+                if(!isLoading)
+                    imageChooser();
             }
         });
 
@@ -47,11 +57,19 @@ public class EditProfileActivity extends AppCompatActivity {
                     selectedImageUri = Uri.parse("android.resource://com.example.inertia/" + R.drawable.dpp);
                 }
                 if (validateInput()) {
-                    new StoreUserData().uploadPhotoToFirebase(user, selectedImageUri, updateUsername.getText().toString(), updateBio.getText().toString());
-                    Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-                    EditProfileActivity.this.startActivity(intent);
-                    EditProfileActivity.this.finish();
+                    isLoading = true;
+                    spinner.setVisibility(View.VISIBLE);
+                    editProfile.setVisibility(View.GONE);
+                    updateUsername.setFocusable(false);
+                    updateUsername.setClickable(false);
+                    updateBio.setFocusable(false);
+                    updateBio.setClickable(false);
+                    new StoreUserData().uploadPhotoToFirebase(
+                            EditProfileActivity.this, user,
+                            selectedImageUri,
+                            updateUsername.getText().toString(),
+                            updateBio.getText().toString()
+                    );
                 }
             }
         });

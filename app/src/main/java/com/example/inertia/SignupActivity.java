@@ -8,8 +8,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignupActivity extends AppCompatActivity {
@@ -18,6 +20,8 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button signup, viewLogin;
     private EditText name, email, password, password2;
+    private CircularProgressIndicator spinner;
+    private TextView altTextLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,14 @@ public class SignupActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         password2 = findViewById(R.id.password2);
+
+        spinner = findViewById(R.id.spinner);
+        altTextLogin = findViewById(R.id.altTextLogin);
+
+        spinner.setIndicatorSize(180);
+        spinner.setTrackThickness(15);
+
+        spinner.setVisibility(View.GONE);
 
         password2.setOnKeyListener(new View.OnKeyListener()
         {
@@ -55,6 +67,18 @@ public class SignupActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                spinner.setVisibility(View.VISIBLE);
+                signup.setVisibility(View.GONE);
+                viewLogin.setVisibility(View.GONE);
+                altTextLogin.setVisibility(View.GONE);
+                name.setFocusable(false);
+                name.setClickable(false);
+                email.setFocusable(false);
+                email.setClickable(false);
+                password.setFocusable(false);
+                password.setClickable(false);
+                password2.setFocusable(false);
+                password2.setClickable(false);
                 signupUser();
             }
         });
