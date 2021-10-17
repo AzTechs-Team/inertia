@@ -6,10 +6,11 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +37,21 @@ public class ProfileFragment extends Fragment {
         }catch (Throwable t){
             Log.d("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1","nai chal raha :_)");
         }
+
+
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        toolbar.setTitle(MainActivity.userProfile.user.get("name").toString());
+        toolbar.inflateMenu(R.menu.profile_menu);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.starred) {
+                    Log.d("!!!!!!!!!!!!!!!!!!!!!!!!!!!","chal raha hai!!!!!!!!!!!!!!!!");
+                }
+                return false;
+            }
+        });
+
         return rootView;
     }
 }
