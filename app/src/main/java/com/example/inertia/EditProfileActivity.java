@@ -9,34 +9,33 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditProfileActivity extends AppCompatActivity {
-    ImageView uploadDP;
+    CircleImageView uploadDP;
     EditText updateUsername,updateBio;
     Button editProfile;
-    int SELECT_PICTURE = 200;
     FirebaseUser user;
     private FirebaseAuth mAuth;
     private Uri selectedImageUri;
     private CircularProgressIndicator spinner;
     boolean isLoading = false;
-    private static final int GalleryPick = 1;
     private static final int CAMERA_REQUEST = 100;
     private static final int STORAGE_REQUEST = 200;
-    private static final int IMAGEPICK_GALLERY_REQUEST = 300;
-    private static final int IMAGE_PICKCAMERA_REQUEST = 400;
     String cameraPermission[];
     String storagePermission[];
 
@@ -114,31 +113,23 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
         builder.create().show();
-
-//        Intent i = new Intent();
-//        i.setType("image/*");
-//        i.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
     }
-    // checking storage permissions
+
     private Boolean checkStoragePermission() {
         boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
         return result;
     }
 
-    // Requesting  gallery permission
     private void requestStoragePermission() {
         requestPermissions(storagePermission, STORAGE_REQUEST);
     }
 
-    // checking camera permissions
     private Boolean checkCameraPermission() {
         boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
         boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
         return result && result1;
     }
 
-    // Requesting camera permission
     private void requestCameraPermission() {
         requestPermissions(cameraPermission, CAMERA_REQUEST);
     }
@@ -173,8 +164,17 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void pickFromGallery() {
-        CropImage.activity().start(EditProfileActivity.this);
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.OVAL)
+                .setFixAspectRatio(true)
+                .setScaleType(CropImageView.ScaleType.FIT_CENTER)
+                .setBorderLineColor(Color.parseColor("#38A3A5"))
+                .setGuidelinesColor(Color.parseColor("#C7F9CC"))
+                .setBorderCornerColor(Color.parseColor("#C7F9CC"))
+                .start(EditProfileActivity.this);
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -187,15 +187,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
             }
         }
-
-//        if (resultCode == RESULT_OK) {
-//            if (requestCode == SELECT_PICTURE) {
-//                selectedImageUri = data.getData();
-//                if (null != selectedImageUri) {
-//                    uploadDP.setImageURI(selectedImageUri);
-//                }
-//            }
-//        }
     }
 
     private boolean validateInput() {

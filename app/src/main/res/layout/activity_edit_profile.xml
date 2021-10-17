@@ -85,11 +85,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.116" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/uploadDP"
         android:layout_width="168dp"
         android:layout_height="161dp"
         android:src="@drawable/dpp"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/blue_900"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

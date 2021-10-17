@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileFragment extends Fragment {
     public ProfileFragment() {}
 
@@ -26,7 +28,7 @@ public class ProfileFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         TextView userName = (TextView) rootView.findViewById(R.id.userName);
         TextView bio = (TextView) rootView.findViewById(R.id.bio);
-        ImageView dp = (ImageView) rootView.findViewById(R.id.dp);
+        CircleImageView dp = (CircleImageView) rootView.findViewById(R.id.dp);
         try {
             userName.setText(MainActivity.userProfile.user.get("username").toString());
             bio.setText(MainActivity.userProfile.user.get("bio").toString());

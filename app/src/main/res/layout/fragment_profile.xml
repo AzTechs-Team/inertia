@@ -13,10 +13,12 @@
             android:paddingHorizontal="40dp"
             android:paddingVertical="20dp">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/dp"
                     android:layout_width="120dp"
                     android:layout_height="119dp"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/blue_900"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.024"
