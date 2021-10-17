@@ -18,10 +18,10 @@ public class SignupActivity extends AppCompatActivity {
 
     private static int RC_SIGN_IN=100;
     private FirebaseAuth mAuth;
-    private Button signup, viewLogin;
-    private EditText name, email, password, password2;
-    private CircularProgressIndicator spinner;
-    private TextView altTextLogin;
+    private static Button signup, viewLogin;
+    private static EditText name, email, password, password2;
+    private static CircularProgressIndicator spinner;
+    private static TextView altTextLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,18 +67,7 @@ public class SignupActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                spinner.setVisibility(View.VISIBLE);
-                signup.setVisibility(View.GONE);
-                viewLogin.setVisibility(View.GONE);
-                altTextLogin.setVisibility(View.GONE);
-                name.setFocusable(false);
-                name.setClickable(false);
-                email.setFocusable(false);
-                email.setClickable(false);
-                password.setFocusable(false);
-                password.setClickable(false);
-                password2.setFocusable(false);
-                password2.setClickable(false);
+                loadingSignup(true);
                 signupUser();
             }
         });
@@ -104,8 +93,43 @@ public class SignupActivity extends AppCompatActivity {
                     SignupActivity.this
             );
         }else{
+            loadingSignup(false);
             Toast.makeText(SignupActivity.this, "Enter valid credentials!",
                     Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static void loadingSignup(boolean loading){
+        if(loading){
+            spinner.setVisibility(View.VISIBLE);
+            signup.setVisibility(View.GONE);
+            viewLogin.setVisibility(View.GONE);
+            altTextLogin.setVisibility(View.GONE);
+            name.setFocusable(false);
+            name.setClickable(false);
+            email.setFocusable(false);
+            email.setClickable(false);
+            password.setFocusable(false);
+            password.setClickable(false);
+            password2.setFocusable(false);
+            password2.setClickable(false);
+        }else{
+            spinner.setVisibility(View.GONE);
+            signup.setVisibility(View.VISIBLE);
+            viewLogin.setVisibility(View.VISIBLE);
+            altTextLogin.setVisibility(View.VISIBLE);
+            name.setFocusable(true);
+            name.setClickable(true);
+            name.setFocusableInTouchMode(true);
+            email.setFocusable(true);
+            email.setClickable(true);
+            email.setFocusableInTouchMode(true);
+            password.setFocusable(true);
+            password.setClickable(true);
+            password.setFocusableInTouchMode(true);
+            password2.setFocusable(true);
+            password2.setClickable(true);
+            password2.setFocusableInTouchMode(true);
         }
     }
 

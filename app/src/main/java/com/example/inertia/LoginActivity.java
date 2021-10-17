@@ -68,14 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                spinner.setVisibility(View.VISIBLE);
-                login.setVisibility(View.GONE);
-                viewSignup.setVisibility(View.GONE);
-                altTextSignUp.setVisibility(View.GONE);
-                email.setClickable(false);
-                email.setFocusable(false);
-                password.setClickable(false);
-                password.setFocusable(false);
+                loadingLoginScreen(true);
                 loginUser();
             }
         });
@@ -102,14 +95,40 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 LoginActivity.this.finish();
                             } else {
+                                loadingLoginScreen(false);
                                 Toast.makeText(LoginActivity.this, "Login failed! Enter valid credentials and try again!",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
         }else {
+            loadingLoginScreen(false);
             Toast.makeText(LoginActivity.this, "Enter valid credentials!",
                     Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void loadingLoginScreen(boolean loading){
+        if(loading){
+            spinner.setVisibility(View.VISIBLE);
+            login.setVisibility(View.GONE);
+            viewSignup.setVisibility(View.GONE);
+            altTextSignUp.setVisibility(View.GONE);
+            email.setClickable(false);
+            email.setFocusable(false);
+            password.setClickable(false);
+            password.setFocusable(false);
+        }else{
+            spinner.setVisibility(View.GONE);
+            login.setVisibility(View.VISIBLE);
+            viewSignup.setVisibility(View.VISIBLE);
+            altTextSignUp.setVisibility(View.VISIBLE);
+            email.setClickable(true);
+            email.setFocusable(true);
+            email.setFocusableInTouchMode(true);
+            password.setClickable(true);
+            password.setFocusable(true);
+            password.setFocusableInTouchMode(true);
         }
     }
 

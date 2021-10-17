@@ -36,6 +36,7 @@ public class FirebaseSignUp {
                            new StoreUserData().redirectToEditProfile(context);
 
                         } else {
+                            SignupActivity.loadingSignup(false);
                             Toast.makeText(context, "User already exists!", Toast.LENGTH_SHORT).show();
                         }
                     }

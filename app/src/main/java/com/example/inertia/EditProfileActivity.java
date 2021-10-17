@@ -72,22 +72,40 @@ public class EditProfileActivity extends AppCompatActivity {
                     selectedImageUri = Uri.parse("android.resource://com.example.inertia/" + R.drawable.dpp);
                 }
                 if (validateInput()) {
-                    isLoading = true;
-                    spinner.setVisibility(View.VISIBLE);
-                    editProfile.setVisibility(View.GONE);
-                    updateUsername.setFocusable(false);
-                    updateUsername.setClickable(false);
-                    updateBio.setFocusable(false);
-                    updateBio.setClickable(false);
+                   loadingEditProfile(true);
                     new StoreUserData().uploadPhotoToFirebase(
                             EditProfileActivity.this, user,
                             selectedImageUri,
                             updateUsername.getText().toString(),
                             updateBio.getText().toString()
                     );
+                }else{
+                   loadingEditProfile(false);
                 }
             }
         });
+    }
+
+    private void loadingEditProfile(boolean loading){
+        if(loading){
+            isLoading = true;
+            spinner.setVisibility(View.VISIBLE);
+            editProfile.setVisibility(View.GONE);
+            updateUsername.setFocusable(false);
+            updateUsername.setClickable(false);
+            updateBio.setFocusable(false);
+            updateBio.setClickable(false);
+        }else{
+            isLoading = false;
+            spinner.setVisibility(View.GONE);
+            editProfile.setVisibility(View.VISIBLE);
+            updateUsername.setFocusable(true);
+            updateUsername.setClickable(true);
+            updateUsername.setFocusableInTouchMode(true);
+            updateBio.setFocusable(true);
+            updateBio.setClickable(true);
+            updateBio.setFocusableInTouchMode(true);
+        }
     }
 
     void imageChooser() {
