@@ -28,71 +28,65 @@
                     app:civ_border_width="2dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.024"
+                    app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.026" />
+                    app:layout_constraintVertical_bias="0.086" />
 
                 <TextView
                     android:id="@+id/userName"
-                    android:layout_width="125dp"
-                    android:layout_height="34dp"
-                    android:layout_marginStart="34dp"
+                    android:layout_width="150dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
                     android:text="Name"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/dp"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.061" />
-
-                <TextView
-                    android:id="@+id/followers"
-                    android:layout_width="125dp"
-                    android:layout_height="34dp"
-                    android:layout_marginStart="34dp"
-                    android:layout_marginBottom="568dp"
-                    android:text="Followers"
-                    android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/dp"
-                    app:layout_constraintTop_toBottomOf="@+id/userName"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintVertical_bias="0.258" />
 
                 <TextView
                     android:id="@+id/bio"
-                    android:layout_width="315dp"
-                    android:layout_height="34dp"
+                    android:layout_width="305dp"
+                    android:layout_height="38dp"
+                    android:gravity="center"
                     android:text="Bio"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.403"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.246" />
+                    app:layout_constraintVertical_bias="0.31" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="230dp"
-            android:fillViewport="true"
-            tools:context=".ProfileFragment">
+            android:layout_height="match_parent"
+            android:layout_marginTop="300dp"
+            android:orientation="vertical"
+            tools:context=".fragments.FragmentViewPagerActivity">
 
-                <TextView
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout"
+                    style="@style/Widget.MaterialComponents.TabLayout.Colored"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/large_text"
-                    android:textColor="@color/white" />
+                    android:layout_height="wrap_content"
+                    app:tabBackground="@drawable/tab_background"
+                    app:tabSelectedTextColor="@color/white"
+                    />
 
-
-        </androidx.core.widget.NestedScrollView>
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+        </LinearLayout>
 
 </FrameLayout>
