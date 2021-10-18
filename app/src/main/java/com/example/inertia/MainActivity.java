@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,9 +28,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private Button signOut;
     private BottomNavigationView bottomNavigationView;
     public static UserProfile userProfile;
+    private static Context mContext;
 
 
     @Override
@@ -37,16 +38,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setUserProfile();
         setContentView(R.layout.activity_main);
-        signOut = findViewById(R.id.signOut);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         loadFragment(new MapFragment());
-        signOut.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                logout();
-            }
-
-        });
+        mContext = this;
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -100,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
                         Map<String, Object> docSnap = documentSnapshot.getData();
                         userProfile = new UserProfile(docSnap);
                     }else{
-                        Log.d("---------------------------", "pls work :D");
                         user.delete();
                         logout();
                     }
@@ -113,11 +106,11 @@ public class MainActivity extends AppCompatActivity {
             });
     }
 
-    public void logout(){
+    public static void logout(){
         FirebaseAuth.getInstance().signOut();
         userProfile = null;
-        Intent intent = new Intent(MainActivity.this, SplashScreen.class);
+        Intent intent = new Intent(mContext, SplashScreen.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        mContext.startActivity(intent);
     }
 }

@@ -24,6 +24,7 @@ public class ProfileBottomSheetFragment extends BottomSheetDialogFragment {
         final View rootView = inflater.inflate(R.layout.profile_bottom_sheet_dialog, container, false);
 
         TextView editProfileOption = (TextView) rootView.findViewById(R.id.profile_bottom_menu_one);
+        TextView logoutOption = (TextView) rootView.findViewById(R.id.profile_bottom_menu_three);
 
         editProfileOption.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,6 +32,13 @@ public class ProfileBottomSheetFragment extends BottomSheetDialogFragment {
                 Intent intent = new Intent(getContext(), EditProfileActivity.class);
                 startActivity(intent);
 
+            }
+        });
+
+        logoutOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.logout();
             }
         });
 
