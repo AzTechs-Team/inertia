@@ -12,14 +12,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -38,6 +41,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private static final int STORAGE_REQUEST = 200;
     String cameraPermission[];
     String storagePermission[];
+    boolean imageUploaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,8 @@ public class EditProfileActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
+        checkIfExistingProfile();
+
         uploadDP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +75,12 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(selectedImageUri == null) {
-                    selectedImageUri = Uri.parse("android.resource://com.example.inertia/" + R.drawable.dpp);
+                    if(MainActivity.userProfile == null) {
+                        imageUploaded = true;
+                        selectedImageUri = Uri.parse("android.resource://com.example.inertia/" + R.drawable.dpp);
+                    }else {
+                        selectedImageUri = Uri.parse(MainActivity.userProfile.user.get("photoURI").toString());
+                    }
                 }
                 if (validateInput()) {
                    loadingEditProfile(true);
@@ -77,7 +88,8 @@ public class EditProfileActivity extends AppCompatActivity {
                             EditProfileActivity.this, user,
                             selectedImageUri,
                             updateUsername.getText().toString(),
-                            updateBio.getText().toString()
+                            updateBio.getText().toString(),
+                            imageUploaded
                     );
                 }else{
                    loadingEditProfile(false);
@@ -105,6 +117,20 @@ public class EditProfileActivity extends AppCompatActivity {
             updateBio.setFocusable(true);
             updateBio.setClickable(true);
             updateBio.setFocusableInTouchMode(true);
+        }
+    }
+
+    private void checkIfExistingProfile(){
+        try {
+            if(MainActivity.userProfile != null) {
+                TextView editProfileTitle = (TextView) findViewById(R.id.editProfileTitle);
+                editProfileTitle.setText("Edit profile");
+                Picasso.get().load(MainActivity.userProfile.user.get("photoURI").toString()).into(uploadDP);
+                updateBio.setText(MainActivity.userProfile.user.get("bio").toString());
+                updateUsername.setText(MainActivity.userProfile.user.get("username").toString());
+            }
+        } catch (Throwable t){
+            Log.d("!!!!!!!!!!!!!!!!!!!!", "edit profile values not working!!!!!!!!!!");
         }
     }
 
@@ -201,6 +227,7 @@ public class EditProfileActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 selectedImageUri = result.getUri();
                 if (null != selectedImageUri) {
+                    imageUploaded = true;
                     uploadDP.setImageURI(selectedImageUri);
                 }
             }
@@ -212,7 +239,7 @@ public class EditProfileActivity extends AppCompatActivity {
             updateUsername.setError("This field is required");
             return false;
         }
-        if (updateUsername.length() >= 9) {
+        if (updateUsername.length() > 19) {
             updateUsername.setError("This field is TOOOOOOOOOOO LONGGGGGGGGGGGGGG");
             return false;
         }

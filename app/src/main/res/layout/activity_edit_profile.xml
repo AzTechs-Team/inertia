@@ -73,10 +73,10 @@
         app:layout_constraintVertical_bias="0.821" />
 
     <TextView
-        android:id="@+id/signupTitle"
+        android:id="@+id/editProfileTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Profile"
+        android:text="Create new Profile"
         android:textColor="@color/green_100"
         android:textSize="38sp"
         app:layout_constraintBottom_toBottomOf="parent"

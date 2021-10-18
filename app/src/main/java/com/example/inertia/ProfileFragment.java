@@ -61,9 +61,11 @@ public class ProfileFragment extends Fragment {
     }
 
     public void showBottomSheetDialog() {
-        View view = getLayoutInflater().inflate(R.layout.profile_bottom_sheet_dialog, null);
-        BottomSheetDialog dialog = new BottomSheetDialog(mainContainer.getContext());
-        dialog.setContentView(view);
-        dialog.show();
+//        View view = getLayoutInflater().inflate(R.layout.profile_bottom_sheet_dialog, null);
+//        BottomSheetDialog dialog = new BottomSheetDialog(mainContainer.getContext());
+//        dialog.setContentView(view);
+//        dialog.show();
+        ProfileBottomSheetFragment bottomSheetFragment = new ProfileBottomSheetFragment();
+        bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
     }
 }

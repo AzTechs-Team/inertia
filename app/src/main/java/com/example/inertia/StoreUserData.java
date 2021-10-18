@@ -30,28 +30,32 @@ public class StoreUserData {
         context.finish();
     }
 
-    public void uploadPhotoToFirebase(Activity context, FirebaseUser user, Uri selectedImageUri, String userName, String bio){
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        final StorageReference ref = storageRef.child("images/" + user.getUid() + ".jpg");
-        UploadTask uploadTask = ref.putFile(selectedImageUri);
-        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
+    public void uploadPhotoToFirebase(Activity context, FirebaseUser user, Uri selectedImageUri, String userName, String bio, boolean didImageUpdate){
+        if(didImageUpdate) {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            final StorageReference ref = storageRef.child("images/" + user.getUid() + ".jpg");
+            UploadTask uploadTask = ref.putFile(selectedImageUri);
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return ref.getDownloadUrl();
                 }
-                return ref.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    Uri photoURI = task.getResult();
-                    storeFireStore(context, user, photoURI ,userName,bio);
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri photoURI = task.getResult();
+                        storeFireStore(context, user, photoURI, userName, bio);
+                    }
                 }
-            }
-        });
+            });
+        }else{
+            storeFireStore(context, user, selectedImageUri, userName, bio);
+        }
     }
 
     private boolean storeFireStore(Activity context, FirebaseUser user_, Uri photoURI , String userName, String bio){
