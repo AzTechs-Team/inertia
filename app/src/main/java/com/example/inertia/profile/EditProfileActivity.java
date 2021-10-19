@@ -1,4 +1,4 @@
-package com.example.inertia;
+package com.example.inertia.profile;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -19,6 +19,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.inertia.MainActivity;
+import com.example.inertia.R;
+import com.example.inertia.helpers.StoreUserData;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

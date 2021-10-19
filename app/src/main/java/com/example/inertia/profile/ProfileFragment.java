@@ -1,4 +1,4 @@
-package com.example.inertia;
+package com.example.inertia.profile;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.inertia.MainActivity;
+import com.example.inertia.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.squareup.picasso.Picasso;

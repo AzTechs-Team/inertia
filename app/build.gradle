@@ -26,6 +26,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets {
+        main {
+            java {
+                srcDirs 'src\\main\\java', 'src\\main\\java\\auth', 'src\\main\\java\\profile', 'src\\main\\java\\com.example.inertia\\profile', 'src\\main\\java\\com.example.inertia\\auth\\profile', 'src\\main\\java\\auth\\profile', 'src\\main\\java\\profileTab'
+            }
+        }
+    }
 }
 
 dependencies {

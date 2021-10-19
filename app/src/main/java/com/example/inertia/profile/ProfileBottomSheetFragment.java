@@ -1,10 +1,12 @@
-package com.example.inertia;
+package com.example.inertia.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.example.inertia.MainActivity;
+import com.example.inertia.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

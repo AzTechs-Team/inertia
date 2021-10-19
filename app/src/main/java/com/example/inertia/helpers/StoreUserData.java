@@ -1,4 +1,4 @@
-package com.example.inertia;
+package com.example.inertia.helpers;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.inertia.MainActivity;
+import com.example.inertia.profile.EditProfileActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

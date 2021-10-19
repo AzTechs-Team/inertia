@@ -1,9 +1,9 @@
-package com.example.inertia;
+package com.example.inertia.models;
 
 import java.util.Map;
 
 public class UserProfile {
-    protected Map<String, Object> user;
+    public Map<String, Object> user;
 
     public UserProfile(Map user) {
         this.user = user;

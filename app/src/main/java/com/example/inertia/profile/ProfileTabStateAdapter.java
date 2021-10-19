@@ -1,4 +1,4 @@
-package com.example.inertia;
+package com.example.inertia.profile;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
