@@ -11,11 +11,13 @@
         android:layout_height="200dp"
         android:layout_margin="13dp"
         app:cardCornerRadius="13dp"
+        app:cardBackgroundColor="@color/blue_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,7 +31,7 @@
                 android:layout_height="150dp"
                 android:contentDescription="content_description_media"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/maxresdefault" />
+                app:srcCompat="@drawable/dpstock" />
 
                 <TextView
                     android:id="@+id/feed_image_title"
@@ -37,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:text="title"
                     android:padding="12dp"
+                    android:textColor="@color/white"
                     android:textSize="18dp"/>
 
         </LinearLayout>

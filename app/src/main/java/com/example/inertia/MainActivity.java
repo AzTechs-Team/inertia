@@ -10,14 +10,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.example.inertia.models.UserProfile;
 import com.example.inertia.home.HomeFragment;
 import com.example.inertia.map.MapFragment;
 import com.example.inertia.profile.ProfileFragment;
+import com.example.inertia.search.SearchFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     public static UserProfile userProfile;
     private static Context mContext;
+    private FloatingActionButton mFab;
 
 
     @Override
@@ -42,6 +48,24 @@ public class MainActivity extends AppCompatActivity {
         loadFragment(new MapFragment());
         mContext = this;
 
+        mFab = findViewById(R.id.fab);
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                PopupMenu popup = new PopupMenu(MainActivity.this, mFab);
+                popup.getMenuInflater().inflate(R.menu.floating_button_menu, popup.getMenu());
+
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+                popup.show();
+            }
+        });
+
         bottomNavigationView.setOnNavigationItemSelectedListener(
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -51,6 +75,11 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.action_home:
                             item.setChecked(true);
                             fragment = new HomeFragment();
+                            loadFragment(fragment);
+                            break;
+                        case R.id.action_search:
+                            item.setChecked(true);
+                            fragment = new SearchFragment();
                             loadFragment(fragment);
                             break;
                         case R.id.action_map:
@@ -67,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             });
-
     }
     private void loadFragment(Fragment fragment) {
         // load fragment

@@ -2,14 +2,24 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_map"
-        android:icon="@drawable/ic_baseline_explore_24"
-        android:checked="false"
-        tools:ignore="MenuTitle" />
-    <item
         android:id="@+id/action_home"
         android:icon="@drawable/ic_baseline_home_24"
         android:checked="true"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:checked="true"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/left_padding"
+        tools:ignore="MenuTitle"
+        android:enabled="false"/>
+
+    <item
+        android:id="@+id/action_map"
+        android:icon="@drawable/ic_baseline_explore_24"
+        android:checked="false"
         tools:ignore="MenuTitle" />
     <item
         android:id="@+id/action_profile"

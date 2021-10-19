@@ -29,12 +29,12 @@ public class ProfileFeedTab extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile_feed_tab, container, false);
         GridView gridView=(GridView) rootView.findViewById(R.id.profile_feed_grid_view);
         ArrayList<FeedImageModel> courseModelArrayList = new ArrayList<FeedImageModel>();
-        courseModelArrayList.add(new FeedImageModel(R.drawable.maxresdefault,"123"));
-        courseModelArrayList.add(new FeedImageModel(R.drawable.maxresdefault,"143"));
-        courseModelArrayList.add(new FeedImageModel(R.drawable.maxresdefault,"12343"));
-        courseModelArrayList.add(new FeedImageModel(R.drawable.maxresdefault,"1232e2"));
-        courseModelArrayList.add(new FeedImageModel(R.drawable.maxresdefault,"12323421432"));
-        courseModelArrayList.add(new FeedImageModel(R.drawable.maxresdefault,"123aghmhjerr"));
+        courseModelArrayList.add(new FeedImageModel(R.drawable.dpstock,"123"));
+        courseModelArrayList.add(new FeedImageModel(R.drawable.dpstock,"143"));
+        courseModelArrayList.add(new FeedImageModel(R.drawable.dpstock,"12343"));
+        courseModelArrayList.add(new FeedImageModel(R.drawable.dpstock,"1232e2"));
+        courseModelArrayList.add(new FeedImageModel(R.drawable.dpstock,"12323421432"));
+        courseModelArrayList.add(new FeedImageModel(R.drawable.dpstock,"123aghmhjerr"));
 
         ProfileFeedGridViewAdapter adapter = new ProfileFeedGridViewAdapter(rootView.getContext(), courseModelArrayList);
         gridView.setAdapter(adapter);
