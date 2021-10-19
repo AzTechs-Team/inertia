@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.example.inertia.R;
+import com.example.inertia.models.FeedImageModel;
+
+import java.util.ArrayList;
 
 
 public class ProfileFeedTab extends Fragment {
@@ -25,7 +28,16 @@ public class ProfileFeedTab extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile_feed_tab, container, false);
         GridView gridView=(GridView) rootView.findViewById(R.id.profile_feed_grid_view);
-        gridView.setAdapter(new ProfileFeedGridViewAdapter(rootView.getContext()));
+        ArrayList<FeedImageModel> courseModelArrayList = new ArrayList<FeedImageModel>();
+        courseModelArrayList.add(new FeedImageModel(R.drawable.maxresdefault,"123"));
+        courseModelArrayList.add(new FeedImageModel(R.drawable.maxresdefault,"143"));
+        courseModelArrayList.add(new FeedImageModel(R.drawable.maxresdefault,"12343"));
+        courseModelArrayList.add(new FeedImageModel(R.drawable.maxresdefault,"1232e2"));
+        courseModelArrayList.add(new FeedImageModel(R.drawable.maxresdefault,"12323421432"));
+        courseModelArrayList.add(new FeedImageModel(R.drawable.maxresdefault,"123aghmhjerr"));
+
+        ProfileFeedGridViewAdapter adapter = new ProfileFeedGridViewAdapter(rootView.getContext(), courseModelArrayList);
+        gridView.setAdapter(adapter);
         return rootView;
     }
 }
