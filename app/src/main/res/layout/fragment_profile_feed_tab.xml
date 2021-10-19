@@ -5,19 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".profile.ProfileFeedTab">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true"
-        tools:context=".profile.ProfileFragment"
-        android:paddingHorizontal="30dp">
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fillViewport="true"-->
+<!--        tools:context=".profile.ProfileFragment"-->
+<!--        android:paddingHorizontal="30dp">-->
 
-        <TextView
+        <GridView
+            android:id="@+id/profile_feed_grid_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:paddingHorizontal="20dp"
+            android:background="#0000E5FF"
             android:gravity="center"
-            android:text="@string/large_text"
-            android:textColor="@color/white" />
+            android:numColumns="2"
+            android:scaleX="1.1"
+            />
 
-    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

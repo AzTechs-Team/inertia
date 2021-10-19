@@ -241,13 +241,15 @@ public class EditProfileActivity extends AppCompatActivity {
         if (updateUsername.length() == 0) {
             updateUsername.setError("This field is required");
             return false;
-        }
-        if (updateUsername.length() > 19) {
-            updateUsername.setError("This field is TOOOOOOOOOOO LONGGGGGGGGGGGGGG");
+        }else if (updateUsername.length() > 19) {
+            updateUsername.setError("This field is too long");
             return false;
         }
         if (updateBio.length() == 0) {
             updateUsername.setError("This field is required");
+            return false;
+        }else if (updateBio.length() >= 40){
+            updateBio.setError("This field is too long");
             return false;
         }
         return true;

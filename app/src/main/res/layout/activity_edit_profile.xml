@@ -21,23 +21,23 @@
 
     <EditText
         android:id="@+id/updateBio"
-        android:layout_width="290dp"
-        android:layout_height="120dp"
+        android:layout_width="286dp"
+        android:layout_height="86dp"
         android:background="#08000000"
         android:backgroundTint="@color/green_100"
         android:gravity="top"
         android:hint="Add your bio"
         android:inputType="textMultiLine"
-        android:minLines="5"
+        android:maxLines="3"
         android:padding="10dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.649" />
+        app:layout_constraintVertical_bias="0.638" />
 
     <EditText
         android:id="@+id/updateUsername"
@@ -70,7 +70,7 @@
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.821" />
+        app:layout_constraintVertical_bias="0.783" />
 
     <TextView
         android:id="@+id/editProfileTitle"

@@ -36,7 +36,7 @@ public class StoreUserData {
         if(didImageUpdate) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
-            final StorageReference ref = storageRef.child("images/" + user.getUid() + ".jpg");
+            final StorageReference ref = storageRef.child("images/" + user.getUid() + "/profilePic.jpg");
             UploadTask uploadTask = ref.putFile(selectedImageUri);
             Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
