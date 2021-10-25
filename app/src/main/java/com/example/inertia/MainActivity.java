@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setUserProfile();
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        loadFragment(new MapFragment());
+        loadFragment(new HomeFragment());
         mContext = this;
 
         mFab = findViewById(R.id.fab);
@@ -97,6 +98,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
     }
+
+    @Override
+    public void onBackPressed() {
+        int selectedItemId = bottomNavigationView.getSelectedItemId();
+        if (selectedItemId == R.id.action_home) {
+            finish();
+        } else {
+            bottomNavigationView.setSelectedItemId(R.id.action_home);
+        }
+    }
+
     private void loadFragment(Fragment fragment) {
         // load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
