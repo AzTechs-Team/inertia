@@ -28,7 +28,7 @@
             <ImageView
                 android:id="@+id/feed_image"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="160dp"
                 android:contentDescription="content_description_media"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/dpstock" />
@@ -38,7 +38,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="title"
-                    android:padding="12dp"
+                    android:paddingHorizontal="12dp"
+                    android:paddingTop="7dp"
                     android:textColor="@color/white"
                     android:textSize="18dp"/>
 

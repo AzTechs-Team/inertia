@@ -12,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +38,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Uri selectedImageUri;
     private CircularProgressIndicator spinner;
-    boolean isLoading = false;
     private static final int CAMERA_REQUEST = 100;
     private static final int STORAGE_REQUEST = 200;
     String cameraPermission[];
@@ -69,8 +67,7 @@ public class EditProfileActivity extends AppCompatActivity {
         uploadDP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isLoading)
-                    imageChooser();
+                imageChooser();
             }
         });
 
@@ -103,15 +100,14 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void loadingEditProfile(boolean loading){
         if(loading){
-            isLoading = true;
             spinner.setVisibility(View.VISIBLE);
             editProfile.setVisibility(View.GONE);
             updateUsername.setFocusable(false);
             updateUsername.setClickable(false);
             updateBio.setFocusable(false);
             updateBio.setClickable(false);
+            uploadDP.setClickable(false);
         }else{
-            isLoading = false;
             spinner.setVisibility(View.GONE);
             editProfile.setVisibility(View.VISIBLE);
             updateUsername.setFocusable(true);
@@ -120,20 +116,18 @@ public class EditProfileActivity extends AppCompatActivity {
             updateBio.setFocusable(true);
             updateBio.setClickable(true);
             updateBio.setFocusableInTouchMode(true);
+            uploadDP.setClickable(true);
         }
     }
 
     private void checkIfExistingProfile(){
-        try {
-            if(MainActivity.userProfile != null) {
-                TextView editProfileTitle = (TextView) findViewById(R.id.editProfileTitle);
-                editProfileTitle.setText("Edit profile");
-                Picasso.get().load(MainActivity.userProfile.user.get("photoURI").toString()).into(uploadDP);
-                updateBio.setText(MainActivity.userProfile.user.get("bio").toString());
-                updateUsername.setText(MainActivity.userProfile.user.get("username").toString());
-            }
-        } catch (Throwable t){
-            Log.d("!!!!!!!!!!!!!!!!!!!!", "edit profile values not working!!!!!!!!!!");
+        if(MainActivity.userProfile != null) {
+            TextView editProfileTitle = (TextView) findViewById(R.id.editProfileTitle);
+            editProfileTitle.setText("Edit profile");
+            Picasso.get().load(MainActivity.userProfile.user.get("photoURI").toString()).into(uploadDP);
+            updateBio.setText(MainActivity.userProfile.user.get("bio").toString());
+            updateUsername.setText(MainActivity.userProfile.user.get("username").toString());
+
         }
     }
 
