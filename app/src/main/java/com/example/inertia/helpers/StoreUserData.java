@@ -19,6 +19,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +34,7 @@ public class StoreUserData {
         context.finish();
     }
 
-    public void uploadPhotoToFirebase(Activity context, FirebaseUser user, Uri selectedImageUri, String userName, String bio, boolean didImageUpdate){
+    public void uploadProfilePhotoToFirebase(Activity context, FirebaseUser user, Uri selectedImageUri, String userName, String bio, boolean didImageUpdate){
         if(didImageUpdate) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
@@ -51,18 +53,19 @@ public class StoreUserData {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         Uri photoURI = task.getResult();
-                        storeFireStore(context, user, photoURI, userName, bio);
+                        storeAuthDetailsToFireStore(context, user, photoURI, userName, bio);
                     }
                 }
             });
         }else{
-            storeFireStore(context, user, selectedImageUri, userName, bio);
+            storeAuthDetailsToFireStore(context, user, selectedImageUri, userName, bio);
         }
     }
 
-    private boolean storeFireStore(Activity context, FirebaseUser user_, Uri photoURI , String userName, String bio){
+    private boolean storeAuthDetailsToFireStore(Activity context, FirebaseUser user_, Uri photoURI , String userName, String bio){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> user = new HashMap<>();
+        user.put("uid", user_.getUid());
         user.put("name", user_.getDisplayName());
         user.put("username",userName);
         user.put("email", user_.getEmail());
@@ -89,5 +92,58 @@ public class StoreUserData {
                     }
                 });
         return true;
+    }
+
+    public void addPostDataToFirebase(Activity context, Uri imageUri, String uid, String caption, String location){
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            final StorageReference ref = storageRef.child("images/" + uid + "/posts/"+ Timestamp.from(Instant.now()).getTime()+".jpg");
+            UploadTask uploadTask = ref.putFile(imageUri);
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return ref.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri photoURI = task.getResult();
+                        Log.d("!!!!!!!!!!!!!","yayyyyyyyyyyyyyyyy"+photoURI);
+                        storePostDetailsToFirestore(context, uid, photoURI, caption, location);
+                    }
+                }
+            });
+    }
+
+    private void storePostDetailsToFirestore(Activity context, String uid, Uri photoURI , String caption, String location){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> post = new HashMap<>();
+        post.put("photoURI", photoURI.toString());
+        post.put("caption",caption);
+        post.put("location", location);
+
+        String id = String.valueOf(Timestamp.from(Instant.now()).getTime());
+        db.collection("users")
+                .document(uid)
+                .collection("posts")
+                .document(id)
+                .set(post)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("", "Error adding document", e);
+                    }
+                })
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.w("RUNNING", "Post added yay!");
+                        new RedirectToActivity().redirectActivityAfterFinish(context, MainActivity.class);
+                    }
+                });
     }
 }

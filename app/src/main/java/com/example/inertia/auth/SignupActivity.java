@@ -2,7 +2,6 @@ package com.example.inertia.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.inertia.R;
+import com.example.inertia.helpers.RedirectToActivity;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -76,10 +76,7 @@ public class SignupActivity extends AppCompatActivity {
         viewLogin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-                startActivity(intent);
-                SignupActivity.this.finish();
+                new RedirectToActivity().redirectActivityAfterFinish(SignupActivity.this, LoginActivity.class);
             }
         });
     }

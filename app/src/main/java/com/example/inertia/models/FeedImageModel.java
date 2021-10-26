@@ -1,20 +1,24 @@
 package com.example.inertia.models;
 
 public class FeedImageModel {
-    private int img;
-    private String title;
 
-    public FeedImageModel(int img, String title) {
+    private String img, caption, location;
+
+    public FeedImageModel(String img, String caption, String location) {
         this.img = img;
-        this.title = title;
+        this.caption = caption;
+        this.location = location;
     }
 
-    public int getImg() {
+    public String getImg() {
         return img;
     }
 
-    public String getTitle() {
-        return title;
+    public String getCaption() {
+        return caption;
     }
 
+    public String getLocation() {
+        return location;
+    }
 }

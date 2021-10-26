@@ -1,10 +1,11 @@
 package com.example.inertia.profile;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
+import com.example.inertia.helpers.RedirectToActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import android.view.LayoutInflater;
@@ -31,9 +32,7 @@ public class ProfileBottomSheetFragment extends BottomSheetDialogFragment {
         editProfileOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), EditProfileActivity.class);
-                startActivity(intent);
-
+                new RedirectToActivity().redirectActivityOnly((Activity) getContext(), EditProfileActivity.class);
             }
         });
 

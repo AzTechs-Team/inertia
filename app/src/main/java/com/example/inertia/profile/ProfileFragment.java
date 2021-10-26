@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
+import com.example.inertia.helpers.GetUserData;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.squareup.picasso.Picasso;
@@ -29,6 +29,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new GetUserData().getPostsData(MainActivity.userProfile.user.get("uid").toString());
     }
 
     private  ViewGroup mainContainer;
@@ -39,14 +40,9 @@ public class ProfileFragment extends Fragment {
         TextView userName = (TextView) rootView.findViewById(R.id.userName);
         TextView bio = (TextView) rootView.findViewById(R.id.bio);
         CircleImageView dp = (CircleImageView) rootView.findViewById(R.id.dp);
-        try {
-            userName.setText(MainActivity.userProfile.user.get("username").toString());
-            bio.setText("\" " +MainActivity.userProfile.user.get("bio").toString() + " \"");
-            Picasso.get().load(MainActivity.userProfile.user.get("photoURI").toString()).into(dp);
-        }catch (Throwable t){
-            Log.d("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1","nai chal raha :_)");
-        }
-
+        userName.setText(MainActivity.userProfile.user.get("username").toString());
+        bio.setText("\" " +MainActivity.userProfile.user.get("bio").toString() + " \"");
+        Picasso.get().load(MainActivity.userProfile.user.get("photoURI").toString()).into(dp);
 
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         toolbar.setTitle(MainActivity.userProfile.user.get("name").toString());

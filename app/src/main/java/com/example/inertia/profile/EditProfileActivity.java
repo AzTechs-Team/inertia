@@ -87,7 +87,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
                 if (validateInput()) {
                    loadingEditProfile(true);
-                    new StoreUserData().uploadPhotoToFirebase(
+                    new StoreUserData().uploadProfilePhotoToFirebase(
                             EditProfileActivity.this, user,
                             selectedImageUri,
                             updateUsername.getText().toString(),

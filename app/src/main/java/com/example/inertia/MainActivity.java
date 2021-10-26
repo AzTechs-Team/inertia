@@ -7,17 +7,17 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
-import android.widget.Toast;
 
+import com.example.inertia.helpers.GetUserData;
+import com.example.inertia.helpers.RedirectToActivity;
 import com.example.inertia.models.UserProfile;
 import com.example.inertia.home.HomeFragment;
 import com.example.inertia.map.MapFragment;
+import com.example.inertia.post.UploadPostActivity;
 import com.example.inertia.profile.ProfileFragment;
 import com.example.inertia.search.SearchFragment;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,8 +26,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -54,16 +52,7 @@ public class MainActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                PopupMenu popup = new PopupMenu(MainActivity.this, mFab);
-                popup.getMenuInflater().inflate(R.menu.floating_button_menu, popup.getMenu());
-
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
-                });
-                popup.show();
+                new RedirectToActivity().redirectActivityOnly(MainActivity.this, UploadPostActivity.class);
             }
         });
 
@@ -110,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFragment(Fragment fragment) {
-        // load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
         transaction.addToBackStack(null);
@@ -118,13 +106,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUserProfile(){
-        DatabaseReference mDatabase;
         FirebaseAuth mAuth;
         FirebaseUser user;
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
         db.collection("users").document(user.getUid()).get()
             .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -133,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         Map<String, Object> docSnap = documentSnapshot.getData();
                         userProfile = new UserProfile(docSnap);
+                        new GetUserData().getPostsData(user.getUid());
                     }else{
                         user.delete();
                         logout();
@@ -149,8 +137,6 @@ public class MainActivity extends AppCompatActivity {
     public static void logout(){
         FirebaseAuth.getInstance().signOut();
         userProfile = null;
-        Intent intent = new Intent(mContext, SplashScreen.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        mContext.startActivity(intent);
+        new RedirectToActivity().redirectActivityOnly((Activity) mContext, SplashScreen.class);
     }
 }

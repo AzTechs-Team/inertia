@@ -9,10 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.models.FeedImageModel;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 public class ProfileFeedTab extends Fragment {
@@ -28,15 +31,18 @@ public class ProfileFeedTab extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile_feed_tab, container, false);
         GridView gridView=(GridView) rootView.findViewById(R.id.profile_feed_grid_view);
-        ArrayList<FeedImageModel> courseModelArrayList = new ArrayList<FeedImageModel>();
-        courseModelArrayList.add(new FeedImageModel(R.drawable.dpstock,"123"));
-        courseModelArrayList.add(new FeedImageModel(R.drawable.dpstock,"143"));
-        courseModelArrayList.add(new FeedImageModel(R.drawable.dpstock,"12343"));
-        courseModelArrayList.add(new FeedImageModel(R.drawable.dpstock,"1232e2"));
-        courseModelArrayList.add(new FeedImageModel(R.drawable.dpstock,"12323421432"));
-        courseModelArrayList.add(new FeedImageModel(R.drawable.dpstock,"123aghmhjerr"));
 
-        ProfileFeedGridViewAdapter adapter = new ProfileFeedGridViewAdapter(rootView.getContext(), courseModelArrayList);
+        ArrayList<FeedImageModel> feedPostsList = new ArrayList<FeedImageModel>();
+        List<Map<String, Object>> feedInfo = null;
+        if(MainActivity.userProfile.feed != null) {
+            feedInfo = MainActivity.userProfile.feed;
+            for (Map<String, Object> i : feedInfo) {
+                feedPostsList.add(new FeedImageModel(i.get("photoURI").toString(), i.get("caption").toString(), i.get("location").toString()));
+            }
+        }
+
+        ProfileFeedGridViewAdapter adapter;
+        adapter = new ProfileFeedGridViewAdapter(rootView.getContext(), feedPostsList);
         gridView.setAdapter(adapter);
         return rootView;
     }

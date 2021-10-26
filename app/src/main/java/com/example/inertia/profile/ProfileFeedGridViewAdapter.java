@@ -31,10 +31,10 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
         }
         FeedImageModel imageModel = getItem(position);
         ImageView img = listitemView.findViewById(R.id.feed_image);
-        TextView title = listitemView.findViewById(R.id.feed_image_title);
+        TextView caption = listitemView.findViewById(R.id.feed_image_title);
         Picasso.get().load(imageModel.getImg()).into(img);
 
-        title.setText(imageModel.getTitle());
+        caption.setText(imageModel.getCaption());
         return listitemView;
     }
 }

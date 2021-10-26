@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.inertia.auth.GoogleSignUp;
 import com.example.inertia.auth.LoginActivity;
 import com.example.inertia.auth.SignupActivity;
+import com.example.inertia.helpers.RedirectToActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -56,16 +57,14 @@ public class SplashScreen extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent mainIntent = new Intent(SplashScreen.this, LoginActivity.class);
-                startActivity(mainIntent);
+                new RedirectToActivity().redirectActivityOnly(SplashScreen.this, LoginActivity.class);
             }
         });
 
         signupBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent mainIntent = new Intent(SplashScreen.this, SignupActivity.class);
-                startActivity(mainIntent);
+                new RedirectToActivity().redirectActivityOnly(SplashScreen.this, SignupActivity.class);
             }
         });
 
@@ -95,10 +94,7 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
-                    Intent intent = new Intent(SplashScreen.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-                    SplashScreen.this.startActivity(intent);
-                    SplashScreen.this.finish();
+                    new RedirectToActivity().redirectActivityAfterFinish(SplashScreen.this, MainActivity.class);
                 }else {
                     loginBtn.setVisibility(View.VISIBLE);
                     signupBtn.setVisibility(View.VISIBLE);
