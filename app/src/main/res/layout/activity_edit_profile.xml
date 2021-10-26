@@ -19,25 +19,50 @@
         app:layout_constraintVertical_bias="0.504"
         custom:srcCompat="@drawable/bg" />
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/uploadDP"
+        android:layout_width="168dp"
+        android:layout_height="161dp"
+        android:src="@drawable/dpp"
+        app:civ_border_color="@color/blue_900"
+        app:civ_border_width="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.322" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="52dp"
+        android:layout_height="46dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.635"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.436"
+        custom:srcCompat="@drawable/ic_baseline_add_a_photo_24" />
+
     <EditText
         android:id="@+id/updateBio"
-        android:layout_width="286dp"
-        android:layout_height="86dp"
-        android:background="#08000000"
+        android:layout_width="290dp"
+        android:layout_height="55dp"
         android:backgroundTint="@color/green_100"
         android:gravity="top"
         android:hint="Add your bio"
-        android:inputType="textMultiLine"
-        android:maxLines="3"
-        android:padding="10dp"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.638" />
+        app:layout_constraintVertical_bias="0.642" />
 
     <EditText
         android:id="@+id/updateUsername"
@@ -52,10 +77,10 @@
         android:textColorHint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.485" />
+        app:layout_constraintVertical_bias="0.532" />
 
     <Button
         android:id="@+id/editProfile"
@@ -67,10 +92,10 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.783" />
+        app:layout_constraintVertical_bias="0.796" />
 
     <TextView
         android:id="@+id/editProfileTitle"
@@ -85,33 +110,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.116" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/uploadDP"
-        android:layout_width="168dp"
-        android:layout_height="161dp"
-        android:src="@drawable/dpp"
-        app:civ_border_width="2dp"
-        app:civ_border_color="@color/blue_900"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.266" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="52dp"
-        android:layout_height="46dp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.635"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.389"
-        custom:srcCompat="@drawable/ic_baseline_add_a_photo_24" />
-
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/spinner"
         android:layout_width="68dp"
@@ -122,6 +120,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.824" />
+        app:layout_constraintVertical_bias="0.799" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

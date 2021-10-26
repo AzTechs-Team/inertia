@@ -50,7 +50,8 @@
 
                 <TextView
                     android:id="@+id/bio"
-                    android:layout_width="305dp"
+                    android:paddingHorizontal="5dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="38dp"
                     android:gravity="center"
                     android:text="Bio"

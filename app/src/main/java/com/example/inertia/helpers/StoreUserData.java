@@ -112,7 +112,6 @@ public class StoreUserData {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         Uri photoURI = task.getResult();
-                        Log.d("!!!!!!!!!!!!!","yayyyyyyyyyyyyyyyy"+photoURI);
                         storePostDetailsToFirestore(context, uid, photoURI, caption, location);
                     }
                 }
@@ -141,7 +140,6 @@ public class StoreUserData {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.w("RUNNING", "Post added yay!");
                         new RedirectToActivity().redirectActivityAfterFinish(context, MainActivity.class);
                     }
                 });
