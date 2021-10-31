@@ -32,6 +32,7 @@ public class ProfileBottomSheetFragment extends BottomSheetDialogFragment {
         editProfileOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ProfileFragment.bottomSheetFragment.dismiss();
                 new RedirectToActivity().redirectActivityOnly((Activity) getContext(), EditProfileActivity.class);
             }
         });
@@ -39,6 +40,7 @@ public class ProfileBottomSheetFragment extends BottomSheetDialogFragment {
         logoutOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ProfileFragment.bottomSheetFragment.dismiss();
                 MainActivity.logout();
             }
         });

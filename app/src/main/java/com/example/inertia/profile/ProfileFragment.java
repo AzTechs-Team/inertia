@@ -24,6 +24,7 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
+    static ProfileBottomSheetFragment bottomSheetFragment;
     public ProfileFragment() {}
 
     @Override
@@ -86,7 +87,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void showBottomSheetDialog() {
-        ProfileBottomSheetFragment bottomSheetFragment = new ProfileBottomSheetFragment();
+        bottomSheetFragment = new ProfileBottomSheetFragment();
         bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
     }
 }
