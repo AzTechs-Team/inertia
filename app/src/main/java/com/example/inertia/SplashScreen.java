@@ -35,6 +35,7 @@ public class SplashScreen extends AppCompatActivity {
     private CircularProgressIndicator spinner;
     private TextView altTextSignIn;
 
+    private GoogleSignInClient mGoogleSignInClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +73,6 @@ public class SplashScreen extends AppCompatActivity {
         signInWithGoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GoogleSignInClient mGoogleSignInClient;
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestIdToken(getString(R.string.default_web_client_id))
                         .requestEmail()
@@ -85,6 +85,7 @@ public class SplashScreen extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
+
         if (mAuth != null) {
             currentUser = mAuth.getCurrentUser();
         }
@@ -114,7 +115,7 @@ public class SplashScreen extends AppCompatActivity {
             try {
                 account = task.getResult(ApiException.class);
                 Log.d("Success: "  , "firebaseAuthWithGoogle: " + account.getIdToken());
-                new GoogleSignUp(mAuth, SplashScreen.this, account.getIdToken());
+                new GoogleSignUp(mAuth, SplashScreen.this, account.getIdToken(), mGoogleSignInClient);
             } catch (ApiException e) {
                 e.printStackTrace();
             }
