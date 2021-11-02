@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public static UserProfile userProfile;
     private static Context mContext;
     private FloatingActionButton mFab;
-
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

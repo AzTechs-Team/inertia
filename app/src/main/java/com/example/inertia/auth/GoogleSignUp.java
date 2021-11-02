@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import com.example.inertia.MainActivity;
 import com.example.inertia.helpers.RedirectToActivity;
 import com.example.inertia.helpers.StoreUserData;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -19,9 +22,10 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class GoogleSignUp {
     private FirebaseAuth mAuth;
     private Activity context;
+    private GoogleSignInClient mGoogleSignInClient;
     // TODO:
     // 1. Google Oauth not working accordingly (not important in Shreya's opinion)
-    public GoogleSignUp(FirebaseAuth mAuth, Activity context, String idToken) {
+    public GoogleSignUp(FirebaseAuth mAuth, Activity context, String idToken, GoogleSignInClient mGoogleSignInClient) {
         this.mAuth = mAuth;
         this.context = context;
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -30,6 +34,7 @@ public class GoogleSignUp {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            mGoogleSignInClient.signOut();
                             Log.d("Success: ", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             if(user.getDisplayName() != null)
