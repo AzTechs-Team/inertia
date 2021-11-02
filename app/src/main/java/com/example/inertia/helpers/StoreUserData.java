@@ -97,7 +97,8 @@ public class StoreUserData {
     public void addPostDataToFirebase(Activity context, Uri imageUri, String uid, String caption, String location){
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
-            final StorageReference ref = storageRef.child("images/" + uid + "/posts/"+ Timestamp.from(Instant.now()).getTime()+".jpg");
+            String timeInstance = String.valueOf(Timestamp.from(Instant.now()).getTime());
+            final StorageReference ref = storageRef.child("images/" + uid + "/posts/"+ timeInstance +".jpg");
             UploadTask uploadTask = ref.putFile(imageUri);
             Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
@@ -112,20 +113,50 @@ public class StoreUserData {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         Uri photoURI = task.getResult();
-                        storePostDetailsToFirestore(context, uid, photoURI, caption, location);
+                        storePostDetailsToFirestore(context, uid, photoURI, caption, location , timeInstance);
                     }
                 }
             });
     }
 
-    private void storePostDetailsToFirestore(Activity context, String uid, Uri photoURI , String caption, String location){
+    private void storePostDetailsToFirestore(Activity context, String uid, Uri photoURI , String caption, String location, String timeInstance){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         Map<String, Object> post = new HashMap<>();
+        post.put("id",timeInstance);
         post.put("photoURI", photoURI.toString());
         post.put("caption",caption);
         post.put("location", location);
 
-        String id = String.valueOf(Timestamp.from(Instant.now()).getTime());
+        db.collection("users")
+                .document(uid)
+                .collection("posts")
+                .document(timeInstance)
+                .set(post)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("", "Error adding document", e);
+                    }
+                })
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        new RedirectToActivity().redirectActivityAfterFinish(context, MainActivity.class);
+                    }
+                });
+    }
+
+
+    public void editPostDetailsToFirestore(Activity context, String uid ,String photoURI, String id, String caption, String location){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> post = new HashMap<>();
+        post.put("photoURI",photoURI);
+        post.put("id",id);
+        post.put("caption",caption);
+        post.put("location", location);
+
         db.collection("users")
                 .document(uid)
                 .collection("posts")

@@ -11,7 +11,7 @@
         android:layout_height="400dp"
         android:layout_margin="13dp"
         app:cardCornerRadius="13dp"
-        app:cardBackgroundColor="@color/blue_900"
+        app:cardBackgroundColor="#C8CCCF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -23,15 +23,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/blue_900">
+            android:paddingHorizontal="20dp"
+            android:background="#C8CCCF">
+
+            <ImageView
+                android:id="@+id/horizontal_menu"
+                android:backgroundTint="@color/white"
+                android:layout_gravity="right"
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                app:srcCompat="@drawable/ic_baseline_horizontal_menu_24" />
 
             <ImageView
                 android:id="@+id/post_dialog_image"
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
+                android:layout_height="290dp"
                 android:contentDescription="content_description_media"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/dpstock" />
+                app:srcCompat="@drawable/dp" />
 
             <TextView
                 android:id="@+id/post_dialog_caption"
