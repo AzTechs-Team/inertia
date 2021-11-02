@@ -1,6 +1,7 @@
 package com.example.inertia.profile;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -8,16 +9,20 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.models.FeedImageModel;
+import com.example.inertia.post.EditPostActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -44,7 +49,7 @@ public class ProfileFeedTab extends Fragment {
         if(MainActivity.userProfile.feed != null) {
             feedInfo = MainActivity.userProfile.feed;
             for (Map<String, Object> i : feedInfo) {
-                feedPostsList.add(new FeedImageModel(i.get("photoURI").toString(), i.get("caption").toString(), i.get("location").toString()));
+                feedPostsList.add(new FeedImageModel(i.get("photoURI").toString(), i.get("caption").toString(), i.get("location").toString(), i.get("id").toString()));
             }
         }
 
@@ -60,6 +65,7 @@ public class ProfileFeedTab extends Fragment {
                 final View dialog = factory.inflate(R.layout.post_card_view, null);
 
                 ImageView img = dialog.findViewById(R.id.post_dialog_image);
+                ImageView horizontalMenu = dialog.findViewById(R.id.horizontal_menu);
                 TextView caption = dialog.findViewById(R.id.post_dialog_caption);
                 TextView location = dialog.findViewById(R.id.post_dialog_location);
                 Picasso.get().load(item.getImg()).into(img);
@@ -67,6 +73,35 @@ public class ProfileFeedTab extends Fragment {
                 caption.setText(item.getCaption());
                 location.setText(item.getLocation());
 
+                horizontalMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PopupMenu popup = new PopupMenu(getContext(), horizontalMenu);
+                        popup.getMenuInflater().inflate(R.menu.edit_post_menu, popup.getMenu());
+
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            public boolean onMenuItemClick(MenuItem i) {
+                                String selectedItem = (String) i.getTitle();
+                                switch (selectedItem){
+                                    case "Edit Post":
+                                        Intent intent = new Intent(getContext(), EditPostActivity.class);
+                                        intent.putExtra("id",item.getId());
+                                        intent.putExtra("photoURI", item.getImg());
+                                        intent.putExtra("caption", item.getCaption());
+                                        intent.putExtra("destination", item.getLocation());
+                                        startActivity(intent);
+                                        break;
+
+                                    case "Delete Post":
+                                        Toast.makeText(getContext(), "lmaooooooooooooooooo", Toast.LENGTH_SHORT).show();
+                                        break;
+                                }
+                                return true;
+                            }
+                        });
+                        popup.show();
+                    }
+                });
                 final AlertDialog postDialog = new AlertDialog.Builder(getContext()).create();
                 postDialog.setView(dialog);
                 postDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

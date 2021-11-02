@@ -120,12 +120,43 @@ public class StoreUserData {
 
     private void storePostDetailsToFirestore(Activity context, String uid, Uri photoURI , String caption, String location){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String id = String.valueOf(Timestamp.from(Instant.now()).getTime());
+
         Map<String, Object> post = new HashMap<>();
+        post.put("id",id);
         post.put("photoURI", photoURI.toString());
         post.put("caption",caption);
         post.put("location", location);
 
-        String id = String.valueOf(Timestamp.from(Instant.now()).getTime());
+        db.collection("users")
+                .document(uid)
+                .collection("posts")
+                .document(id)
+                .set(post)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("", "Error adding document", e);
+                    }
+                })
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        new RedirectToActivity().redirectActivityAfterFinish(context, MainActivity.class);
+                    }
+                });
+    }
+
+
+    public void editPostDetailsToFirestore(Activity context, String uid ,String photoURI, String id, String caption, String location){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> post = new HashMap<>();
+        post.put("photoURI",photoURI);
+        post.put("id",id);
+        post.put("caption",caption);
+        post.put("location", location);
+
         db.collection("users")
                 .document(uid)
                 .collection("posts")
