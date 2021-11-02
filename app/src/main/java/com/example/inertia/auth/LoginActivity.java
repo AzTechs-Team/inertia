@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -14,11 +15,16 @@ import android.widget.Toast;
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.helpers.RedirectToActivity;
+import com.example.inertia.helpers.Toaster;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -90,10 +96,18 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 new RedirectToActivity().redirectActivityAfterFinish(LoginActivity.this, MainActivity.class);
-                            } else {
+                            } else if(!task.isSuccessful()) {
+                                try {
+                                    throw task.getException();
+                                } catch(FirebaseAuthInvalidUserException e) {
+                                    new Toaster().toaster_("User does not exits.", LoginActivity.this);
+                                } catch(FirebaseAuthInvalidCredentialsException e) {
+                                    new Toaster().toaster_("The password is invalid!", LoginActivity.this);
+                                } catch(Exception e) {
+                                    new Toaster().toaster_("Some Error Occurred!", LoginActivity.this);
+                                    Log.e("ERROR: ", e.toString());
+                                }
                                 loadingLoginScreen(false);
-                                Toast.makeText(LoginActivity.this, "Login failed! Enter valid credentials and try again!",
-                                        Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

@@ -42,7 +42,6 @@ public class FirebaseSignUp {
                            new StoreUserData().redirectToEditProfile(context);
 
                         } else if(!task.isSuccessful()) {
-                            Log.e("ERROOORRRRR hai bsdk: ", task.getException().toString());
                             try {
                                 throw task.getException();
                             } catch(FirebaseAuthInvalidCredentialsException e) {
