@@ -3,14 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".home.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:title="INERTIA"
+        app:titleTextColor="@color/white"
+        android:theme="?attr/actionBarTheme" />
+
+    <GridView
+        android:id="@+id/home_feed_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:paddingHorizontal="10dp"
+        android:background="#0000E5FF"
         android:gravity="center"
-        android:text="home fragment"
-        android:textColor="#FFFFFF" />
+        android:numColumns="1"
+        android:layout_marginTop="54dp"
+        />
 
 </FrameLayout>

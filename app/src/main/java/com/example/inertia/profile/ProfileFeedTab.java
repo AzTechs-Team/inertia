@@ -56,7 +56,7 @@ public class ProfileFeedTab extends Fragment {
         }
 
         ProfileFeedGridViewAdapter adapter;
-        adapter = new ProfileFeedGridViewAdapter(rootView.getContext(), feedPostsList);
+        adapter = new ProfileFeedGridViewAdapter(rootView.getContext(), feedPostsList,"profile");
         gridView.setAdapter(adapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

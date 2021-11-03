@@ -13,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.inertia.auth.GoogleSignUp;
 import com.example.inertia.auth.LoginActivity;
 import com.example.inertia.auth.SignupActivity;
+import com.example.inertia.helpers.GetUserData;
 import com.example.inertia.helpers.RedirectToActivity;
+import com.example.inertia.models.HomeFeedPosts;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -34,6 +36,7 @@ public class SplashScreen extends AppCompatActivity {
     private static int RC_SIGN_IN=100;
     private CircularProgressIndicator spinner;
     private TextView altTextSignIn;
+    public static HomeFeedPosts homeFeedPosts;
 
     private GoogleSignInClient mGoogleSignInClient;
     @Override
@@ -88,6 +91,8 @@ public class SplashScreen extends AppCompatActivity {
 
         if (mAuth != null) {
             currentUser = mAuth.getCurrentUser();
+            homeFeedPosts = new HomeFeedPosts();
+            new GetUserData().getHomeFeedData();
         }
 
         new Handler().postDelayed(new Runnable() {
