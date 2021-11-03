@@ -18,13 +18,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class GoogleSignUp {
     private FirebaseAuth mAuth;
     private Activity context;
     private GoogleSignInClient mGoogleSignInClient;
-    // TODO:
-    // 1. Google Oauth not working accordingly (not important in Shreya's opinion)
     public GoogleSignUp(FirebaseAuth mAuth, Activity context, String idToken, GoogleSignInClient mGoogleSignInClient) {
         this.mAuth = mAuth;
         this.context = context;
@@ -37,10 +39,22 @@ public class GoogleSignUp {
                             mGoogleSignInClient.signOut();
                             Log.d("Success: ", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            if(user.getDisplayName() != null)
-                                new RedirectToActivity().redirectActivityAfterFinish(context, MainActivity.class);
-                            else
-                                new StoreUserData().redirectToEditProfile(context);
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            DocumentReference doc = db.collection("users").document(user.getUid());
+                            doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if(task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if(document.exists()){
+                                            new RedirectToActivity().redirectActivityAfterFinish(context, MainActivity.class);
+                                        }
+                                        else{
+                                            new StoreUserData().redirectToEditProfile(context);
+                                        }
+                                    }
+                                }
+                            });
                         } else {
                             Log.w("Error: ", "signInWithCredential:failure", task.getException());
                         }
