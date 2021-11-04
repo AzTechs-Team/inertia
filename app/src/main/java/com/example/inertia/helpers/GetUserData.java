@@ -1,5 +1,7 @@
 package com.example.inertia.helpers;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -20,12 +22,12 @@ import java.util.Map;
 
 public class GetUserData {
     List<Map<String, Object>> posts;
-    List <String> uids;
+    List <Map<String, Object>> users;
     List <String> allPostsIds;
     FirebaseFirestore db;
     public GetUserData() {
         this.posts =  new ArrayList<>();
-        this.uids =  new ArrayList<>();
+        this.users =  new ArrayList<>();
         this.allPostsIds =  new ArrayList<>();
         this.db = FirebaseFirestore.getInstance();
     }
@@ -41,21 +43,21 @@ public class GetUserData {
                     }
                     for (QueryDocumentSnapshot doc : value) {
                         if (doc.get("uid") != null) {
-                            uids.add(doc.get("uid").toString());
+                            users.add(doc.getData());
                         }
                     }
-                    for(String uid: uids){
-                        getAllPosts(uid);
+                    for(Map<String, Object> user: users){
+                        getAllPosts(user);
                     }
                     SplashScreen.homeFeedPosts.setHomeFeedPosts(posts);
                 }
             });
     }
 
-    private void getAllPosts(String uid){
+    private void getAllPosts(Map<String,Object> user){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users")
-            .document(uid).collection("posts")
+            .document(user.get("uid").toString()).collection("posts")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(@Nullable QuerySnapshot value,
@@ -65,7 +67,10 @@ public class GetUserData {
                     }
                     for (QueryDocumentSnapshot doc : value) {
                         if (doc.get("id") != null && allPostsIds != null&& !allPostsIds.contains(doc.get("id").toString())) {
-                            posts.add(doc.getData());
+                            Map<String,Object> meta = doc.getData();
+                            meta.put("username",user.get("username").toString());
+                            meta.put("userPFP",user.get("photoURI").toString());
+                            posts.add(meta);
                             allPostsIds.add(doc.get("id").toString());
                         }
                     }
@@ -82,7 +87,7 @@ public class GetUserData {
             });
     }
 
-    public void getPostsData(String uid) {
+    public void getPostsData(String uid, String username, String photoURI) {
         //TODO: add onchange listener, so we dont have calls every time profile fragment is loaded
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(uid).collection("posts").get()
@@ -92,7 +97,10 @@ public class GetUserData {
                     if (task.isSuccessful()) {
                         List<Map<String, Object>> temp = new ArrayList<Map<String, Object>>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            temp.add(document.getData());
+                            Map<String,Object> meta = document.getData();
+                            meta.put("username",username);
+                            meta.put("userPFP",photoURI);
+                            temp.add(meta);
                         }
                         if(temp != null) {
                             Collections.reverse(temp);

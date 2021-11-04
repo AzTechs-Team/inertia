@@ -18,6 +18,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
     String id;
     public ProfileFeedGridViewAdapter(@NonNull Context context, ArrayList<FeedImageModel> courseModelArrayList, String id) {
@@ -38,18 +40,25 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
         }
         FeedImageModel imageModel = getItem(position);
         ImageView img;
-        TextView caption;
+        CircleImageView userPFP;
+        TextView caption, username;
         if(id == "profile") {
             img = listitemView.findViewById(R.id.feed_image);
             caption = listitemView.findViewById(R.id.feed_image_title);
+
         }else {
             img = listitemView.findViewById(R.id.post_dialog_image);
             caption = listitemView.findViewById(R.id.post_dialog_caption);
+            username = listitemView.findViewById(R.id.post_dialog_username);
+            userPFP = listitemView.findViewById(R.id.post_dialog_profilepic);
             ExtendedFloatingActionButton location = listitemView.findViewById(R.id.post_dialog_location);
             ImageView horizontal_menu = listitemView.findViewById(R.id.horizontal_menu);
 
             horizontal_menu.setVisibility(View.INVISIBLE);
             horizontal_menu.setClickable(false);
+
+            username.setText(imageModel.getUsername());
+            Picasso.get().load(imageModel.getUserPFP()).into(userPFP);
 
             location.setText(imageModel.getLocation());
             location.shrink();

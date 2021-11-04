@@ -30,7 +30,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new GetUserData().getPostsData(MainActivity.userProfile.user.get("uid").toString());
+        new GetUserData().getPostsData(MainActivity.userProfile.user.get("uid").toString(),MainActivity.userProfile.user.get("username").toString(), MainActivity.userProfile.user.get("photoURI").toString());
     }
 
     private  ViewGroup mainContainer;

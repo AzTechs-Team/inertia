@@ -45,7 +45,9 @@ public class HomeFragment extends Fragment {
                                 i.get("photoURI").toString(),
                                 i.get("caption").toString(),
                                 i.get("location").toString(),
-                                i.get("id").toString()
+                                i.get("id").toString(),
+                                i.get("username").toString(),
+                                i.get("userPFP").toString()
                         )
                 );
             }

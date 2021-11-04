@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         Map<String, Object> docSnap = documentSnapshot.getData();
                         userProfile = new UserProfile(docSnap);
-                        new GetUserData().getPostsData(user.getUid());
+                        new GetUserData().getPostsData(user.getUid(), userProfile.user.get("username").toString(), userProfile.user.get("photoURI").toString());
                     }else{
                         user.delete();
                         logout();

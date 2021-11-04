@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class ProfileFeedTab extends Fragment {
     public ProfileFeedTab() {
@@ -51,7 +53,7 @@ public class ProfileFeedTab extends Fragment {
         if(MainActivity.userProfile.feed != null) {
             feedInfo = MainActivity.userProfile.feed;
             for (Map<String, Object> i : feedInfo) {
-                feedPostsList.add(new FeedImageModel(i.get("photoURI").toString(), i.get("caption").toString(), i.get("location").toString(), i.get("id").toString()));
+                feedPostsList.add(new FeedImageModel(i.get("photoURI").toString(), i.get("caption").toString(), i.get("location").toString(), i.get("id").toString(),i.get("username").toString(),i.get("userPFP").toString()));
             }
         }
 
@@ -69,8 +71,13 @@ public class ProfileFeedTab extends Fragment {
                 ImageView img = dialog.findViewById(R.id.post_dialog_image);
                 ImageView horizontalMenu = dialog.findViewById(R.id.horizontal_menu);
                 TextView caption = dialog.findViewById(R.id.post_dialog_caption);
+                CircleImageView userPFP = dialog.findViewById(R.id.post_dialog_profilepic);
+                TextView username = dialog.findViewById(R.id.post_dialog_username);
                 ExtendedFloatingActionButton extendedFAB = dialog.findViewById(R.id.post_dialog_location);
                 Picasso.get().load(item.getImg()).into(img);
+                username.setText(item.getUsername());
+                Picasso.get().load(item.getUserPFP()).into(userPFP);
+
 
                 caption.setText(item.getCaption());
                 extendedFAB.shrink();

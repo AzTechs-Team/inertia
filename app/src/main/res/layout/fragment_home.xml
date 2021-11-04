@@ -25,7 +25,7 @@
         android:background="#0000E5FF"
         android:gravity="center"
         android:numColumns="1"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="58dp"
         />
 
 </FrameLayout>
