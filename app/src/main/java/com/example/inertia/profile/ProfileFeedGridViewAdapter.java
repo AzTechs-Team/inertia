@@ -1,5 +1,6 @@
 package com.example.inertia.profile;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.inertia.R;
 import com.example.inertia.models.FeedImageModel;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -74,6 +76,60 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
                 }
             });
 
+            LottieAnimationView imgIconLike = listitemView.findViewById(R.id.post_dialog_like_animation_view);
+            ImageView unlikeIcon = listitemView.findViewById(R.id.post_dialog_unlike);
+            ImageView likeIcon = listitemView.findViewById(R.id.post_dialog_like);
+
+            likeIcon.setVisibility(View.GONE);
+            likeIcon.setClickable(false);
+
+            final boolean[] likeStatus = {false};
+            imgIconLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    likeStatus[0] = !likeStatus[0];
+                    if(likeStatus[0]){
+                        imgIconLike.setSpeed(2F);
+                    }else{
+                        imgIconLike.setSpeed(-2F);
+                    }
+
+                    imgIconLike.addAnimatorListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animator) {
+                            unlikeIcon.setVisibility(View.GONE);
+                            likeIcon.setVisibility(View.GONE);
+                            unlikeIcon.setClickable(false);
+                            likeIcon.setClickable(false);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animator) {
+                            if(likeStatus[0]){
+                                unlikeIcon.setVisibility(View.GONE);
+                                unlikeIcon.setClickable(false);
+                                likeIcon.setVisibility(View.VISIBLE);
+                                likeIcon.setClickable(true);
+                            }else{
+                                likeIcon.setVisibility(View.GONE);
+                                likeIcon.setClickable(false);
+                                unlikeIcon.setVisibility(View.VISIBLE);
+                                unlikeIcon.setClickable(true);
+                            }
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animator) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animator) {
+                        }
+                    });
+                    imgIconLike.playAnimation();
+                }
+            });
 
         }
         Picasso.get().load(imageModel.getImg()).into(img);
