@@ -58,4 +58,6 @@ dependencies {
 
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    implementation "com.github.skydoves:balloon:1.4.0"
 }

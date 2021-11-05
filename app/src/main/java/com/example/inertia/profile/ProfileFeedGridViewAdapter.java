@@ -11,11 +11,19 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.inertia.MainActivity;
 import com.example.inertia.R;
+import com.example.inertia.helpers.StoreUserData;
 import com.example.inertia.models.FeedImageModel;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.skydoves.balloon.ArrowOrientation;
+import com.skydoves.balloon.ArrowPositionRules;
+import com.skydoves.balloon.Balloon;
+import com.skydoves.balloon.BalloonAnimation;
+import com.skydoves.balloon.BalloonSizeSpec;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,7 +55,8 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
         if(id == "profile") {
             img = listitemView.findViewById(R.id.feed_image);
             caption = listitemView.findViewById(R.id.feed_image_title);
-
+            Picasso.get().load(imageModel.getImg()).into(img);
+            caption.setText(imageModel.getCaption());
         }else {
             img = listitemView.findViewById(R.id.post_dialog_image);
             caption = listitemView.findViewById(R.id.post_dialog_caption);
@@ -61,6 +70,8 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
 
             username.setText(imageModel.getUsername());
             Picasso.get().load(imageModel.getUserPFP()).into(userPFP);
+            Picasso.get().load(imageModel.getImg()).into(img);
+            caption.setText(imageModel.getCaption());
 
             location.setText(imageModel.getLocation());
             location.shrink();
@@ -76,6 +87,7 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
                 }
             });
 
+            ArrayList<String> likesList = imageModel.getLikes();
             LottieAnimationView imgIconLike = listitemView.findViewById(R.id.post_dialog_like_animation_view);
             ImageView unlikeIcon = listitemView.findViewById(R.id.post_dialog_unlike);
             ImageView likeIcon = listitemView.findViewById(R.id.post_dialog_like);
@@ -83,16 +95,55 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
             likeIcon.setVisibility(View.GONE);
             likeIcon.setClickable(false);
 
-            final boolean[] likeStatus = {false};
+            final boolean[] likeStatus = {likesList.contains(imageModel.getUid())};
+
+            if(likeStatus[0]){
+                onLike(likeIcon, unlikeIcon);
+            }else{
+                onUnlike(likeIcon, unlikeIcon);
+            }
+
             imgIconLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     likeStatus[0] = !likeStatus[0];
+
                     if(likeStatus[0]){
                         imgIconLike.setSpeed(2F);
+                        likesList.add(MainActivity.userProfile.user.get("uid").toString());
                     }else{
                         imgIconLike.setSpeed(-2F);
+                        likesList.remove(MainActivity.userProfile.user.get("uid").toString());
                     }
+
+                    if(likeStatus[0]){
+                        Balloon balloon = new Balloon.Builder(getContext())
+                            .setArrowSize(10)
+                            .setArrowOrientation(ArrowOrientation.TOP)
+                            .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+                            .setArrowPosition(0.5f)
+                            .setWidth(BalloonSizeSpec.WRAP)
+                            .setHeight(65)
+                            .setTextSize(18f)
+                            .setCornerRadius(6f)
+                            .setAlpha(0.9f)
+                            .setText(String.valueOf(likesList.size()))
+                            .setTextColor(ContextCompat.getColor(getContext(), R.color.white))
+                            .setTextIsHtml(true)
+                            .setIconDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_favorite_24))
+                            .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.blue_900))
+                            .setBalloonAnimation(BalloonAnimation.FADE)
+                            .setAutoDismissDuration(1000L)
+                            .setPaddingHorizontal(12)
+                            .build();
+                        balloon.showAlignTop(likeIcon);
+                    }
+
+                    new StoreUserData().updateLikesToFirestore(
+                            likesList,
+                            MainActivity.userProfile.user.get("uid").toString(),
+                            imageModel.getId()
+                    );
 
                     imgIconLike.addAnimatorListener(new Animator.AnimatorListener() {
                         @Override
@@ -106,34 +157,37 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
                         @Override
                         public void onAnimationEnd(Animator animator) {
                             if(likeStatus[0]){
-                                unlikeIcon.setVisibility(View.GONE);
-                                unlikeIcon.setClickable(false);
-                                likeIcon.setVisibility(View.VISIBLE);
-                                likeIcon.setClickable(true);
+                                onLike(likeIcon, unlikeIcon);
                             }else{
-                                likeIcon.setVisibility(View.GONE);
-                                likeIcon.setClickable(false);
-                                unlikeIcon.setVisibility(View.VISIBLE);
-                                unlikeIcon.setClickable(true);
+                                onUnlike(likeIcon, unlikeIcon);
                             }
                         }
 
                         @Override
-                        public void onAnimationCancel(Animator animator) {
-
-                        }
+                        public void onAnimationCancel(Animator animator) { }
 
                         @Override
-                        public void onAnimationRepeat(Animator animator) {
-                        }
+                        public void onAnimationRepeat(Animator animator) { }
                     });
                     imgIconLike.playAnimation();
                 }
             });
 
         }
-        Picasso.get().load(imageModel.getImg()).into(img);
-        caption.setText(imageModel.getCaption());
         return listitemView;
+    }
+
+    private void onUnlike(ImageView likeIcon, ImageView unlikeIcon){
+        likeIcon.setVisibility(View.GONE);
+        likeIcon.setClickable(false);
+        unlikeIcon.setVisibility(View.VISIBLE);
+        unlikeIcon.setClickable(true);
+    }
+
+    private void onLike(ImageView likeIcon, ImageView unlikeIcon){
+        unlikeIcon.setVisibility(View.GONE);
+        unlikeIcon.setClickable(false);
+        likeIcon.setVisibility(View.VISIBLE);
+        likeIcon.setClickable(true);
     }
 }

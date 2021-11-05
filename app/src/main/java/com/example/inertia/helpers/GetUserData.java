@@ -1,7 +1,5 @@
 package com.example.inertia.helpers;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -70,6 +68,7 @@ public class GetUserData {
                             Map<String,Object> meta = doc.getData();
                             meta.put("username",user.get("username").toString());
                             meta.put("userPFP",user.get("photoURI").toString());
+                            meta.put("uid",user.get("uid").toString());
                             posts.add(meta);
                             allPostsIds.add(doc.get("id").toString());
                         }
@@ -100,6 +99,7 @@ public class GetUserData {
                             Map<String,Object> meta = document.getData();
                             meta.put("username",username);
                             meta.put("userPFP",photoURI);
+                            meta.put("uid",uid);
                             temp.add(meta);
                         }
                         if(temp != null) {

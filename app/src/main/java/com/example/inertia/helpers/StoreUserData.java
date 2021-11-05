@@ -21,6 +21,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -113,13 +114,15 @@ public class StoreUserData {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         Uri photoURI = task.getResult();
-                        storePostDetailsToFirestore(context, uid, photoURI, caption, location , timeInstance);
+                        ArrayList<String> likes = new ArrayList<String>();
+                        storePostDetailsToFirestore(context, uid, photoURI, caption, location , timeInstance,likes);
                     }
                 }
             });
     }
 
-    private void storePostDetailsToFirestore(Activity context, String uid, Uri photoURI , String caption, String location, String timeInstance){
+    private void storePostDetailsToFirestore(
+            Activity context, String uid, Uri photoURI , String caption, String location, String timeInstance, ArrayList<String> likes){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> post = new HashMap<>();
@@ -127,6 +130,7 @@ public class StoreUserData {
         post.put("photoURI", photoURI.toString());
         post.put("caption",caption);
         post.put("location", location);
+        post.put("likes", likes);
 
         db.collection("users")
                 .document(uid)
@@ -147,32 +151,53 @@ public class StoreUserData {
                 });
     }
 
-
-    public void editPostDetailsToFirestore(Activity context, String uid ,String photoURI, String id, String caption, String location){
+    public void editPostDetailsToFirestore(
+            Activity context, String uid , String id, String caption, String location){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> post = new HashMap<>();
-        post.put("photoURI",photoURI);
-        post.put("id",id);
         post.put("caption",caption);
         post.put("location", location);
+
+        db.collection("users")
+            .document(uid)
+            .collection("posts")
+            .document(id)
+            .update(post)
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w("", "Error adding document", e);
+                }
+            })
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    new RedirectToActivity().redirectActivityAfterFinish(context, MainActivity.class);
+                }
+            });
+    }
+
+    public void updateLikesToFirestore(ArrayList<String> likes, String uid, String id){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> post = new HashMap<>();
+        post.put("likes",likes);
 
         db.collection("users")
                 .document(uid)
                 .collection("posts")
                 .document(id)
-                .set(post)
+                .update(post)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("", "Error adding document", e);
+                        Log.w("", "Error reading likes", e);
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        new RedirectToActivity().redirectActivityAfterFinish(context, MainActivity.class);
-                    }
+                    public void onComplete(@NonNull Task<Void> task) {}
                 });
     }
 }

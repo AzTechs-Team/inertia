@@ -47,7 +47,9 @@ public class HomeFragment extends Fragment {
                                 i.get("location").toString(),
                                 i.get("id").toString(),
                                 i.get("username").toString(),
-                                i.get("userPFP").toString()
+                                i.get("userPFP").toString(),
+                                (ArrayList<String>) i.get("likes"),
+                                i.get("uid").toString()
                         )
                 );
             }

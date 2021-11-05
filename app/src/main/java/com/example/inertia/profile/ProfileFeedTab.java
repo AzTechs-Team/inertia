@@ -1,5 +1,6 @@
 package com.example.inertia.profile;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -19,12 +21,19 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.helpers.DeleteUserData;
+import com.example.inertia.helpers.StoreUserData;
 import com.example.inertia.models.FeedImageModel;
 import com.example.inertia.post.EditPostActivity;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.skydoves.balloon.ArrowOrientation;
+import com.skydoves.balloon.ArrowPositionRules;
+import com.skydoves.balloon.Balloon;
+import com.skydoves.balloon.BalloonAnimation;
+import com.skydoves.balloon.BalloonSizeSpec;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -53,7 +62,18 @@ public class ProfileFeedTab extends Fragment {
         if(MainActivity.userProfile.feed != null) {
             feedInfo = MainActivity.userProfile.feed;
             for (Map<String, Object> i : feedInfo) {
-                feedPostsList.add(new FeedImageModel(i.get("photoURI").toString(), i.get("caption").toString(), i.get("location").toString(), i.get("id").toString(),i.get("username").toString(),i.get("userPFP").toString()));
+                feedPostsList.add(
+                        new FeedImageModel(
+                            i.get("photoURI").toString(),
+                            i.get("caption").toString(),
+                            i.get("location").toString(),
+                            i.get("id").toString(),
+                            i.get("username").toString(),
+                            i.get("userPFP").toString(),
+                            (ArrayList<String>) i.get("likes"),
+                            i.get("uid").toString()
+                        )
+                );
             }
         }
 
@@ -123,6 +143,92 @@ public class ProfileFeedTab extends Fragment {
                         popup.show();
                     }
                 });
+
+                ArrayList<String> likesList = item.getLikes();
+                LottieAnimationView imgIconLike = dialog.findViewById(R.id.post_dialog_like_animation_view);
+                ImageView unlikeIcon = dialog.findViewById(R.id.post_dialog_unlike);
+                ImageView likeIcon = dialog.findViewById(R.id.post_dialog_like);
+
+                likeIcon.setVisibility(View.GONE);
+                likeIcon.setClickable(false);
+
+                final boolean[] likeStatus = {likesList.contains(item.getUid())};
+
+                if(likeStatus[0]){
+                    onLike(likeIcon, unlikeIcon);
+                }else{
+                    onUnlike(likeIcon, unlikeIcon);
+                }
+
+                imgIconLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        likeStatus[0] = !likeStatus[0];
+
+                        if(likeStatus[0]){
+                            imgIconLike.setSpeed(2F);
+                            likesList.add(MainActivity.userProfile.user.get("uid").toString());
+                        }else{
+                            imgIconLike.setSpeed(-2F);
+                            likesList.remove(MainActivity.userProfile.user.get("uid").toString());
+                        }
+
+                        if(likeStatus[0]){
+                            Balloon balloon = new Balloon.Builder(getContext())
+                                .setArrowSize(10)
+                                .setArrowOrientation(ArrowOrientation.BOTTOM)
+                                .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+                                .setArrowPosition(0.5f)
+                                .setWidth(BalloonSizeSpec.WRAP)
+                                .setHeight(65)
+                                .setTextSize(18f)
+                                .setCornerRadius(6f)
+                                .setAlpha(0.9f)
+                                .setText(String.valueOf(likesList.size()))
+                                .setTextColor(ContextCompat.getColor(getContext(), R.color.white))
+                                .setTextIsHtml(true)
+                                .setIconDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_favorite_24))
+                                .setBackgroundColor(ContextCompat.getColor(getContext(), R.color.blue_900))
+                                .setBalloonAnimation(BalloonAnimation.FADE)
+                                .setAutoDismissDuration(1000L)
+                                .setPaddingHorizontal(12)
+                                .build();
+                            balloon.showAlignTop(likeIcon);
+                        }
+
+                        new StoreUserData().updateLikesToFirestore(
+                                likesList,
+                                MainActivity.userProfile.user.get("uid").toString(),
+                                item.getId()
+                        );
+
+                        imgIconLike.addAnimatorListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animator) {
+                                unlikeIcon.setVisibility(View.GONE);
+                                likeIcon.setVisibility(View.GONE);
+                                unlikeIcon.setClickable(false);
+                                likeIcon.setClickable(false);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animator) {
+                                if(likeStatus[0]){
+                                    onLike(likeIcon, unlikeIcon);
+                                }else{
+                                    onUnlike(likeIcon, unlikeIcon);
+                                }
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animator) { }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animator) { }
+                        });
+                        imgIconLike.playAnimation();
+                    }
+                });
                 final AlertDialog postDialog = new AlertDialog.Builder(getContext()).create();
                 postDialog.setView(dialog);
                 postDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -130,6 +236,20 @@ public class ProfileFeedTab extends Fragment {
             }
         });
         return rootView;
+    }
+
+    private void onUnlike(ImageView likeIcon, ImageView unlikeIcon){
+        likeIcon.setVisibility(View.GONE);
+        likeIcon.setClickable(false);
+        unlikeIcon.setVisibility(View.VISIBLE);
+        unlikeIcon.setClickable(true);
+    }
+
+    private void onLike(ImageView likeIcon, ImageView unlikeIcon){
+        unlikeIcon.setVisibility(View.GONE);
+        unlikeIcon.setClickable(false);
+        likeIcon.setVisibility(View.VISIBLE);
+        likeIcon.setClickable(true);
     }
 
 }
