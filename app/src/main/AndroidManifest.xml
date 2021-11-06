@@ -14,13 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Inertia">
         <activity
+            android:screenOrientation="portrait"
             android:name=".post.EditPostActivity"
             android:exported="true" />
-        <activity android:name=".post.UploadPostActivity" />
         <activity
+            android:screenOrientation="portrait"
+            android:name=".post.UploadPostActivity" />
+        <activity
+            android:screenOrientation="portrait"
             android:name=".profile.EditProfileActivity"
             android:exported="true" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
@@ -29,14 +34,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".auth.SignupActivity" />
         <activity
+            android:screenOrientation="portrait"
+            android:name=".auth.SignupActivity" />
+        <activity
+            android:screenOrientation="portrait"
             android:name=".auth.LoginActivity"
             android:exported="true" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:exported="true" />
         <activity
+            android:screenOrientation="portrait"
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
     </application>
