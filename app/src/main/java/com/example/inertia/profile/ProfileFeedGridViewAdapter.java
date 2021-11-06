@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.inertia.MainActivity;
@@ -19,6 +20,7 @@ import com.example.inertia.R;
 import com.example.inertia.helpers.StoreUserData;
 import com.example.inertia.models.FeedImageModel;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
@@ -87,15 +89,13 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
                 }
             });
 
+            String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
             ArrayList<String> likesList = imageModel.getLikes();
             LottieAnimationView imgIconLike = listitemView.findViewById(R.id.post_dialog_like_animation_view);
             ImageView unlikeIcon = listitemView.findViewById(R.id.post_dialog_unlike);
             ImageView likeIcon = listitemView.findViewById(R.id.post_dialog_like);
 
-            likeIcon.setVisibility(View.GONE);
-            likeIcon.setClickable(false);
-
-            final boolean[] likeStatus = {likesList.contains(imageModel.getUid())};
+            final boolean[] likeStatus = {likesList.contains(currentUserID)};
 
             if(likeStatus[0]){
                 onLike(likeIcon, unlikeIcon);
@@ -141,7 +141,7 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
 
                     new StoreUserData().updateLikesToFirestore(
                             likesList,
-                            MainActivity.userProfile.user.get("uid").toString(),
+                            imageModel.getUid(),
                             imageModel.getId()
                     );
 
@@ -173,6 +173,20 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
                 }
             });
 
+            View cardHeader = listitemView.findViewById(R.id.card_header);
+
+            cardHeader.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (imageModel.getUid().equals(MainActivity.userProfile.user.get("uid"))){
+                        Fragment fragment = new ProfileFragment("self");
+                        MainActivity.loadFragment(fragment);
+                        MainActivity.bottomNavigationView.setSelectedItemId(R.id.action_profile);
+                    }else{
+                        MainActivity.getUserProfileDetails(imageModel.getUid());
+                    }
+                }
+            });
         }
         return listitemView;
     }

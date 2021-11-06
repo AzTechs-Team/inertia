@@ -2,9 +2,12 @@ package com.example.inertia.helpers;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.inertia.MainActivity;
 import com.example.inertia.SplashScreen;
+import com.example.inertia.home.HomeFragment;
+import com.example.inertia.profile.ProfileFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.EventListener;
@@ -23,6 +26,7 @@ public class GetUserData {
     List <Map<String, Object>> users;
     List <String> allPostsIds;
     FirebaseFirestore db;
+
     public GetUserData() {
         this.posts =  new ArrayList<>();
         this.users =  new ArrayList<>();
@@ -86,7 +90,7 @@ public class GetUserData {
             });
     }
 
-    public void getPostsData(String uid, String username, String photoURI) {
+    public void getPostsData(String uid, String username, String photoURI, String profileId) {
         //TODO: add onchange listener, so we dont have calls every time profile fragment is loaded
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(uid).collection("posts").get()
@@ -104,11 +108,20 @@ public class GetUserData {
                         }
                         if(temp != null) {
                             Collections.reverse(temp);
-                            MainActivity.userProfile.setFeed(temp);
+                            if(profileId == "self") {
+                                MainActivity.userProfile.setFeed(temp);
+                                Fragment fragment = new ProfileFragment("self");
+                                MainActivity.loadFragment(fragment);
+                            }
+                            if(profileId == "other") {
+                                MainActivity.newUserProfile.setFeed(temp);
+                                HomeFragment.changeFragmentToUserProfile();
+                            }
                         }
                     }
                 }
             });
     }
+
 
 }

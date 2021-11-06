@@ -8,8 +8,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class ProfileTabStateAdapter extends FragmentStateAdapter {
     private static final int CARD_ITEM_SIZE = 2;
-    public ProfileTabStateAdapter(@NonNull FragmentActivity fragmentActivity) {
+    String id;
+    public ProfileTabStateAdapter(@NonNull FragmentActivity fragmentActivity, String id) {
         super(fragmentActivity);
+        this.id = id;
     }
     @NonNull @Override public Fragment createFragment(int position) {
         switch (position) {
@@ -17,7 +19,7 @@ public class ProfileTabStateAdapter extends FragmentStateAdapter {
                 return new ProfileTravelledTab();
             case 0:
             default:
-                return new ProfileFeedTab();
+                return new ProfileFeedTab(id);
         }
     }
     @Override public int getItemCount() {

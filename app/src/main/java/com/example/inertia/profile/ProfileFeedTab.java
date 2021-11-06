@@ -29,6 +29,7 @@ import com.example.inertia.helpers.StoreUserData;
 import com.example.inertia.models.FeedImageModel;
 import com.example.inertia.post.EditPostActivity;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
@@ -44,7 +45,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileFeedTab extends Fragment {
-    public ProfileFeedTab() {
+    String id;
+    public ProfileFeedTab(String id) {
+        this.id = id;
     }
 
     @Override
@@ -59,7 +62,7 @@ public class ProfileFeedTab extends Fragment {
 
         ArrayList<FeedImageModel> feedPostsList = new ArrayList<FeedImageModel>();
         List<Map<String, Object>> feedInfo = null;
-        if(MainActivity.userProfile.feed != null) {
+        if(id=="self" && MainActivity.userProfile.feed != null) {
             feedInfo = MainActivity.userProfile.feed;
             for (Map<String, Object> i : feedInfo) {
                 feedPostsList.add(
@@ -77,10 +80,28 @@ public class ProfileFeedTab extends Fragment {
             }
         }
 
+        if(id=="other" && MainActivity.newUserProfile.feed != null) {
+            feedInfo = MainActivity.newUserProfile.feed;
+            for (Map<String, Object> i : feedInfo) {
+                feedPostsList.add(
+                        new FeedImageModel(
+                                i.get("photoURI").toString(),
+                                i.get("caption").toString(),
+                                i.get("location").toString(),
+                                i.get("id").toString(),
+                                i.get("username").toString(),
+                                i.get("userPFP").toString(),
+                                (ArrayList<String>) i.get("likes"),
+                                i.get("uid").toString()
+                        )
+                );
+            }
+        }
+
         ProfileFeedGridViewAdapter adapter;
         adapter = new ProfileFeedGridViewAdapter(rootView.getContext(), feedPostsList,"profile");
         gridView.setAdapter(adapter);
-
+        final String profileId = this.id;
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -114,45 +135,49 @@ public class ProfileFeedTab extends Fragment {
                   }
                 });
 
-                horizontalMenu.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        PopupMenu popup = new PopupMenu(getContext(), horizontalMenu);
-                        popup.getMenuInflater().inflate(R.menu.edit_post_menu, popup.getMenu());
+                horizontalMenu.setVisibility(View.INVISIBLE);
+                horizontalMenu.setClickable(false);
 
-                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            public boolean onMenuItemClick(MenuItem i) {
-                                String selectedItem = (String) i.getTitle();
-                                switch (selectedItem){
-                                    case "Edit Post":
-                                        Intent intent = new Intent(getContext(), EditPostActivity.class);
-                                        intent.putExtra("id",item.getId());
-                                        intent.putExtra("photoURI", item.getImg());
-                                        intent.putExtra("caption", item.getCaption());
-                                        intent.putExtra("destination", item.getLocation());
-                                        startActivity(intent);
-                                        break;
+                if( profileId.equals("self")) {
+                    horizontalMenu.setVisibility(View.VISIBLE);
+                    horizontalMenu.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            PopupMenu popup = new PopupMenu(getContext(), horizontalMenu);
+                            popup.getMenuInflater().inflate(R.menu.edit_post_menu, popup.getMenu());
 
-                                    case "Delete Post":
-                                        new DeleteUserData().deletePost((Activity) getContext(), item.getId());
-                                        break;
+                            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                public boolean onMenuItemClick(MenuItem i) {
+                                    String selectedItem = (String) i.getTitle();
+                                    switch (selectedItem) {
+                                        case "Edit Post":
+                                            Intent intent = new Intent(getContext(), EditPostActivity.class);
+                                            intent.putExtra("id", item.getId());
+                                            intent.putExtra("photoURI", item.getImg());
+                                            intent.putExtra("caption", item.getCaption());
+                                            intent.putExtra("destination", item.getLocation());
+                                            startActivity(intent);
+                                            break;
+
+                                        case "Delete Post":
+                                            new DeleteUserData().deletePost((Activity) getContext(), item.getId());
+                                            break;
+                                    }
+                                    return true;
                                 }
-                                return true;
-                            }
-                        });
-                        popup.show();
-                    }
-                });
+                            });
+                            popup.show();
+                        }
+                    });
+                }
 
+                String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 ArrayList<String> likesList = item.getLikes();
                 LottieAnimationView imgIconLike = dialog.findViewById(R.id.post_dialog_like_animation_view);
                 ImageView unlikeIcon = dialog.findViewById(R.id.post_dialog_unlike);
                 ImageView likeIcon = dialog.findViewById(R.id.post_dialog_like);
 
-                likeIcon.setVisibility(View.GONE);
-                likeIcon.setClickable(false);
-
-                final boolean[] likeStatus = {likesList.contains(item.getUid())};
+                final boolean[] likeStatus = {likesList.contains(currentUserID)};
 
                 if(likeStatus[0]){
                     onLike(likeIcon, unlikeIcon);
@@ -198,7 +223,7 @@ public class ProfileFeedTab extends Fragment {
 
                         new StoreUserData().updateLikesToFirestore(
                                 likesList,
-                                MainActivity.userProfile.user.get("uid").toString(),
+                                item.getUid(),
                                 item.getId()
                         );
 
