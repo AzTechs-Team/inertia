@@ -58,6 +58,8 @@ dependencies {
 
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
-
     implementation "com.github.skydoves:balloon:1.4.0"
+
+    implementation(name:'HERE-sdk', ext:'aar')
+    implementation 'com.google.code.gson:gson:2.8.0'
 }
