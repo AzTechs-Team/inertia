@@ -27,6 +27,9 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.List;
+import java.util.Map;
+
 public class SplashScreen extends AppCompatActivity {
 
     private FirebaseUser currentUser;
@@ -37,6 +40,7 @@ public class SplashScreen extends AppCompatActivity {
     private CircularProgressIndicator spinner;
     private TextView altTextSignIn;
     public static HomeFeedPosts homeFeedPosts;
+    public static List<Map<String, Object>> allUsers;
 
     private GoogleSignInClient mGoogleSignInClient;
     @Override
@@ -92,7 +96,9 @@ public class SplashScreen extends AppCompatActivity {
         if (mAuth != null) {
             currentUser = mAuth.getCurrentUser();
             homeFeedPosts = new HomeFeedPosts();
-            new GetUserData().getHomeFeedData();
+            GetUserData alUserHomeFeed = new GetUserData();
+            alUserHomeFeed.getHomeFeedData();
+            allUsers = alUserHomeFeed.getUsers();
         }
 
         new Handler().postDelayed(new Runnable() {

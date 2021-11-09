@@ -5,10 +5,19 @@
     android:layout_height="match_parent"
     tools:context=".search.SearchFragment">
 
-    <TextView
+    <SearchView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="search fragment"
-        android:textColor="#FFFFFF" />
+        android:background="@color/white"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:id="@+id/search"
+        android:layout_marginTop="15dp"
+        android:queryHint="Select any user here"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/search_items"
+        android:layout_marginTop="100dp"
+        />
 </FrameLayout>
