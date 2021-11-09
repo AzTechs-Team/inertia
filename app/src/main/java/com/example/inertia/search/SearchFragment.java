@@ -80,7 +80,6 @@ public class SearchFragment extends Fragment {
                 String uid = zizu_.get(userProfile).toString();
                 view.clearFocus();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                //Hide:
                 imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 if (uid.equals(MainActivity.userProfile.user.get("uid"))){
                     Fragment fragment = new ProfileFragment("self");
