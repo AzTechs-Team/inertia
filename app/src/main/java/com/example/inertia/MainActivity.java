@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+
                 new RedirectToActivity().redirectActivityOnly(MainActivity.this, UploadPostActivity.class);
             }
         });
@@ -111,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    //TODO: shift to getuserdata
     private void setUserProfile(){
         FirebaseAuth mAuth;
         FirebaseUser user;

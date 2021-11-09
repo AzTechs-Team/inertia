@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -95,7 +96,7 @@ public class StoreUserData {
         return true;
     }
 
-    public void addPostDataToFirebase(Activity context, Uri imageUri, String uid, String caption, String location){
+    public void addPostDataToFirebase(Activity context, Uri imageUri, String uid, String caption, String location,GeoPoint coordinates){
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
             String timeInstance = String.valueOf(Timestamp.from(Instant.now()).getTime());
@@ -115,14 +116,14 @@ public class StoreUserData {
                     if (task.isSuccessful()) {
                         Uri photoURI = task.getResult();
                         ArrayList<String> likes = new ArrayList<String>();
-                        storePostDetailsToFirestore(context, uid, photoURI, caption, location , timeInstance,likes);
+                        storePostDetailsToFirestore(context, uid, photoURI, caption, location , timeInstance,likes, coordinates);
                     }
                 }
             });
     }
 
     private void storePostDetailsToFirestore(
-            Activity context, String uid, Uri photoURI , String caption, String location, String timeInstance, ArrayList<String> likes){
+            Activity context, String uid, Uri photoURI , String caption, String location, String timeInstance, ArrayList<String> likes, GeoPoint coordinates){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> post = new HashMap<>();
@@ -131,6 +132,7 @@ public class StoreUserData {
         post.put("caption",caption);
         post.put("location", location);
         post.put("likes", likes);
+        post.put("coords",coordinates);
 
         db.collection("users")
                 .document(uid)

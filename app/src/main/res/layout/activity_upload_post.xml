@@ -7,6 +7,7 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     tools:context=".post.UploadPostActivity">
 
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="801dp"
@@ -18,7 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.504"
         app:srcCompat="@drawable/bg" />
-
 
     <TextView
         android:layout_width="wrap_content"
@@ -76,9 +76,9 @@
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.623" />
+        app:layout_constraintVertical_bias="0.742"/>
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
         android:id="@+id/addLocation"
         android:layout_width="290dp"
         android:layout_height="55dp"
@@ -91,36 +91,36 @@
         android:textColorHint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintHorizontal_bias="0.537"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.742" />
+        app:layout_constraintVertical_bias="0.599" />
 
-    <Button
-        android:id="@+id/addPost"
-        android:layout_width="285dp"
-        android:layout_height="57dp"
-        android:backgroundTint="@color/green_500"
-        android:text="Add post"
-        android:textColor="@color/blue_900"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.539"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.856" />
+        <Button
+            android:id="@+id/addPost"
+            android:layout_width="285dp"
+            android:layout_height="57dp"
+            android:backgroundTint="@color/green_500"
+            android:text="Add post"
+            android:textColor="@color/blue_900"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.539"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.856" />
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/spinner"
-        android:layout_width="68dp"
-        android:layout_height="59dp"
-        android:indeterminate="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.857" />
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/spinner"
+            android:layout_width="68dp"
+            android:layout_height="59dp"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.857" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

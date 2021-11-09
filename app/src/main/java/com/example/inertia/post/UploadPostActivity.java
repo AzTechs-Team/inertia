@@ -8,27 +8,38 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.inertia.R;
+import com.example.inertia.helpers.AutoSuggestionQuery;
 import com.example.inertia.helpers.StoreUserData;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.GeoPoint;
+import com.here.android.mpa.common.GeoCoordinate;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.List;
+
 public class UploadPostActivity extends AppCompatActivity {
 
-    private EditText addCaption, addLocation;
+    private EditText addCaption;
+    static private AutoCompleteTextView addLocation;
     private ImageView uploadPhoto;
     private Button addPost;
     private CircularProgressIndicator spinner;
     private Uri selectedImageUri;
+    static public GeoPoint selectedCoordinates = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,23 +61,21 @@ public class UploadPostActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        addLocation.setOnKeyListener(new View.OnKeyListener()
+        addLocation.addTextChangedListener(new TextWatcher()
         {
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (event.getAction() == KeyEvent.ACTION_DOWN)
-                {
-                    switch (keyCode)
-                    {
-                        case KeyEvent.KEYCODE_ENTER:
-                            addingPostData(user);
-                            return true;
-                        default:
-                            break;
-                    }
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int end, int count) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int end, int count) {
+                if (count % 3 == 0) {
+                    if (addLocation.getText().toString() != null && addLocation.getText().toString().length() != 0)
+                        new AutoSuggestionQuery().search(charSequence.toString());
                 }
-                return false;
             }
+
+            @Override
+            public void afterTextChanged(Editable editable) { }
         });
 
         addPost.setOnClickListener(new View.OnClickListener(){
@@ -85,7 +94,23 @@ public class UploadPostActivity extends AppCompatActivity {
         });
     }
 
+    public static void initSpinner(List<String> location, List<List<GeoCoordinate>> coordinates) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (UploadPostActivity.addLocation.getContext(), android.R.layout.select_dialog_item, location);
+        addLocation.setThreshold(3);
+        addLocation.setAdapter(adapter);
+        addLocation.setTextColor(Color.WHITE);
 
+        addLocation.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
+                selectedCoordinates = new GeoPoint(
+                        coordinates.get(position).get(0).getLatitude(),
+                        coordinates.get(position).get(0).getLongitude()
+                );
+            }
+        });
+    }
 
     private void addingPostData(FirebaseUser user){
         try {
@@ -95,7 +120,8 @@ public class UploadPostActivity extends AppCompatActivity {
                     selectedImageUri,
                     user.getUid(),
                     addCaption.getText().toString(),
-                    addLocation.getText().toString()
+                    addLocation.getText().toString(),
+                    selectedCoordinates
             );
         } catch (Throwable t){
             loadingUploadPostScreen(false);
