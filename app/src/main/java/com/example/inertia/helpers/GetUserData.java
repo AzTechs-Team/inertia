@@ -123,5 +123,7 @@ public class GetUserData {
             });
     }
 
-
+    public List<Map<String, Object>> getUsers() {
+        return users;
+    }
 }
