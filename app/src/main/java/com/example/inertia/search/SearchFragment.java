@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import android.widget.SearchView;
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.SplashScreen;
-import com.example.inertia.home.HomeFragment;
 import com.example.inertia.profile.ProfileFragment;
 
 import java.util.ArrayList;
@@ -78,7 +76,6 @@ public class SearchFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
-                Log.e("######################", parent.getItemAtPosition(i).toString());
                 String userProfile = parent.getItemAtPosition(i).toString();
                 String uid = zizu_.get(userProfile).toString();
                 view.clearFocus();
@@ -90,12 +87,8 @@ public class SearchFragment extends Fragment {
                     MainActivity.loadFragment(fragment);
                     MainActivity.bottomNavigationView.setSelectedItemId(R.id.action_profile);
                 }else{
-                    Log.e("#######################################", "coming in else");
                     MainActivity.getUserProfileDetails(uid);
                 }
-
-//                MainActivity.newUserProfile();
-//                HomeFragment.changeFragmentToUserProfile();
             }
         });
         return view;
