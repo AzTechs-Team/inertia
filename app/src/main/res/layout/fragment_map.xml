@@ -5,12 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".map.MapFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <fragment
+        class="com.here.android.mpa.mapping.AndroidXMapFragment"
+        android:id="@+id/mapfragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="map fragment"
-        android:textColor="#FFFFFF" />
-
+        android:layout_height="match_parent"/>
 </FrameLayout>

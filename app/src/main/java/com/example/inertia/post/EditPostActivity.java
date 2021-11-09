@@ -48,7 +48,6 @@ public class EditPostActivity extends AppCompatActivity {
                 new StoreUserData().editPostDetailsToFirestore(
                         EditPostActivity.this,
                         MainActivity.userProfile.user.get("uid").toString(),
-                        photoURI,
                         id,
                         editCaption.getText().toString(),
                         editLocation.getText().toString()

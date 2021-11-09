@@ -3,6 +3,7 @@ package com.example.inertia;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
@@ -18,7 +19,6 @@ import com.example.inertia.models.UserProfile;
 import com.example.inertia.home.HomeFragment;
 import com.example.inertia.map.MapFragment;
 import com.example.inertia.post.UploadPostActivity;
-import com.example.inertia.profile.ProfileFragment;
 import com.example.inertia.search.SearchFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,16 +32,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private BottomNavigationView bottomNavigationView;
-    public static UserProfile userProfile;
+    public static BottomNavigationView bottomNavigationView;
+    public static UserProfile userProfile, newUserProfile;
     private static Context mContext;
     private FloatingActionButton mFab;
     private FirebaseAuth mAuth;
+    public static FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setUserProfile();
+        fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         loadFragment(new HomeFragment());
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+
                 new RedirectToActivity().redirectActivityOnly(MainActivity.this, UploadPostActivity.class);
             }
         });
@@ -79,8 +82,12 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.action_profile:
                             item.setChecked(true);
-                            fragment = new ProfileFragment();
-                            loadFragment(fragment);
+                            new GetUserData().getPostsData(
+                                    MainActivity.userProfile.user.get("uid").toString(),
+                                    MainActivity.userProfile.user.get("username").toString(),
+                                    MainActivity.userProfile.user.get("photoURI").toString(),
+                                    "self"
+                            );
                             break;
                     }
                     return true;
@@ -98,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    static public void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -120,7 +127,12 @@ public class MainActivity extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         Map<String, Object> docSnap = documentSnapshot.getData();
                         userProfile = new UserProfile(docSnap);
-                        new GetUserData().getPostsData(user.getUid(), userProfile.user.get("username").toString(), userProfile.user.get("photoURI").toString());
+                        new GetUserData().getPostsData(
+                                user.getUid(),
+                                userProfile.user.get("username").toString(),
+                                userProfile.user.get("photoURI").toString(),
+                                "no redirect"
+                        );
                     }else{
                         user.delete();
                         logout();
@@ -138,5 +150,30 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         userProfile = null;
         new RedirectToActivity().redirectActivityOnly((Activity) mContext, SplashScreen.class);
+    }
+
+    static public void getUserProfileDetails(String uid){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").document(uid).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            Map<String, Object> docSnap = documentSnapshot.getData();
+                            newUserProfile = new UserProfile(docSnap);
+                            new GetUserData().getPostsData(
+                                    uid,
+                                    newUserProfile.user.get("username").toString(),
+                                    newUserProfile.user.get("photoURI").toString(),
+                                    "other"
+                            );
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("ERROR", "Error getting user details", e);
+            }
+        });
     }
 }
