@@ -40,6 +40,7 @@ public class UploadPostActivity extends AppCompatActivity {
     private CircularProgressIndicator spinner;
     private Uri selectedImageUri;
     static public GeoPoint selectedCoordinates = null;
+    public static AutoSuggestionQuery uploadLocationQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +69,11 @@ public class UploadPostActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int end, int count) {
-                if (count % 3 == 0) {
-                    if (addLocation.getText().toString() != null && addLocation.getText().toString().length() != 0)
-                        new AutoSuggestionQuery().search(charSequence.toString());
+                if (count % 2 == 0) {
+                    if (addLocation.getText().toString() != null && addLocation.getText().toString().length() != 0) {
+                        uploadLocationQuery = new AutoSuggestionQuery("upload");
+                        uploadLocationQuery.search(charSequence.toString());
+                    }
                 }
             }
 
@@ -94,14 +97,14 @@ public class UploadPostActivity extends AppCompatActivity {
         });
     }
 
-    public static void initSpinner(List<String> location, List<List<GeoCoordinate>> coordinates) {
+    public static void loadAutoSuggestionItemsInUploadPost(List<String> location, List<List<GeoCoordinate>> coordinates) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (UploadPostActivity.addLocation.getContext(), android.R.layout.select_dialog_item, location);
         addLocation.setThreshold(3);
         addLocation.setAdapter(adapter);
         addLocation.setTextColor(Color.WHITE);
 
-        addLocation.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        addLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
                 selectedCoordinates = new GeoPoint(

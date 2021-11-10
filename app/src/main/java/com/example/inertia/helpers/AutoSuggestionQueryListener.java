@@ -2,6 +2,7 @@ package com.example.inertia.helpers;
 
 import android.util.Log;
 
+import com.example.inertia.post.EditPostActivity;
 import com.example.inertia.post.UploadPostActivity;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.search.AutoSuggest;
@@ -14,6 +15,11 @@ import java.util.Collections;
 import java.util.List;
 
 class AutoSuggestionQueryListener implements ResultListener<List<AutoSuggest>> {
+    public String id;
+    public AutoSuggestionQueryListener(String id) {
+        this.id = id;
+    }
+
     @Override
     public void onCompleted(List<AutoSuggest> data, ErrorCode error) {
         List<String> location = new ArrayList<String>();
@@ -29,6 +35,9 @@ class AutoSuggestionQueryListener implements ResultListener<List<AutoSuggest>> {
                 Log.e("Auto Suggest not working", "lmao indeed");
             }
         }
-        UploadPostActivity.initSpinner(location,coordinates);
+        if(id.equals("upload"))
+            UploadPostActivity.loadAutoSuggestionItemsInUploadPost(location,coordinates);
+        else
+            EditPostActivity.loadAutoSuggestionItemsInEditPost(location,coordinates);
     }
 }

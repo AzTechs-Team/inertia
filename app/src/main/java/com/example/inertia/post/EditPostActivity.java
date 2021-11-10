@@ -3,23 +3,37 @@ package com.example.inertia.post;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
+import com.example.inertia.helpers.AutoSuggestionQuery;
 import com.example.inertia.helpers.StoreUserData;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.firebase.firestore.GeoPoint;
+import com.here.android.mpa.common.GeoCoordinate;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class EditPostActivity extends AppCompatActivity {
-    private EditText editCaption, editLocation;
+    private EditText editCaption;
+    static private AutoCompleteTextView editLocation;
     private Button editPost;
     private ImageView editPhoto;
     private CircularProgressIndicator spinner;
+    public static AutoSuggestionQuery editLocationQuery;
+    static public GeoPoint selectedCoordinates = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +55,25 @@ public class EditPostActivity extends AppCompatActivity {
         editLocation.setText(location);
         Picasso.get().load(photoURI).into(editPhoto);
 
+        editLocation.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int end, int count) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int end, int count) {
+                if (count % 2 == 0) {
+                    if (editLocation.getText().toString() != null && editLocation.getText().toString().length() != 0) {
+                        editLocationQuery = new AutoSuggestionQuery("edit");
+                        editLocationQuery.search(charSequence.toString());
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) { }
+        });
+
         editPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +84,24 @@ public class EditPostActivity extends AppCompatActivity {
                         id,
                         editCaption.getText().toString(),
                         editLocation.getText().toString()
+                );
+            }
+        });
+    }
+
+    public static void loadAutoSuggestionItemsInEditPost(List<String> location, List<List<GeoCoordinate>> coordinates) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (EditPostActivity.editLocation.getContext(), android.R.layout.select_dialog_item, location);
+        editLocation.setThreshold(3);
+        editLocation.setAdapter(adapter);
+        editLocation.setTextColor(Color.WHITE);
+
+        editLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
+                selectedCoordinates = new GeoPoint(
+                        coordinates.get(position).get(0).getLatitude(),
+                        coordinates.get(position).get(0).getLongitude()
                 );
             }
         });
