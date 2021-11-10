@@ -1,6 +1,7 @@
 package com.example.inertia.search;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
@@ -57,8 +59,9 @@ public class SearchFragment extends Fragment {
         list.add("Nimit");
         list.add("Shreya");
 
-        adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, list);
+        adapter = new ArrayAdapter<String>(view.getContext(), R.layout.search_list_item, list);
         listView.setAdapter(adapter);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -67,7 +70,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, usernames);
+                adapter = new ArrayAdapter<String>(view.getContext(), R.layout.search_list_item, usernames);
                 listView.setAdapter(adapter);
                 adapter.getFilter().filter(s);
                 return false;
