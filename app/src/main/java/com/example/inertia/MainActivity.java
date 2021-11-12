@@ -28,6 +28,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.here.android.mpa.common.ApplicationContext;
+import com.here.android.mpa.common.MapEngine;
+import com.here.android.mpa.common.OnEngineInitListener;
 
 import java.util.Map;
 
@@ -93,6 +96,15 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             });
+
+        MapEngine.getInstance().init(new ApplicationContext(MainActivity.this), new OnEngineInitListener() {
+            @Override
+            public void onEngineInitializationCompleted(Error error) {
+                if (error == Error.NONE) {
+                    Log.d("!!!!!!!!!!!!!!!!!!!!!!!!!!!", "Map initalized!");
+                }
+            }
+        });
     }
 
     @Override
