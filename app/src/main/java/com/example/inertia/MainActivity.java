@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEngineInitializationCompleted(Error error) {
                 if (error == Error.NONE) {
-                    Log.d("!!!!!!!!!!!!!!!!!!!!!!!!!!!", "Map initalized!");
+                    Log.d("finally chal raha hai", "Map initalized!");
                 }
             }
         });

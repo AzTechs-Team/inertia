@@ -30,6 +30,7 @@ import com.example.inertia.models.FeedImageModel;
 import com.example.inertia.post.EditPostActivity;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.GeoPoint;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
@@ -74,7 +75,8 @@ public class ProfileFeedTab extends Fragment {
                             i.get("username").toString(),
                             i.get("userPFP").toString(),
                             (ArrayList<String>) i.get("likes"),
-                            i.get("uid").toString()
+                            i.get("uid").toString(),
+                            (GeoPoint) i.get("coords")
                         )
                 );
             }
@@ -92,7 +94,8 @@ public class ProfileFeedTab extends Fragment {
                                 i.get("username").toString(),
                                 i.get("userPFP").toString(),
                                 (ArrayList<String>) i.get("likes"),
-                                i.get("uid").toString()
+                                i.get("uid").toString(),
+                                (GeoPoint) i.get("coords")
                         )
                 );
             }

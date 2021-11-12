@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.example.inertia.helpers.GetUserData;
 import com.example.inertia.models.FeedImageModel;
 import com.example.inertia.profile.ProfileFeedGridViewAdapter;
 import com.example.inertia.profile.ProfileFragment;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,8 @@ public class HomeFragment extends Fragment {
                                 i.get("username").toString(),
                                 i.get("userPFP").toString(),
                                 (ArrayList<String>) i.get("likes"),
-                                i.get("uid").toString()
+                                i.get("uid").toString(),
+                                (GeoPoint) i.get("coords")
                         )
                 );
             }

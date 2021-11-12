@@ -1,13 +1,17 @@
 package com.example.inertia.models;
 
+import com.google.firebase.firestore.GeoPoint;
+
 import java.util.ArrayList;
 
 public class FeedImageModel {
 
     private String img, caption, location, id, username, userPFP, uid;
     private ArrayList<String> likes;
+    private GeoPoint coords;
 
-    public FeedImageModel(String img, String caption, String location, String id, String username, String userPFP, ArrayList<String> likes, String uid) {
+    public FeedImageModel(
+            String img, String caption, String location, String id, String username, String userPFP, ArrayList<String> likes, String uid, GeoPoint coords) {
         this.img = img;
         this.caption = caption;
         this.location = location;
@@ -16,6 +20,7 @@ public class FeedImageModel {
         this.userPFP = userPFP;
         this.likes = likes;
         this.uid = uid;
+        this.coords = coords;
     }
 
     public String getImg() {
@@ -49,4 +54,6 @@ public class FeedImageModel {
     public String getUid() {
         return uid;
     }
+
+    public GeoPoint getCoords() { return coords; }
 }
