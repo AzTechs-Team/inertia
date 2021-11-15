@@ -10,7 +10,46 @@
         class="com.here.android.mpa.mapping.AndroidXMapFragment"
         android:id="@+id/mapfragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_gravity="top|center_horizontal"
+        app:cardBackgroundColor="@color/green_100"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp">
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_500"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="3dp"
+                android:src="@drawable/ic_baseline_search_24"
+                android:layout_gravity="center"
+                app:tint="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/searchDestination"
+                android:layout_width="280dp"
+                android:layout_height="55dp"
+                android:backgroundTint="@color/green_300"
+                android:ems="10"
+                android:hint="Enter destination"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/map_card"
@@ -20,7 +59,8 @@
         android:layout_gravity="bottom|center_horizontal"
         app:cardBackgroundColor="@color/green_100"
         android:visibility="gone"
-        app:cardCornerRadius="13dp">
+        app:cardCornerRadius="13dp"
+        app:cardElevation="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,7 +1,6 @@
 package com.example.inertia.search;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;

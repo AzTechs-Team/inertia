@@ -1,26 +1,29 @@
 package com.example.inertia.map;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.SplashScreen;
+import com.example.inertia.helpers.AutoSuggestionQuery;
 import com.example.inertia.profile.ProfileFragment;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.firestore.GeoPoint;
@@ -37,22 +40,22 @@ import com.here.android.mpa.mapping.MapObject;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Stream;
 
 public class MapFragment extends Fragment {
     public MapFragment() { }
 
-    private Map map = null;
+    private static Map map = null;
     private AndroidXMapFragment mapFragment = null;
     private MaterialCardView mapCard;
     private TextView mapCardUsername, mapCardCaption, mapCardLocation;
     private ImageView mapCardPostPic;
-    HashMap<String,String> post;
+    private HashMap<String,String> post;
+    public static AutoSuggestionQuery enterDestinationQuery;
+    static private AutoCompleteTextView searchDestination;
+    public static View rootView;
 
 
     @Override
@@ -63,15 +66,37 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+        rootView = inflater.inflate(R.layout.fragment_map, container, false);
         mapCard = rootView.findViewById(R.id.map_card);
         mapCardUsername = rootView.findViewById(R.id.map_dialog_username);
         mapCardCaption = rootView.findViewById(R.id.map_dialog_caption);
         mapCardLocation = rootView.findViewById(R.id.map_dialog_location);
         mapCardPostPic = rootView.findViewById(R.id.map_dialog_postpic);
+        searchDestination = rootView.findViewById(R.id.searchDestination);
+
+        searchDestination.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int end, int count) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int end, int count) {
+                if (count % 2 == 0) {
+                    if (searchDestination.getText().toString() != null && searchDestination.getText().toString().length() != 0) {
+                        enterDestinationQuery = new AutoSuggestionQuery("map");
+                        enterDestinationQuery.search(charSequence.toString());
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) { }
+        });
+
+
+
         mapFragment = (AndroidXMapFragment) getChildFragmentManager().findFragmentById(R.id.mapfragment);
         com.here.android.mpa.common.MapSettings.setDiskCacheRootPath(getActivity().getApplicationContext().getExternalFilesDir(null) + File.separator + ".here-maps");
-
         List<java.util.Map<String, Object>> postsList = SplashScreen.homeFeedPosts.posts;
         mapFragment.init(new OnEngineInitListener() {
             @Override
@@ -130,6 +155,24 @@ public class MapFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+
+    public static void loadAutoSuggestionItemsInMapFragment(List<String> location, List<List<GeoCoordinate>> coordinates) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (rootView.getContext(), android.R.layout.select_dialog_item, location);
+        searchDestination.setThreshold(3);
+        searchDestination.setAdapter(adapter);
+        searchDestination.setTextColor(Color.WHITE);
+
+        searchDestination.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
+                map.setCenter(coordinates.get(position).get(0), Map.Animation.LINEAR);
+                InputMethodManager imm = (InputMethodManager) rootView.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+            }
+        });
     }
 
     public MapGesture.OnGestureListener createGestureListener(){

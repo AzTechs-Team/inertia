@@ -2,6 +2,7 @@ package com.example.inertia.helpers;
 
 import android.util.Log;
 
+import com.example.inertia.map.MapFragment;
 import com.example.inertia.post.EditPostActivity;
 import com.example.inertia.post.UploadPostActivity;
 import com.here.android.mpa.common.GeoCoordinate;
@@ -37,6 +38,8 @@ class AutoSuggestionQueryListener implements ResultListener<List<AutoSuggest>> {
         }
         if(id.equals("upload"))
             UploadPostActivity.loadAutoSuggestionItemsInUploadPost(location,coordinates);
+        else if(id.equals("map"))
+            MapFragment.loadAutoSuggestionItemsInMapFragment(location,coordinates);
         else
             EditPostActivity.loadAutoSuggestionItemsInEditPost(location,coordinates);
     }
