@@ -7,7 +7,7 @@
 
     <SearchView
         android:layout_width="match_parent"
-        android:background="@color/white"
+        android:background="@color/black"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
         android:id="@+id/search"

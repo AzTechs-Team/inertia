@@ -1,5 +1,7 @@
 package com.example.inertia.search;
 
+import static com.example.inertia.MainActivity.list;
+
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -31,7 +33,6 @@ public class SearchFragment extends Fragment {
     SearchView searchView;
     ListView listView;
 
-    ArrayList<String> list;
     ArrayAdapter<String> adapter;
 
     @Override
@@ -45,7 +46,6 @@ public class SearchFragment extends Fragment {
         searchView = (SearchView) view.findViewById(R.id.search);
         listView = (ListView) view.findViewById(R.id.search_items);
 
-        list = new ArrayList<String>();
         List<String> usernames = new ArrayList<String>();
         Map<String, Object> zizu_ = new HashMap<String, Object>();
 
@@ -53,13 +53,9 @@ public class SearchFragment extends Fragment {
             zizu_.put(zizu.get("username").toString(), zizu.get("uid"));
             usernames.add(zizu.get("username").toString());
         }
-        list.add("Ashwin");
-        list.add("Nimit");
-        list.add("Shreya");
 
         adapter = new ArrayAdapter<String>(view.getContext(), R.layout.search_list_item, list);
         listView.setAdapter(adapter);
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -78,10 +74,18 @@ public class SearchFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
                 String userProfile = parent.getItemAtPosition(i).toString();
+                if(!list.contains(userProfile))
+                    list.add(0, userProfile);
+                else if(list.contains(userProfile)){
+                    list.remove(userProfile);
+                    list.add(0, userProfile);
+                }
                 String uid = zizu_.get(userProfile).toString();
                 view.clearFocus();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                adapter = new ArrayAdapter<String>(view.getContext(), R.layout.search_list_item, list);
+                listView.setAdapter(adapter);
                 if (uid.equals(MainActivity.userProfile.user.get("uid"))){
                     Fragment fragment = new ProfileFragment("self");
                     MainActivity.loadFragment(fragment);
