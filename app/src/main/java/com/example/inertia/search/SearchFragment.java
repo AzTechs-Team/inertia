@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
@@ -32,7 +33,6 @@ public class SearchFragment extends Fragment {
 
     SearchView searchView;
     ListView listView;
-
     ArrayAdapter<String> adapter;
 
     @Override
@@ -46,6 +46,7 @@ public class SearchFragment extends Fragment {
         searchView = (SearchView) view.findViewById(R.id.search);
         listView = (ListView) view.findViewById(R.id.search_items);
 
+        TextView recent = (TextView) view.findViewById(R.id.recent);
         List<String> usernames = new ArrayList<String>();
         Map<String, Object> zizu_ = new HashMap<String, Object>();
 
@@ -56,6 +57,9 @@ public class SearchFragment extends Fragment {
 
         adapter = new ArrayAdapter<String>(view.getContext(), R.layout.search_list_item, list);
         listView.setAdapter(adapter);
+        if(list.isEmpty()){
+            recent.setVisibility(View.GONE);
+        }
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
