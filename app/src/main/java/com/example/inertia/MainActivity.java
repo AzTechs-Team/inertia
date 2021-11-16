@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.action_map:
                             item.setChecked(true);
-                            fragment = new MapFragment();
+                            fragment = new MapFragment(0,0);
                             loadFragment(fragment);
                             break;
                         case R.id.action_profile:

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
+import com.example.inertia.helpers.CardGridViewAdapter;
 import com.example.inertia.helpers.DeleteUserData;
 import com.example.inertia.helpers.StoreUserData;
 import com.example.inertia.models.FeedImageModel;
@@ -101,8 +102,8 @@ public class ProfileFeedTab extends Fragment {
             }
         }
 
-        ProfileFeedGridViewAdapter adapter;
-        adapter = new ProfileFeedGridViewAdapter(rootView.getContext(), feedPostsList,"profile");
+        CardGridViewAdapter adapter;
+        adapter = new CardGridViewAdapter(rootView.getContext(), feedPostsList,"profile");
         gridView.setAdapter(adapter);
         final String profileId = this.id;
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

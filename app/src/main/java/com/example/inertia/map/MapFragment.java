@@ -45,7 +45,16 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MapFragment extends Fragment {
-    public MapFragment() { }
+    private double initalLat, initalLng;
+
+    public MapFragment(double initalLat, double initalLng) {
+        this.initalLat = initalLat;
+        this.initalLng = initalLng;
+        if(this.initalLat ==0 && this.initalLng == 0){
+            this.initalLat = 22.3236938;
+            this.initalLng = 73.2350609;
+        }
+    }
 
     private static Map map = null;
     private AndroidXMapFragment mapFragment = null;
@@ -107,7 +116,7 @@ public class MapFragment extends Fragment {
                     map = mapFragment.getMap();
                     mapFragment.getMapGesture().addOnGestureListener(onGestureListenernew, 0, false);
                     map.setMapScheme(scheme);
-                    map.setCenter(new GeoCoordinate(22.3236938, 73.2350609, 0.0), Map.Animation.LINEAR);
+                    map.setCenter(new GeoCoordinate(initalLat, initalLng, 0.0), Map.Animation.LINEAR);
                     map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 2);
                     map.setProjectionMode(Map.Projection.MERCATOR);
                     ClusterLayer cl = new ClusterLayer();
