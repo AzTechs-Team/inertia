@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.example.inertia.profile.ProfileFragment;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.firestore.GeoPoint;
 import com.here.android.mpa.cluster.ClusterLayer;
+import com.here.android.mpa.common.CustomConfigurations;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.Image;
 import com.here.android.mpa.common.OnEngineInitListener;
@@ -37,6 +39,9 @@ import com.here.android.mpa.mapping.AndroidXMapFragment;
 import com.here.android.mpa.mapping.MapGesture;
 import com.here.android.mpa.mapping.MapMarker;
 import com.here.android.mpa.mapping.MapObject;
+import com.here.android.mpa.mapping.customization.CustomizableScheme;
+import com.here.android.mpa.mapping.customization.CustomizableVariables;
+import com.here.android.mpa.mapping.customization.ZoomRange;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -102,10 +107,27 @@ public class MapFragment extends Fragment {
             @Override
             public void onEngineInitializationCompleted(OnEngineInitListener.Error error) {
                 try {
-                    MapGesture.OnGestureListener onGestureListenernew = createGestureListener();
-                    String scheme = Map.Scheme.NORMAL_NIGHT;
+                    MapGesture.OnGestureListener onGestureListener = createGestureListener();
                     map = mapFragment.getMap();
-                    mapFragment.getMapGesture().addOnGestureListener(onGestureListenernew, 0, false);
+                    ZoomRange range = new ZoomRange(map.getMinZoomLevel(),5);
+                    ZoomRange range1 = new ZoomRange(5,map.getMaxZoomLevel());
+                    ZoomRange range2 = new ZoomRange(map.getMinZoomLevel(),map.getMaxZoomLevel());
+                    CustomizableScheme scheme = map.createCustomizableScheme("newCustomScheme",Map.Scheme.NORMAL_NIGHT);
+                    scheme.setVariableValue(CustomizableVariables.CountryBoundary.WIDTH, 2f, range2);
+                    scheme.setVariableValue(CustomizableVariables.CountryBoundary.COLOR,Color.LTGRAY,range2);
+                    scheme.setVariableValue(CustomizableVariables.StateBoundary.WIDTH, 0f, range);
+                    scheme.setVariableValue(CustomizableVariables.StateBoundary.COLOR,Color.GREEN,range);
+                    scheme.setVariableValue(CustomizableVariables.StateBoundary.WIDTH, 1.5f, range1);
+                    scheme.setVariableValue(CustomizableVariables.StateBoundary.COLOR,Color.CYAN,range1);
+                    scheme.setVariableValue(CustomizableVariables.ContinentLabel.FONTSTYLE_SIZE,35f,range2);
+                    scheme.setVariableValue(CustomizableVariables.ContinentLabel.FONTSTYLE_OUTLINE_WIDTH,25f,range2);
+                    scheme.setVariableValue(CustomizableVariables.StateLabel.FONTSTYLE_SIZE,10f,range2);
+                    scheme.setVariableValue(CustomizableVariables.StateLabel.FONTSTYLE_OUTLINE_WIDTH,15f,range2);
+                    scheme.setVariableValue(CustomizableVariables.CityCenter.DISTRICT_FONTSTYLE_COLOR,Color.DKGRAY,range2);
+                    scheme.setVariableValue(CustomizableVariables.PointOfInterest.FONTSTYLE_COLOR,Color.CYAN,range2);
+                    scheme.setVariableValue(CustomizableVariables.ElevationMap.SHADER_SHADOW_COLOR,Color.BLACK,range2);
+
+                    mapFragment.getMapGesture().addOnGestureListener(onGestureListener, 0, false);
                     map.setMapScheme(scheme);
                     map.setCenter(new GeoCoordinate(22.3236938, 73.2350609, 0.0), Map.Animation.LINEAR);
                     map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 2);
