@@ -32,6 +32,7 @@ import com.here.android.mpa.common.ApplicationContext;
 import com.here.android.mpa.common.MapEngine;
 import com.here.android.mpa.common.OnEngineInitListener;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton mFab;
     private FirebaseAuth mAuth;
     public static FragmentManager fragmentManager;
+    public static ArrayList<String> list = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

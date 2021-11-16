@@ -7,17 +7,26 @@
 
     <SearchView
         android:layout_width="match_parent"
-        android:background="@color/white"
+        android:background="@color/black"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
         android:id="@+id/search"
         android:layout_marginTop="15dp"
         android:queryHint="Select any user here"/>
 
+    <TextView
+        android:id="@+id/recent"
+        android:layout_marginTop="75dp"
+        android:layout_marginBottom="10dp"
+        android:paddingHorizontal="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/recent_search"
+        android:textSize="18sp" />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:id="@+id/search_items"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="110dp"
         />
 </FrameLayout>
