@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class GetUserData {
     List<Map<String, Object>> posts;
-    List <Map<String, Object>> users;
+    public static List <Map<String, Object>> users;
     List <String> allPostsIds;
     FirebaseFirestore db;
 
@@ -121,6 +121,18 @@ public class GetUserData {
                     }
                 }
             });
+    }
+
+    public static ArrayList<String> getUserName(ArrayList<String> uid) {
+        ArrayList<String> userNames = new ArrayList<String>();
+        for(int i =0; i < uid.size(); i++) {
+            for (int j = 0; j < users.size(); j++) {
+                if(users.get(j).get("uid").equals(uid.get(i))){
+                    userNames.add(users.get(j).get("username").toString());
+                }
+            }
+        }
+        return userNames;
     }
 
     public List<Map<String, Object>> getUsers() {
