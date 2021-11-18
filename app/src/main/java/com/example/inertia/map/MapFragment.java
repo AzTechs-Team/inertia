@@ -191,7 +191,7 @@ public class MapFragment extends Fragment {
 
     public static void loadAutoSuggestionItemsInMapFragment(List<String> location, List<List<GeoCoordinate>> coordinates) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (rootView.getContext(), android.R.layout.select_dialog_item, location);
+                (rootView.getContext(), R.layout.dropdown_menu_item, location);
         searchDestination.setThreshold(3);
         searchDestination.setAdapter(adapter);
         searchDestination.setTextColor(Color.WHITE);
