@@ -1,4 +1,4 @@
-package com.example.inertia.profile;
+package com.example.inertia.helpers;
 
 import android.animation.Animator;
 import android.app.AlertDialog;
@@ -25,6 +25,7 @@ import com.example.inertia.R;
 import com.example.inertia.helpers.GetUserData;
 import com.example.inertia.helpers.StoreUserData;
 import com.example.inertia.models.FeedImageModel;
+import com.example.inertia.profile.ProfileFragment;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.skydoves.balloon.ArrowOrientation;
@@ -38,10 +39,10 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
+public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
     String id;
     private ArrayList<String> likesList;
-    public ProfileFeedGridViewAdapter(@NonNull Context context, ArrayList<FeedImageModel> courseModelArrayList, String id) {
+    public CardGridViewAdapter(@NonNull Context context, ArrayList<FeedImageModel> courseModelArrayList, String id) {
         super(context, 0, courseModelArrayList);
         this.id = id;
     }
@@ -53,20 +54,33 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
         if (listitemView == null) {
             if(id == "profile")
                 listitemView = LayoutInflater.from(getContext()).inflate(R.layout.feed_card_view, parent, false);
+            else if(id == "destination")
+                listitemView = LayoutInflater.from(getContext()).inflate(R.layout.destination_card_view, parent, false);
             else
                 listitemView = LayoutInflater.from(getContext()).inflate(R.layout.post_card_view, parent, false);
 
         }
+
         FeedImageModel imageModel = getItem(position);
         ImageView img;
         CircleImageView userPFP;
-        TextView caption, username;
+        TextView caption, username, destinationLocation;
+
         if(id == "profile") {
             img = listitemView.findViewById(R.id.feed_image);
             caption = listitemView.findViewById(R.id.feed_image_title);
             Picasso.get().load(imageModel.getImg()).into(img);
             caption.setText(imageModel.getCaption());
-        }else {
+        }else if(id == "destination"){
+            img = listitemView.findViewById(R.id.destination_image);
+            destinationLocation= listitemView.findViewById(R.id.destination_location);
+            img.setAlpha((float) 0.80);
+            Picasso.get().load(imageModel.getImg()).into(img);
+
+            String temp = imageModel.getLocation().substring(0, Math.min(imageModel.getLocation().length(), 20));
+            destinationLocation.setText(temp.length()>= 20? temp+"...":temp);
+
+        } else {
             img = listitemView.findViewById(R.id.post_dialog_image);
             caption = listitemView.findViewById(R.id.post_dialog_caption);
             username = listitemView.findViewById(R.id.post_dialog_username);
@@ -201,17 +215,13 @@ public class ProfileFeedGridViewAdapter extends ArrayAdapter<FeedImageModel> {
                 public boolean onLongClick(View view) {
                     LayoutInflater factory = LayoutInflater.from(getContext());
                     final View dialog = factory.inflate(R.layout.post_stats_card_view, null);
-                    Log.e("##########################", likesList.toString());
-                    Log.e("######################", String.valueOf(R.layout.post_stats_card_view));
                     ArrayList<String> UserLikeList = GetUserData.getUserName(likesList);
                     try {
                         ListView likeId = dialog.findViewById(R.id.likesId);
                         ArrayAdapter adapter = new ArrayAdapter<String>(getContext(), R.layout.search_list_item, UserLikeList);
                         likeId.setAdapter(adapter);
-                        Log.e("#########################", "working");
                     }
                     catch (Throwable err){
-                        Log.e("###################",err.toString());
                     }
                     final AlertDialog postDialog = new AlertDialog.Builder(getContext()).create();
                     postDialog.setView(dialog);

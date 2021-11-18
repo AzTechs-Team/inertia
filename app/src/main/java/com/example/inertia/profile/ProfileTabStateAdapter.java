@@ -16,7 +16,7 @@ public class ProfileTabStateAdapter extends FragmentStateAdapter {
     @NonNull @Override public Fragment createFragment(int position) {
         switch (position) {
             case 1:
-                return new ProfileTravelledTab();
+                return new ProfileTravelledTab(id);
             case 0:
             default:
                 return new ProfileFeedTab(id);

@@ -3,12 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".profile.ProfileTravelledTab"
-    android:background="@color/black">
+    tools:context=".profile.ProfileTravelledTab">
 
-    <TextView
+    <GridView
+        android:id="@+id/profile_destination_grid_view"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Welcome to Traveled tab" />
+        android:layout_marginBottom="50dp"
+        android:paddingHorizontal="20dp"
+        android:background="#0000E5FF"
+        android:gravity="center"
+        android:numColumns="1"
+        android:scaleX="1.1"
+        />
 
 </FrameLayout>

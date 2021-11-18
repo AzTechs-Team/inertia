@@ -15,8 +15,9 @@ import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.SplashScreen;
 import com.example.inertia.helpers.GetUserData;
+import com.example.inertia.map.MapFragment;
 import com.example.inertia.models.FeedImageModel;
-import com.example.inertia.profile.ProfileFeedGridViewAdapter;
+import com.example.inertia.helpers.CardGridViewAdapter;
 import com.example.inertia.profile.ProfileFragment;
 import com.google.firebase.firestore.GeoPoint;
 
@@ -61,8 +62,8 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        ProfileFeedGridViewAdapter adapter;
-        adapter = new ProfileFeedGridViewAdapter(rootView.getContext(), feedPostsList, "home");
+        CardGridViewAdapter adapter;
+        adapter = new CardGridViewAdapter(rootView.getContext(), feedPostsList, "home");
         gridView.setAdapter(adapter);
 
         return rootView;
@@ -76,5 +77,13 @@ public class HomeFragment extends Fragment {
         if(MainActivity.newUserProfile != null) {
             transaction.commit();
         }
+    }
+
+    static public void changeFragmentToMapProfile(double lat, double lng){
+        Fragment newFragment = new MapFragment(lat, lng);
+        FragmentTransaction transaction = currentActivityFragment.beginTransaction();
+        transaction.add(R.id.frame_container, newFragment);
+        MainActivity.bottomNavigationView.setSelectedItemId(R.id.action_map);
+        transaction.commit();
     }
 }
