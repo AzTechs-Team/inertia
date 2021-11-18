@@ -1,12 +1,17 @@
 package com.example.inertia.helpers;
 
 import android.animation.Animator;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
+import com.example.inertia.helpers.GetUserData;
 import com.example.inertia.helpers.StoreUserData;
 import com.example.inertia.models.FeedImageModel;
 import com.example.inertia.profile.ProfileFragment;
@@ -35,6 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
     String id;
+    private ArrayList<String> likesList;
     public CardGridViewAdapter(@NonNull Context context, ArrayList<FeedImageModel> courseModelArrayList, String id) {
         super(context, 0, courseModelArrayList);
         this.id = id;
@@ -104,7 +111,7 @@ public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
             });
 
             String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            ArrayList<String> likesList = imageModel.getLikes();
+            likesList = imageModel.getLikes();
             LottieAnimationView imgIconLike = listitemView.findViewById(R.id.post_dialog_like_animation_view);
             ImageView unlikeIcon = listitemView.findViewById(R.id.post_dialog_unlike);
             ImageView likeIcon = listitemView.findViewById(R.id.post_dialog_like);
@@ -199,6 +206,28 @@ public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
                     }else{
                         MainActivity.getUserProfileDetails(imageModel.getUid());
                     }
+                }
+            });
+
+            View cardBody = listitemView.findViewById(R.id.card);
+            cardBody.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    LayoutInflater factory = LayoutInflater.from(getContext());
+                    final View dialog = factory.inflate(R.layout.post_stats_card_view, null);
+                    ArrayList<String> UserLikeList = GetUserData.getUserName(likesList);
+                    try {
+                        ListView likeId = dialog.findViewById(R.id.likesId);
+                        ArrayAdapter adapter = new ArrayAdapter<String>(getContext(), R.layout.search_list_item, UserLikeList);
+                        likeId.setAdapter(adapter);
+                    }
+                    catch (Throwable err){
+                    }
+                    final AlertDialog postDialog = new AlertDialog.Builder(getContext()).create();
+                    postDialog.setView(dialog);
+                    postDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    postDialog.show();
+                    return false;
                 }
             });
         }
