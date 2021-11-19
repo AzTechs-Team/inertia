@@ -40,6 +40,8 @@
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/searchDestination"
                 android:backgroundTint="@color/accent_color"
+                android:textColor="@color/white"
+                android:textColorHint="#8E8F95"
                 android:layout_width="280dp"
                 android:layout_height="55dp"
                 android:ems="10"

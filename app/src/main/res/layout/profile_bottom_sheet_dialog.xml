@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:id="@+id/profile_bottom_sheet_dialog"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/profile_bottom_sheet_dialog"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    tools:layout_editor_absoluteX="201dp"
+    tools:layout_editor_absoluteY="93dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="20dp"
-        android:paddingBottom="10dp"
-        android:background="@color/blue_700"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="201dp"
-        tools:layout_editor_absoluteY="93dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingVertical="10dp"
+            android:text="Settings"
+            android:clickable="true"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="#A590C6"
+            android:layout_marginBottom="10dp"
+            android:textSize="26sp" />
+
 
         <TextView
             android:id="@+id/profile_bottom_menu_one"
@@ -25,29 +35,8 @@
             android:clickable="true"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.433" />
-
-        <TextView
-            android:id="@+id/profile_bottom_menu_two"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
-            android:text="Settings"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.369" />
+            android:layout_marginBottom="10dp"
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/profile_bottom_menu_three"
@@ -57,14 +46,5 @@
             android:text="Log out"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.634" />
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:textSize="22sp" />
+</LinearLayout>

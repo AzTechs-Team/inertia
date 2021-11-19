@@ -20,7 +20,7 @@
         android:id="@+id/home_feed_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="36dp"
         android:paddingHorizontal="10dp"
         android:background="#0000E5FF"
         android:gravity="center"

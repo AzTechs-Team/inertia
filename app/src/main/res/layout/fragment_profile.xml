@@ -79,6 +79,7 @@
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
                     style="@style/Widget.MaterialComponents.TabLayout.Colored"
+                    android:theme="@style/TabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:tabBackground="@drawable/tab_background"
