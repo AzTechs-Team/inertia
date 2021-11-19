@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -230,6 +231,21 @@ public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
                     return false;
                 }
             });
+//
+//            cardBody.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    try {
+//                        Log.e("##############", imageModel.getLikes().toString());
+//                        Toast.makeText(getContext(),  imageModel.getUsername(),Toast.LENGTH_LONG).show();
+//                    }
+//                    catch (Throwable err){
+//                        Toast.makeText(getContext(), err.toString(), Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                }
+//            });
+//
         }
         return listitemView;
     }
@@ -248,3 +264,6 @@ public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
         likeIcon.setClickable(true);
     }
 }
+
+//TODO:
+//1. Suggestion to use realtime database for posts and likes, we've to refresh fragments for getting like status
