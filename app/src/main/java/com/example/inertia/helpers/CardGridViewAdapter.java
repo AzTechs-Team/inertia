@@ -42,7 +42,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
     String id;
-    private ArrayList<String> likesList;
+//    private ;
     public CardGridViewAdapter(@NonNull Context context, ArrayList<FeedImageModel> courseModelArrayList, String id) {
         super(context, 0, courseModelArrayList);
         this.id = id;
@@ -112,7 +112,7 @@ public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
             });
 
             String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            likesList = imageModel.getLikes();
+            ArrayList<String> likesList= imageModel.getLikes();
             LottieAnimationView imgIconLike = listitemView.findViewById(R.id.post_dialog_like_animation_view);
             ImageView unlikeIcon = listitemView.findViewById(R.id.post_dialog_unlike);
             ImageView likeIcon = listitemView.findViewById(R.id.post_dialog_like);
@@ -231,21 +231,6 @@ public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
                     return false;
                 }
             });
-//
-//            cardBody.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    try {
-//                        Log.e("##############", imageModel.getLikes().toString());
-//                        Toast.makeText(getContext(),  imageModel.getUsername(),Toast.LENGTH_LONG).show();
-//                    }
-//                    catch (Throwable err){
-//                        Toast.makeText(getContext(), err.toString(), Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                }
-//            });
-//
         }
         return listitemView;
     }
@@ -265,5 +250,3 @@ public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
     }
 }
 
-//TODO:
-//1. Suggestion to use realtime database for posts and likes, we've to refresh fragments for getting like status
