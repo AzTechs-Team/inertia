@@ -29,25 +29,23 @@
             android:layout_gravity="center_horizontal">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="17dp"
-                android:layout_marginRight="3dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="19dp"
+                android:layout_marginRight="1dp"
                 android:src="@drawable/ic_baseline_search_24"
                 android:layout_gravity="center"
-                app:tint="@color/white" />
+                app:tint="@color/accent_color" />
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/searchDestination"
+                app:theme="@style/AutoSearchViewStyle"
                 android:layout_width="280dp"
                 android:layout_height="55dp"
-                android:backgroundTint="@color/accent_color"
                 android:ems="10"
                 android:hint="Enter destination"
                 android:inputType="textPersonName"
-                android:padding="10dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                android:padding="10dp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
