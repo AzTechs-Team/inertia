@@ -85,7 +85,7 @@
                     android:paddingHorizontal="2dp"
                     android:text="title"
                     android:textColor="@color/white"
-                    android:textSize="22dp"
+                    android:textSize="18dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"

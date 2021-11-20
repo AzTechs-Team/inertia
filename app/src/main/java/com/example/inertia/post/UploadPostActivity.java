@@ -122,7 +122,7 @@ public class UploadPostActivity extends AppCompatActivity {
                     UploadPostActivity.this,
                     selectedImageUri,
                     user.getUid(),
-                    addCaption.getText().toString(),
+                    addCaption.getText().toString().trim(),
                     addLocation.getText().toString(),
                     selectedCoordinates
             );

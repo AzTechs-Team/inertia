@@ -43,4 +43,11 @@
         <item name="android:background">@drawable/bottom_sheet_gradient</item>
     </style>
 
+    <style name="MenuTextAppearance" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
+    </style>
+
+    <style name="myPopupMenuTextAppearanceLarge" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Large">
+        <item name="android:textColor">#ffffff</item>
+    </style>
 </resources>

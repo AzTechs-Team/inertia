@@ -3,6 +3,7 @@ package com.example.inertia.profile;
 import android.animation.Animator;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -123,8 +125,8 @@ public class ProfileFeedTab extends Fragment {
                 username.setText(item.getUsername());
                 Picasso.get().load(item.getUserPFP()).into(userPFP);
 
-
-                caption.setText(item.getCaption());
+                String temp = item.getCaption().substring(0, Math.min(item.getCaption().length(),40));
+                caption.setText(temp.length()>= 40? temp+"...":temp);
                 extendedFAB.shrink();
                 extendedFAB.setText(item.getLocation());
 
@@ -147,7 +149,9 @@ public class ProfileFeedTab extends Fragment {
                     horizontalMenu.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            PopupMenu popup = new PopupMenu(getContext(), horizontalMenu);
+                            Context wrapper = new ContextThemeWrapper(getContext(),R.style.MenuTextAppearance);
+
+                            PopupMenu popup = new PopupMenu(wrapper, horizontalMenu);
                             popup.getMenuInflater().inflate(R.menu.edit_post_menu, popup.getMenu());
 
                             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

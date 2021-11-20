@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +21,6 @@ import androidx.fragment.app.Fragment;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
-import com.example.inertia.helpers.GetUserData;
-import com.example.inertia.helpers.StoreUserData;
 import com.example.inertia.models.FeedImageModel;
 import com.example.inertia.profile.ProfileFragment;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -70,7 +67,8 @@ public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
             img = listitemView.findViewById(R.id.feed_image);
             caption = listitemView.findViewById(R.id.feed_image_title);
             Picasso.get().load(imageModel.getImg()).into(img);
-            caption.setText(imageModel.getCaption());
+            String temp = imageModel.getCaption().substring(0, Math.min(imageModel.getCaption().length(),17));
+            caption.setText(temp.length()>= 17? temp+"...":temp);
         }else if(id == "destination"){
             img = listitemView.findViewById(R.id.destination_image);
             destinationLocation= listitemView.findViewById(R.id.destination_location);
@@ -94,7 +92,9 @@ public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
             username.setText(imageModel.getUsername());
             Picasso.get().load(imageModel.getUserPFP()).into(userPFP);
             Picasso.get().load(imageModel.getImg()).into(img);
-            caption.setText(imageModel.getCaption());
+
+            String temp = imageModel.getCaption().substring(0, Math.min(imageModel.getCaption().length(), 20));
+            caption.setText(temp.length()>= 20? temp+"...":temp);
 
             location.setText(imageModel.getLocation());
             location.shrink();
