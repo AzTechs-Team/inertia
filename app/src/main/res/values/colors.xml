@@ -16,6 +16,7 @@
     <color name="primary_color_light">#363847</color>
     <color name="primary_color_lighter">#565867</color>
     <color name="primary_color_tint">#605C78</color>
+    <color name="primary_color_tint_ligher">#C0BBDA</color>
     <color name="accent_color_dark">#413A95</color>
     <color name="accent_color">#7B7BC6</color>
     <color name="accent_color_light">#8E79FA</color>

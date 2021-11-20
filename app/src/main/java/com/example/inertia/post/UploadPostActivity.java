@@ -17,6 +17,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.inertia.R;
 import com.example.inertia.helpers.AutoSuggestionQuery;
@@ -118,14 +119,20 @@ public class UploadPostActivity extends AppCompatActivity {
     private void addingPostData(FirebaseUser user){
         try {
             loadingUploadPostScreen(true);
-            new StoreUserData().addPostDataToFirebase(
-                    UploadPostActivity.this,
-                    selectedImageUri,
-                    user.getUid(),
-                    addCaption.getText().toString().trim(),
-                    addLocation.getText().toString(),
-                    selectedCoordinates
-            );
+            if(selectedCoordinates != null) {
+                new StoreUserData().addPostDataToFirebase(
+                        UploadPostActivity.this,
+                        selectedImageUri,
+                        user.getUid(),
+                        addCaption.getText().toString().trim(),
+                        addLocation.getText().toString(),
+                        selectedCoordinates
+                );
+            }else{
+                loadingUploadPostScreen(false);
+                Toast.makeText(getApplicationContext(), "Enter valid location", Toast.LENGTH_SHORT).show();
+                addLocation.setText("");
+            }
         } catch (Throwable t){
             loadingUploadPostScreen(false);
         }
@@ -185,6 +192,7 @@ public class UploadPostActivity extends AppCompatActivity {
                 selectedImageUri = result.getUri();
                 if (null != selectedImageUri) {
                     uploadPhoto.setImageURI(selectedImageUri);
+                    uploadPhoto.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     addPost.setEnabled(true);
                     addPost.setClickable(true);
                     addPost.setAlpha(1);
