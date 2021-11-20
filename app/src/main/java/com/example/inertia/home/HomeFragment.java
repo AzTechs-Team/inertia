@@ -70,7 +70,6 @@ public class HomeFragment extends Fragment {
         CardGridViewAdapter adapter;
         adapter = new CardGridViewAdapter(rootView.getContext(), feedPostsList, "home");
         gridView.setAdapter(adapter);
-
         return rootView;
     }
 
