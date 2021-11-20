@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,8 @@ import android.widget.TextView;
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.SplashScreen;
+import com.example.inertia.helpers.customListViewAdapter;
+import com.example.inertia.models.userSearchModel;
 import com.example.inertia.profile.ProfileFragment;
 
 import java.util.ArrayList;
@@ -30,11 +31,12 @@ import java.util.Map;
 
 public class SearchFragment extends Fragment {
 
-    public SearchFragment() { }
+
+    public SearchFragment() {}
 
     SearchView searchView;
     ListView listView;
-    ArrayAdapter<String> adapter;
+    customListViewAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,15 +50,16 @@ public class SearchFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.search_items);
 
         TextView recent = (TextView) view.findViewById(R.id.recent);
-        List<String> usernames = new ArrayList<String>();
         Map<String, Object> zizu_ = new HashMap<String, Object>();
-
+        ArrayList<userSearchModel> users = new ArrayList<userSearchModel>();
+        int i = 0;
         for (Map<String, Object> zizu: SplashScreen.allUsers) {
             zizu_.put(zizu.get("username").toString(), zizu.get("uid"));
-            usernames.add(zizu.get("username").toString());
+            users.add(new userSearchModel(zizu.get("uid").toString() ,zizu.get("username").toString(), zizu.get("name").toString(), zizu.get("photoURI").toString()));
+            i++;
         }
 
-        adapter = new ArrayAdapter<String>(view.getContext(), R.layout.search_list_item, list);
+        adapter = new customListViewAdapter((Activity) view.getContext(), list);
         listView.setAdapter(adapter);
         if(list.isEmpty()){
             recent.setVisibility(View.GONE);
@@ -76,9 +79,9 @@ public class SearchFragment extends Fragment {
                 }else {
                     recent.setVisibility(View.GONE);
                     listView.setVisibility(View.VISIBLE);
-                    adapter = new ArrayAdapter<String>(view.getContext(), R.layout.search_list_item, usernames);
+                    ArrayList<userSearchModel> temp = filter_(s, users);
+                    adapter = new customListViewAdapter((Activity) view.getContext(),temp);
                     listView.setAdapter(adapter);
-                    adapter.getFilter().filter(s);
                     return false;
                 }
             }
@@ -86,19 +89,17 @@ public class SearchFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
-                String userProfile = parent.getItemAtPosition(i).toString();
+                userSearchModel userProfile = (userSearchModel) parent.getItemAtPosition(i);
                 if(!list.contains(userProfile))
                     list.add(0, userProfile);
                 else if(list.contains(userProfile)){
                     list.remove(userProfile);
                     list.add(0, userProfile);
                 }
-                String uid = zizu_.get(userProfile).toString();
+                String uid = userProfile.getUid();
                 view.clearFocus();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                adapter = new ArrayAdapter<String>(view.getContext(), R.layout.search_list_item, list);
-                listView.setAdapter(adapter);
                 if (uid.equals(MainActivity.userProfile.user.get("uid"))){
                     Fragment fragment = new ProfileFragment("self");
                     MainActivity.loadFragment(fragment);
@@ -109,5 +110,16 @@ public class SearchFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public ArrayList<userSearchModel> filter_(String s, ArrayList<userSearchModel> users) {
+        ArrayList<userSearchModel> temp = new ArrayList<userSearchModel>();
+        int length = users.size();
+        for (int i =0; i<length; i++){
+            if(users.get(i).getUserName().startsWith(s)){
+                temp.add(users.get(i));
+            }
+        }
+        return temp;
     }
 }

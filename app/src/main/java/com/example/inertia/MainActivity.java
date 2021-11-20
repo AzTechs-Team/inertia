@@ -18,6 +18,7 @@ import com.example.inertia.helpers.RedirectToActivity;
 import com.example.inertia.models.UserProfile;
 import com.example.inertia.home.HomeFragment;
 import com.example.inertia.map.MapFragment;
+import com.example.inertia.models.userSearchModel;
 import com.example.inertia.post.UploadPostActivity;
 import com.example.inertia.search.SearchFragment;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton mFab;
     private FirebaseAuth mAuth;
     public static FragmentManager fragmentManager;
-    public static ArrayList<String> list = new ArrayList<String>();
+    public static ArrayList<userSearchModel> list = new ArrayList<userSearchModel>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
