@@ -14,7 +14,6 @@ import android.widget.GridView;
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.SplashScreen;
-import com.example.inertia.helpers.GetUserData;
 import com.example.inertia.map.MapFragment;
 import com.example.inertia.models.FeedImageModel;
 import com.example.inertia.helpers.CardGridViewAdapter;
@@ -32,7 +31,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new GetUserData().getHomeFeedData();
     }
 
     @Override
@@ -42,22 +40,20 @@ public class HomeFragment extends Fragment {
         currentActivityFragment = getActivity().getSupportFragmentManager();
         GridView gridView=(GridView) rootView.findViewById(R.id.home_feed_grid_view);
         ArrayList<FeedImageModel> feedPostsList = new ArrayList<FeedImageModel>();
-        List<Map<String, Object>> feedInfo = null;
         if(SplashScreen.homeFeedPosts.posts != null) {
-            feedInfo = SplashScreen.homeFeedPosts.posts;
-            for (Map<String, Object> i : feedInfo) {
+            for (Map<String, Object> i : SplashScreen.homeFeedPosts.posts) {
                 feedPostsList.add(
-                        new FeedImageModel(
-                                i.get("photoURI").toString(),
-                                i.get("caption").toString(),
-                                i.get("location").toString(),
-                                i.get("id").toString(),
-                                i.get("username").toString(),
-                                i.get("userPFP").toString(),
-                                (ArrayList<String>) i.get("likes"),
-                                i.get("uid").toString(),
-                                (GeoPoint) i.get("coords")
-                        )
+                    new FeedImageModel(
+                            i.get("photoURI").toString(),
+                            i.get("caption").toString(),
+                            i.get("location").toString(),
+                            i.get("id").toString(),
+                            i.get("username").toString(),
+                            i.get("userPFP").toString(),
+                            (ArrayList<String>) i.get("likes"),
+                            i.get("uid").toString(),
+                            (GeoPoint) i.get("coords")
+                    )
                 );
             }
         }
