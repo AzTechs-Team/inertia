@@ -1,5 +1,7 @@
 package com.example.inertia.helpers;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -157,6 +159,7 @@ public class GetUserData {
 
     public static ArrayList<String> getUserName(ArrayList<String> uid) {
         ArrayList<String> userNames = new ArrayList<String>();
+        users = SplashScreen.allUsers;
         for(int i =0; i < uid.size(); i++) {
             for (int j = 0; j < users.size(); j++) {
                 if(users.get(j).get("uid").equals(uid.get(i))){
