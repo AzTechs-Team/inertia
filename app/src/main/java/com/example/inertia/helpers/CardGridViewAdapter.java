@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
     String id;
-    private ArrayList<String> likesList;
+//    private ;
     public CardGridViewAdapter(@NonNull Context context, ArrayList<FeedImageModel> courseModelArrayList, String id) {
         super(context, 0, courseModelArrayList);
         this.id = id;
@@ -111,7 +112,7 @@ public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
             });
 
             String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            likesList = imageModel.getLikes();
+            ArrayList<String> likesList= imageModel.getLikes();
             LottieAnimationView imgIconLike = listitemView.findViewById(R.id.post_dialog_like_animation_view);
             ImageView unlikeIcon = listitemView.findViewById(R.id.post_dialog_unlike);
             ImageView likeIcon = listitemView.findViewById(R.id.post_dialog_like);
@@ -248,3 +249,4 @@ public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
         likeIcon.setClickable(true);
     }
 }
+

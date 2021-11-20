@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class SearchFragment extends Fragment {
         if(list.isEmpty()){
             recent.setVisibility(View.GONE);
         }
+        listView.setVisibility(View.VISIBLE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -68,10 +70,17 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                adapter = new ArrayAdapter<String>(view.getContext(), R.layout.search_list_item, usernames);
-                listView.setAdapter(adapter);
-                adapter.getFilter().filter(s);
-                return false;
+                if(s == null || s.isEmpty()){
+                    listView.setVisibility(View.INVISIBLE);
+                    return false;
+                }else {
+                    recent.setVisibility(View.GONE);
+                    listView.setVisibility(View.VISIBLE);
+                    adapter = new ArrayAdapter<String>(view.getContext(), R.layout.search_list_item, usernames);
+                    listView.setAdapter(adapter);
+                    adapter.getFilter().filter(s);
+                    return false;
+                }
             }
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
