@@ -26,4 +26,8 @@ public class userSearchModel {
     public String getUid() {
         return uid;
     }
+
+    public String getName() {
+        return name;
+    }
 }

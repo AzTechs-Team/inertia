@@ -37,7 +37,7 @@ public class customListViewAdapter extends ArrayAdapter<userSearchModel> {
         TextView textViewNames = (TextView) row.findViewById(R.id.name);
         ImageView imageViewPhoto = (ImageView) row.findViewById(R.id.photoId);
         textViewUserNames.setText(searchUsers.get(position).getUserName());
-        textViewNames.setText(searchUsers.get(position).getUserName());
+        textViewNames.setText(searchUsers.get(position).getName());
         Picasso.get().load(listItem_.getPhotoURI()).into(imageViewPhoto);
         return row;
     }
