@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         loadFragment(new HomeFragment());
         mContext = this;
-
+        SplashScreen.homeFeedPosts.setMainActivityLoaded(true);
         mFab = findViewById(R.id.fab);
 
         mFab.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +125,18 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frame_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    static public void refreshHomeFragment(){
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.frame_container);
+        if (currentFragment instanceof HomeFragment) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                fragmentManager.beginTransaction().detach(currentFragment).commitNow();
+                fragmentManager.beginTransaction().attach(currentFragment).commitNow();
+            } else {
+                fragmentManager.beginTransaction().detach(currentFragment).attach(currentFragment).commit();
+            }
+        }
     }
 
     private void setUserProfile(){
