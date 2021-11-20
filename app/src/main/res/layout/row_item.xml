@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    <ImageView
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        android:layout_rowSpan="2"
-        android:layout_width="80dp"
-        android:layout_height="70dp"
-
-        android:scaleType="fitXY"
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/photoId"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        app:civ_border_color="@color/accent_color"
+        app:civ_border_width="2dp"
         android:layout_row="0"
-        android:layout_column="0" />
+        android:layout_rowSpan="2"
+        android:layout_column="0"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
-        android:layout_marginLeft="10dp"
-        android:textSize="30dp"
-        android:textColor="#1E90FF"
+        android:layout_marginTop="9dp"
+        android:textSize="20dp"
+        android:textColor="@color/white"
         android:id="@+id/userName"
         android:layout_row="0"
         android:layout_column="1" />
@@ -28,9 +33,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
-        android:layout_marginLeft="10dp"
-        android:textSize="20dp"
-        android:textColor="#4B0082"
+        android:textSize="15dp"
+        android:textColor="@color/primary_color_tint"
         android:id="@+id/name"
         android:layout_row="1"
         android:layout_column="1" />
