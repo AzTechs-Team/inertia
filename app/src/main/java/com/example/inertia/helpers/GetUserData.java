@@ -1,7 +1,5 @@
 package com.example.inertia.helpers;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -81,18 +79,20 @@ public class GetUserData {
                         if (y.getType().toString().equals("ADDED")) {
                             posts.add(meta);
                             allPostsIds.add(doc.get("id").toString());
+                            sortAndUpdatePosts("ADDED");
                         } else if (y.getType().toString().equals("MODIFIED")) {
                             findAndDeletePost(doc);
                             posts.add(meta);
+                            sortAndUpdatePosts("MODIFIED");
                         } else if (y.getType().toString().equals("REMOVED")) {//removed
-                                findAndDeletePost(doc);
-                                allPostsIds.remove(doc.getData().get("id"));
+                            findAndDeletePost(doc);
+                            allPostsIds.remove(doc.getData().get("id"));
+                            sortAndUpdatePosts("REMOVED");
                         }
-                        sortAndUpdatePosts();
+
                     }
                 }
             });
-
     }
 
     public void findAndDeletePost(QueryDocumentSnapshot doc){
@@ -106,7 +106,7 @@ public class GetUserData {
         posts.remove(temp);
     }
 
-    public void sortAndUpdatePosts(){
+    public void sortAndUpdatePosts(String id){
         for (int i = 0; i < posts.size()-1; i++)
             for (int j = 0; j < posts.size()-i-1; j++)
                 if (Double.parseDouble((String)posts.get(j).get("id")) < Double.parseDouble((String) posts.get(j+1).get("id")))
@@ -116,8 +116,8 @@ public class GetUserData {
                     posts.set(j+1, temp);
                 }
         SplashScreen.homeFeedPosts.setHomeFeedPosts(posts);
-        if(SplashScreen.homeFeedPosts.isMainActivityLoaded()) {
-            MainActivity.refreshFragment();
+        if(SplashScreen.homeFeedPosts.isMainActivityLoaded() && id.equals("MODIFIED")) {
+            MainActivity.refreshHomeFragment();
         }
 
     }

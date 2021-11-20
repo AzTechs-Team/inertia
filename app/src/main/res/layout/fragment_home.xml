@@ -16,6 +16,11 @@
         app:titleTextColor="@color/white"
         android:theme="?attr/actionBarTheme" />
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="58dp">
     <GridView
         android:id="@+id/home_feed_grid_view"
         android:layout_width="match_parent"
@@ -25,7 +30,6 @@
         android:background="#0000E5FF"
         android:gravity="center"
         android:numColumns="1"
-        android:layout_marginTop="58dp"
         />
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

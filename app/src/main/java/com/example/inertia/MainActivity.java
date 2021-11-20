@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    static public void refreshFragment(){
+    static public void refreshHomeFragment(){
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.frame_container);
         if (currentFragment instanceof HomeFragment) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

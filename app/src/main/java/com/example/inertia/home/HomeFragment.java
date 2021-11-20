@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,6 @@ import com.example.inertia.profile.ProfileFragment;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class HomeFragment extends Fragment {
@@ -39,6 +39,15 @@ public class HomeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         currentActivityFragment = getActivity().getSupportFragmentManager();
         GridView gridView=(GridView) rootView.findViewById(R.id.home_feed_grid_view);
+        SwipeRefreshLayout swipeRefresh;
+        swipeRefresh = rootView.findViewById(R.id.swipe_refresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefresh.setRefreshing(false);
+                MainActivity.refreshHomeFragment();
+            }
+        });
         ArrayList<FeedImageModel> feedPostsList = new ArrayList<FeedImageModel>();
         if(SplashScreen.homeFeedPosts.posts != null) {
             for (Map<String, Object> i : SplashScreen.homeFeedPosts.posts) {
