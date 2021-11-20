@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.504"
-        custom:srcCompat="@drawable/bg" />
+        custom:srcCompat="@drawable/screen_bg" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/uploadDP"
@@ -50,7 +50,7 @@
         android:id="@+id/updateBio"
         android:layout_width="290dp"
         android:layout_height="55dp"
-        android:backgroundTint="@color/green_100"
+        android:backgroundTint="@color/accent_color_light"
         android:gravity="top"
         android:hint="Add your bio"
         android:inputType="textPersonName"
@@ -68,7 +68,7 @@
         android:id="@+id/updateUsername"
         android:layout_width="290dp"
         android:layout_height="55dp"
-        android:backgroundTint="@color/green_100"
+        android:backgroundTint="@color/accent_color_light"
         android:ems="10"
         android:hint="Enter a Username"
         android:inputType="textPersonName"
@@ -86,9 +86,7 @@
         android:id="@+id/editProfile"
         android:layout_width="285dp"
         android:layout_height="57dp"
-        android:backgroundTint="@color/green_500"
         android:text="Update Profile"
-        android:textColor="@color/blue_900"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,8 +100,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create new Profile"
-        android:textColor="@color/green_100"
-        android:textSize="38sp"
+        android:textColor="@color/white"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
