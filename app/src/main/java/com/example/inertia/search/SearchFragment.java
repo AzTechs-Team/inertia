@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.SplashScreen;
-import com.example.inertia.helpers.customListViewAdapter;
+import com.example.inertia.helpers.CustomListViewAdapter;
 import com.example.inertia.models.UserSearchModel;
 import com.example.inertia.profile.ProfileFragment;
 
@@ -34,7 +34,7 @@ public class SearchFragment extends Fragment {
 
     SearchView searchView;
     ListView listView;
-    customListViewAdapter adapter;
+    CustomListViewAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class SearchFragment extends Fragment {
             i++;
         }
 
-        adapter = new customListViewAdapter((Activity) view.getContext(), list);
+        adapter = new CustomListViewAdapter((Activity) view.getContext(), list);
         listView.setAdapter(adapter);
         if(list.isEmpty()){
             recent.setVisibility(View.GONE);
@@ -74,7 +74,7 @@ public class SearchFragment extends Fragment {
                 if(s == null || s.isEmpty()){
                     listView.setVisibility(View.INVISIBLE);
                     recent.setVisibility(View.VISIBLE);
-                    adapter = new customListViewAdapter((Activity) view.getContext(), list);
+                    adapter = new CustomListViewAdapter((Activity) view.getContext(), list);
                     listView.setAdapter(adapter);
                     listView.setVisibility(View.VISIBLE);
                     return false;
@@ -82,7 +82,7 @@ public class SearchFragment extends Fragment {
                     recent.setVisibility(View.GONE);
                     listView.setVisibility(View.VISIBLE);
                     ArrayList<UserSearchModel> temp = filter_(s, users);
-                    adapter = new customListViewAdapter((Activity) view.getContext(),temp);
+                    adapter = new CustomListViewAdapter((Activity) view.getContext(),temp);
                     listView.setAdapter(adapter);
                     return false;
                 }
