@@ -217,8 +217,12 @@ public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
                     ArrayList<String> UserLikeList = GetUserData.getUserName(likesList);
                     try {
                         ListView likeId = dialog.findViewById(R.id.likesId);
+                        TextView caption = dialog.findViewById(R.id.post_stats_caption);
+                        TextView likedBy = dialog.findViewById(R.id.post_stats_likes);
                         ArrayAdapter adapter = new ArrayAdapter<String>(getContext(), R.layout.search_list_item, UserLikeList);
                         likeId.setAdapter(adapter);
+                        caption.setText(imageModel.getCaption());
+                        likedBy.setText("\uD83D\uDC96 Liked by "+UserLikeList.size());
                     }
                     catch (Throwable err){
                     }

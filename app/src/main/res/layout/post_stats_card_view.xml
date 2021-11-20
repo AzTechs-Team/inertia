@@ -6,9 +6,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
-        android:layout_width="320dp"
-        android:layout_height="400dp"
-        app:cardBackgroundColor="#C8CCCF"
+        android:layout_width="330dp"
+        android:layout_height="380dp"
+        app:cardBackgroundColor="@color/primary_color_light"
         app:cardCornerRadius="13dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,17 +16,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.631">
-        <TextView
-            android:layout_margin ="10dp"
-            android:text="likes on your post 💖"
-            android:layout_width="wrap_content"
-            android:textSize="16dp"
-            android:layout_height="20dp"/>
-        <ListView
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginTop="45dp"
-            android:id="@+id/likesId"
-            />
+            android:layout_height="match_parent"
+            android:paddingHorizontal="12dp">
+            <TextView
+                android:id="@+id/post_stats_caption"
+                android:layout_gravity="center|top"
+                android:paddingTop="15dp"
+                android:layout_margin ="10dp"
+                android:text="Caption"
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:textSize="18dp"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/post_stats_likes"
+                android:layout_gravity="center|top"
+                android:layout_margin ="8dp"
+                android:text="💖  Liked by"
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textColor="@color/primary_color_tint_ligher"
+                android:layout_height="wrap_content"/>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="2dp"
+                android:id="@+id/likesId"
+                />
+        </LinearLayout>
+
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

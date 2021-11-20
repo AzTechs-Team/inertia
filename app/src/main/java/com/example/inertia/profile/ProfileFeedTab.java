@@ -18,8 +18,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -28,6 +30,7 @@ import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.helpers.CardGridViewAdapter;
 import com.example.inertia.helpers.DeleteUserData;
+import com.example.inertia.helpers.GetUserData;
 import com.example.inertia.helpers.StoreUserData;
 import com.example.inertia.models.FeedImageModel;
 import com.example.inertia.post.EditPostActivity;
@@ -262,6 +265,33 @@ public class ProfileFeedTab extends Fragment {
                         imgIconLike.playAnimation();
                     }
                 });
+
+                View cardBody = dialog.findViewById(R.id.card);
+                cardBody.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        LayoutInflater factory = LayoutInflater.from(getContext());
+                        final View dialog = factory.inflate(R.layout.post_stats_card_view, null);
+                        ArrayList<String> UserLikeList = GetUserData.getUserName(likesList);
+                        try {
+                            ListView likeId = dialog.findViewById(R.id.likesId);
+                            TextView caption = dialog.findViewById(R.id.post_stats_caption);
+                            TextView likedBy = dialog.findViewById(R.id.post_stats_likes);
+                            ArrayAdapter adapter = new ArrayAdapter<String>(getContext(), R.layout.search_list_item, UserLikeList);
+                            likeId.setAdapter(adapter);
+                            caption.setText(item.getCaption());
+                            likedBy.setText("\uD83D\uDC96 Liked by "+UserLikeList.size());
+                        }
+                        catch (Throwable err){
+                        }
+                        final AlertDialog postDialog = new AlertDialog.Builder(getContext()).create();
+                        postDialog.setView(dialog);
+                        postDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        postDialog.show();
+                        return false;
+                    }
+                });
+
                 final AlertDialog postDialog = new AlertDialog.Builder(getContext()).create();
                 postDialog.setView(dialog);
                 postDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
