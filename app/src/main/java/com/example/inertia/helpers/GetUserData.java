@@ -10,6 +10,7 @@ import com.example.inertia.home.HomeFragment;
 import com.example.inertia.profile.ProfileFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -51,7 +52,6 @@ public class GetUserData {
                     for(Map<String, Object> user: users){
                         getAllPosts(user);
                     }
-                    SplashScreen.homeFeedPosts.setHomeFeedPosts(posts);
                 }
             });
     }
@@ -67,27 +67,59 @@ public class GetUserData {
                     if (e != null) {
                         return;
                     }
-                    for (QueryDocumentSnapshot doc : value) {
-                        if (doc.get("id") != null && allPostsIds != null&& !allPostsIds.contains(doc.get("id").toString())) {
-                            Map<String,Object> meta = doc.getData();
-                            meta.put("username",user.get("username").toString());
-                            meta.put("userPFP",user.get("photoURI").toString());
-                            meta.put("uid",user.get("uid").toString());
+
+                    List<DocumentChange> x = value.getDocumentChanges();
+                    for(DocumentChange y: x){
+                        QueryDocumentSnapshot doc = y.getDocument();
+                        Map<String, Object> meta = doc.getData();
+                        meta.put("username", user.get("username").toString());
+                        meta.put("userPFP", user.get("photoURI").toString());
+                        meta.put("uid", user.get("uid").toString());
+
+                        if (y.getType().toString().equals("ADDED")) {
                             posts.add(meta);
                             allPostsIds.add(doc.get("id").toString());
+                            sortAndUpdatePosts("ADDED");
+                        } else if (y.getType().toString().equals("MODIFIED")) {
+                            findAndDeletePost(doc);
+                            posts.add(meta);
+                            sortAndUpdatePosts("MODIFIED");
+                        } else if (y.getType().toString().equals("REMOVED")) {//removed
+                            findAndDeletePost(doc);
+                            allPostsIds.remove(doc.getData().get("id"));
+                            sortAndUpdatePosts("REMOVED");
                         }
-                    }
 
-                    for (int i = 0; i < posts.size()-1; i++)
-                        for (int j = 0; j < posts.size()-i-1; j++)
-                            if (Double.parseDouble((String)posts.get(j).get("id")) < Double.parseDouble((String) posts.get(j+1).get("id")))
-                            {
-                                Map<String,Object> temp = posts.get(j);
-                                posts.set(j, posts.get(j+1));
-                                posts.set(j+1, temp);
-                            }
+                    }
                 }
             });
+    }
+
+    public void findAndDeletePost(QueryDocumentSnapshot doc){
+        String id = (String) doc.getData().get("id");
+        Map<String, Object> temp= null;
+        for(Map<String, Object>post: posts){
+            if(id.equals(post.get("id").toString())){
+                temp = post;
+            }
+        }
+        posts.remove(temp);
+    }
+
+    public void sortAndUpdatePosts(String id){
+        for (int i = 0; i < posts.size()-1; i++)
+            for (int j = 0; j < posts.size()-i-1; j++)
+                if (Double.parseDouble((String)posts.get(j).get("id")) < Double.parseDouble((String) posts.get(j+1).get("id")))
+                {
+                    Map<String,Object> temp = posts.get(j);
+                    posts.set(j, posts.get(j+1));
+                    posts.set(j+1, temp);
+                }
+        SplashScreen.homeFeedPosts.setHomeFeedPosts(posts);
+        if(SplashScreen.homeFeedPosts.isMainActivityLoaded() && id.equals("MODIFIED")) {
+            MainActivity.refreshHomeFragment();
+        }
+
     }
 
     public void getPostsData(String uid, String username, String photoURI, String profileId) {
