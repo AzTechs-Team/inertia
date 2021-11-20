@@ -2,13 +2,13 @@ package com.example.inertia.models;
 
 import java.util.Map;
 
-public class userSearchModel {
+public class UserSearchModel {
     public String uid;
     public String userName;
     public String name;
     public String photoURI;
 
-    public userSearchModel(String uid, String userName, String name,String photoURI){
+    public UserSearchModel(String uid, String userName, String name, String photoURI){
         this.uid = uid;
         this.userName = userName;
         this.name = name;
