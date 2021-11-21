@@ -52,6 +52,7 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".MainActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:exported="true" />
         <activity
             android:screenOrientation="portrait"
