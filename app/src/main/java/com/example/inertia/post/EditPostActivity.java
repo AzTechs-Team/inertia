@@ -90,7 +90,6 @@ public class EditPostActivity extends AppCompatActivity {
                 }else{
                     loadingEditPostScreen(false);
                     Toast.makeText(getApplicationContext(), "Enter valid location", Toast.LENGTH_SHORT).show();
-                    editLocation.setText("");
                 }
             }
         });
@@ -118,9 +117,7 @@ public class EditPostActivity extends AppCompatActivity {
         if(loading){
             spinner.setVisibility(View.VISIBLE);
             editPost.setVisibility(View.GONE);
-            editCaption.setClickable(false);
             editCaption.setFocusable(false);
-            editLocation.setClickable(false);
             editLocation.setFocusable(false);
         }else{
             spinner.setVisibility(View.GONE);
@@ -129,6 +126,8 @@ public class EditPostActivity extends AppCompatActivity {
             editCaption.setFocusable(true);
             editLocation.setClickable(true);
             editLocation.setFocusable(true);
+            editLocation.setFocusableInTouchMode(true);
+            editCaption.setFocusableInTouchMode(true);
         }
     }
 }

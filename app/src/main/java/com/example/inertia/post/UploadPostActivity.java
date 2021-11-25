@@ -131,7 +131,6 @@ public class UploadPostActivity extends AppCompatActivity {
             }else{
                 loadingUploadPostScreen(false);
                 Toast.makeText(getApplicationContext(), "Enter valid location", Toast.LENGTH_SHORT).show();
-                addLocation.setText("");
             }
         } catch (Throwable t){
             loadingUploadPostScreen(false);
@@ -142,19 +141,19 @@ public class UploadPostActivity extends AppCompatActivity {
         if(loading){
             spinner.setVisibility(View.VISIBLE);
             addPost.setVisibility(View.GONE);
-            addCaption.setClickable(false);
             addCaption.setFocusable(false);
-            addLocation.setClickable(false);
             addLocation.setFocusable(false);
             uploadPhoto.setClickable(false);
         }else{
             spinner.setVisibility(View.GONE);
             addPost.setVisibility(View.VISIBLE);
-            addCaption.setClickable(true);
             addCaption.setFocusable(true);
-            addLocation.setClickable(true);
+            addCaption.setClickable(true);
             addLocation.setFocusable(true);
+            addLocation.setClickable(true);
             uploadPhoto.setClickable(true);
+            addLocation.setFocusableInTouchMode(true);
+            addCaption.setFocusableInTouchMode(true);
         }
     }
 
