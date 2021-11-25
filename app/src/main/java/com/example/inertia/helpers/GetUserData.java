@@ -100,10 +100,9 @@ public class GetUserData {
 
     public void findAndDeletePost(QueryDocumentSnapshot doc){
         String id = (String) doc.getData().get("id");
-        Map<String, Object> temp = null;
         for(Map<String, Object>post: posts){
             if(id.equals(post.get("id"))){
-                posts.remove(temp);
+                posts.remove(post);
                 return;
             }
         }
