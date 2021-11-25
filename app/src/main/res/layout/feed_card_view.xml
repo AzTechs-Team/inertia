@@ -11,7 +11,7 @@
         android:layout_height="200dp"
         android:layout_margin="13dp"
         app:cardCornerRadius="13dp"
-        app:cardBackgroundColor="@color/blue_dark"
+        app:cardBackgroundColor="@color/primary_color_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -23,25 +23,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/blue_dark">
+            android:layout_margin="10dp"
+            android:background="@color/primary_color_light">
 
-            <ImageView
-                android:id="@+id/feed_image"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="@color/primary_color_light"
+                app:cardCornerRadius="13dp">
+                <ImageView
+                    android:id="@+id/feed_image"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:contentDescription="content_description_media"
+                    android:scaleType="centerCrop"
+                    android:background="@color/primary_color_tint" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/feed_image_title"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:contentDescription="content_description_media"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/dpstock" />
-
-                <TextView
-                    android:id="@+id/feed_image_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="title"
-                    android:paddingHorizontal="12dp"
-                    android:paddingTop="7dp"
-                    android:textColor="@color/white"
-                    android:textSize="18dp"/>
+                android:layout_height="wrap_content"
+                android:text="title"
+                android:paddingTop="10dp"
+                android:textColor="@color/white"
+                android:textSize="15dp"/>
 
         </LinearLayout>
 

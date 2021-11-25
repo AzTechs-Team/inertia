@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import com.example.inertia.helpers.RedirectToActivity;
 import com.example.inertia.models.UserProfile;
 import com.example.inertia.home.HomeFragment;
 import com.example.inertia.map.MapFragment;
+import com.example.inertia.models.UserSearchModel;
 import com.example.inertia.post.UploadPostActivity;
 import com.example.inertia.search.SearchFragment;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton mFab;
     private FirebaseAuth mAuth;
     public static FragmentManager fragmentManager;
-    public static ArrayList<String> list = new ArrayList<String>();
+    public static ArrayList<UserSearchModel> list = new ArrayList<UserSearchModel>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         loadFragment(new HomeFragment());
         mContext = this;
-
+        SplashScreen.homeFeedPosts.setMainActivityLoaded(true);
         mFab = findViewById(R.id.fab);
 
         mFab.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +126,18 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frame_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    static public void refreshHomeFragment(){
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.frame_container);
+        if (currentFragment instanceof HomeFragment) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                fragmentManager.beginTransaction().detach(currentFragment).commitNow();
+                fragmentManager.beginTransaction().attach(currentFragment).commitNow();
+            } else {
+                fragmentManager.beginTransaction().detach(currentFragment).attach(currentFragment).commit();
+            }
+        }
     }
 
     private void setUserProfile(){

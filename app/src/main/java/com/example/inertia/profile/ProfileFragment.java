@@ -96,6 +96,6 @@ public class ProfileFragment extends Fragment {
 
     public void showBottomSheetDialog() {
         bottomSheetFragment = new ProfileBottomSheetFragment();
-        bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
+        bottomSheetFragment.show(getChildFragmentManager(), bottomSheetFragment.getTag());
     }
 }

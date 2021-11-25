@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_900"
+    android:background="@color/primary_color_dark"
     tools:context=".MainActivity">
 
     <FrameLayout
@@ -17,7 +17,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_above="@id/bottom_nav_frame"
+        android:background="@drawable/shadow_gradient"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.933"/>
+
     <FrameLayout
+        android:id="@+id/bottom_nav_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,12 +39,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:backgroundTint="@color/blue_700"
-            app:itemIconSize="28dp"
+            android:background="@drawable/rounded_corners_top"
+            android:elevation="50dp"
+            android:paddingTop="6dp"
+            app:backgroundTint="@color/primary_color"
+            app:itemIconSize="30dp"
             app:itemIconTint="@menu/selected_nav"
             app:itemTextColor="@menu/selected_nav"
             app:menu="@menu/bottom_navigation_main" />
@@ -41,10 +58,10 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="100dp"
-        android:src="@drawable/ic_baseline_add_24"
+        android:elevation="120dp"
         android:scaleType="center"
-        app:maxImageSize="36dp"
+        android:src="@drawable/ic_baseline_add_24"
+        app:borderWidth="0dp"
         app:fabCustomSize="65dp"
         app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -53,6 +70,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.960"
+        app:maxImageSize="36dp"
         app:rippleColor="@color/white" />
 
 

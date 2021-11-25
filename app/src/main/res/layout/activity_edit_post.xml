@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".post.EditPostActivity">
 
-
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="801dp"
@@ -17,13 +16,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.504"
-        app:srcCompat="@drawable/bg" />
+        app:srcCompat="@drawable/screen_bg" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit Post"
-        android:textColor="@color/green_100"
+        android:textColor="@color/white"
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,43 +31,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.085" />
 
-    <ImageView
-        android:id="@+id/editPhoto"
-        android:layout_width="250dp"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
         android:layout_height="250dp"
-        android:src="@drawable/dpstock"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="@color/primary_color_tint"
+        app:cardCornerRadius="13dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.259" />
-
-    <EditText
-        android:id="@+id/editCaption"
-        android:layout_width="286dp"
-        android:layout_height="86dp"
-        android:background="#08000000"
-        android:backgroundTint="@color/green_100"
-        android:gravity="top"
-        android:hint="Edit caption"
-        android:inputType="textMultiLine"
-        android:maxLines="3"
-        android:padding="10dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.742" />
+        app:layout_constraintVertical_bias="0.280">
+        <ImageView
+            android:id="@+id/editPhoto"
+            android:layout_width="250dp"
+            android:layout_height="250dp"/>
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
         android:id="@+id/editLocation"
         android:layout_width="290dp"
         android:layout_height="55dp"
-        android:backgroundTint="@color/green_100"
+        android:backgroundTint="@color/accent_color_light"
         android:ems="10"
         android:hint="Edit destination"
         android:inputType="textPersonName"
@@ -80,15 +65,31 @@
         app:layout_constraintHorizontal_bias="0.537"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.599" />
+        app:layout_constraintVertical_bias="0.612" />
+
+    <EditText
+        android:id="@+id/editCaption"
+        android:layout_width="286dp"
+        android:layout_height="55dp"
+        android:backgroundTint="@color/accent_color_light"
+        android:gravity="top"
+        android:hint="Edit caption"
+        android:inputType="textMultiLine"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.727" />
 
     <Button
         android:id="@+id/editPost"
         android:layout_width="285dp"
         android:layout_height="57dp"
-        android:backgroundTint="@color/green_500"
         android:text="Edit post"
-        android:textColor="@color/blue_900"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

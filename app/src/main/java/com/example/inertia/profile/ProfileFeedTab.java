@@ -3,6 +3,7 @@ package com.example.inertia.profile;
 import android.animation.Animator;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,13 +12,16 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -26,6 +30,7 @@ import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.helpers.CardGridViewAdapter;
 import com.example.inertia.helpers.DeleteUserData;
+import com.example.inertia.helpers.GetUserData;
 import com.example.inertia.helpers.StoreUserData;
 import com.example.inertia.models.FeedImageModel;
 import com.example.inertia.post.EditPostActivity;
@@ -123,8 +128,8 @@ public class ProfileFeedTab extends Fragment {
                 username.setText(item.getUsername());
                 Picasso.get().load(item.getUserPFP()).into(userPFP);
 
-
-                caption.setText(item.getCaption());
+                String temp = item.getCaption().substring(0, Math.min(item.getCaption().length(),40));
+                caption.setText(temp.length()>= 40? temp+"...":temp);
                 extendedFAB.shrink();
                 extendedFAB.setText(item.getLocation());
 
@@ -147,7 +152,9 @@ public class ProfileFeedTab extends Fragment {
                     horizontalMenu.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            PopupMenu popup = new PopupMenu(getContext(), horizontalMenu);
+                            Context wrapper = new ContextThemeWrapper(getContext(),R.style.MenuTextAppearance);
+
+                            PopupMenu popup = new PopupMenu(wrapper, horizontalMenu);
                             popup.getMenuInflater().inflate(R.menu.edit_post_menu, popup.getMenu());
 
                             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -258,6 +265,33 @@ public class ProfileFeedTab extends Fragment {
                         imgIconLike.playAnimation();
                     }
                 });
+
+                View cardBody = dialog.findViewById(R.id.card);
+                cardBody.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        LayoutInflater factory = LayoutInflater.from(getContext());
+                        final View dialog = factory.inflate(R.layout.post_stats_card_view, null);
+                        ArrayList<String> UserLikeList = GetUserData.getUserName(likesList);
+                        try {
+                            ListView likeId = dialog.findViewById(R.id.likesId);
+                            TextView caption = dialog.findViewById(R.id.post_stats_caption);
+                            TextView likedBy = dialog.findViewById(R.id.post_stats_likes);
+                            ArrayAdapter adapter = new ArrayAdapter<String>(getContext(), R.layout.search_list_item, UserLikeList);
+                            likeId.setAdapter(adapter);
+                            caption.setText(item.getCaption());
+                            likedBy.setText("\uD83D\uDC96 Liked by "+UserLikeList.size());
+                        }
+                        catch (Throwable err){
+                        }
+                        final AlertDialog postDialog = new AlertDialog.Builder(getContext()).create();
+                        postDialog.setView(dialog);
+                        postDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        postDialog.show();
+                        return false;
+                    }
+                });
+
                 final AlertDialog postDialog = new AlertDialog.Builder(getContext()).create();
                 postDialog.setView(dialog);
                 postDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

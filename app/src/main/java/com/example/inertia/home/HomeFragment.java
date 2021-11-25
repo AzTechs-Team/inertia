@@ -5,16 +5,22 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
 
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.SplashScreen;
-import com.example.inertia.helpers.GetUserData;
+import com.example.inertia.auth.LoginActivity;
+import com.example.inertia.helpers.RedirectToActivity;
 import com.example.inertia.map.MapFragment;
 import com.example.inertia.models.FeedImageModel;
 import com.example.inertia.helpers.CardGridViewAdapter;
@@ -22,8 +28,8 @@ import com.example.inertia.profile.ProfileFragment;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class HomeFragment extends Fragment {
     static FragmentManager currentActivityFragment;
@@ -32,7 +38,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new GetUserData().getHomeFeedData();
     }
 
     @Override
@@ -40,14 +45,47 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         currentActivityFragment = getActivity().getSupportFragmentManager();
-        GridView gridView=(GridView) rootView.findViewById(R.id.home_feed_grid_view);
+//        GridView gridView=(GridView) rootView.findViewById(R.id.home_feed_grid_view);
+
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+
+        SwipeRefreshLayout swipeRefresh;
+        swipeRefresh = rootView.findViewById(R.id.swipe_refresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefresh.setRefreshing(false);
+                MainActivity.refreshHomeFragment();
+            }
+        });
         ArrayList<FeedImageModel> feedPostsList = new ArrayList<FeedImageModel>();
-        List<Map<String, Object>> feedInfo = null;
         if(SplashScreen.homeFeedPosts.posts != null) {
-            feedInfo = SplashScreen.homeFeedPosts.posts;
-            for (Map<String, Object> i : feedInfo) {
+            for (Map<String, Object> i : SplashScreen.homeFeedPosts.getPosts()) {
                 feedPostsList.add(
-                        new FeedImageModel(
+                    new FeedImageModel(
+                            i.get("photoURI").toString(),
+                            i.get("caption").toString(),
+                            i.get("location").toString(),
+                            i.get("id").toString(),
+                            i.get("username").toString(),
+                            i.get("userPFP").toString(),
+                            (ArrayList<String>) i.get("likes"),
+                            i.get("uid").toString(),
+                            (GeoPoint) i.get("coords")
+                    )
+                );
+            }
+        }else{
+            Button explore = (Button) rootView.findViewById(R.id.explore);
+            explore.setVisibility(View.VISIBLE);
+            explore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    feedPostsList.clear();
+                    explore.setVisibility(View.GONE);
+                    for (Map<String, Object> i : SplashScreen.homeFeedPosts.getPosts()) {
+                        feedPostsList.add(
+                            new FeedImageModel(
                                 i.get("photoURI").toString(),
                                 i.get("caption").toString(),
                                 i.get("location").toString(),
@@ -57,15 +95,18 @@ public class HomeFragment extends Fragment {
                                 (ArrayList<String>) i.get("likes"),
                                 i.get("uid").toString(),
                                 (GeoPoint) i.get("coords")
-                        )
-                );
-            }
+                            )
+                        );
+                    }
+                    MainActivity.refreshHomeFragment();
+                }
+            });
         }
 
-        CardGridViewAdapter adapter;
-        adapter = new CardGridViewAdapter(rootView.getContext(), feedPostsList, "home");
-        gridView.setAdapter(adapter);
-
+        HomeFeedAdapter adapter = new HomeFeedAdapter(getContext(), feedPostsList);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
         return rootView;
     }
 

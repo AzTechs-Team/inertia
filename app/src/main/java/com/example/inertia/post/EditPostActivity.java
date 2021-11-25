@@ -14,6 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
@@ -78,13 +79,18 @@ public class EditPostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingEditPostScreen(true);
-                new StoreUserData().editPostDetailsToFirestore(
-                        EditPostActivity.this,
-                        MainActivity.userProfile.user.get("uid").toString(),
-                        id,
-                        editCaption.getText().toString(),
-                        editLocation.getText().toString()
-                );
+                if(selectedCoordinates != null) {
+                    new StoreUserData().editPostDetailsToFirestore(
+                            EditPostActivity.this,
+                            MainActivity.userProfile.user.get("uid").toString(),
+                            id,
+                            editCaption.getText().toString(),
+                            editLocation.getText().toString()
+                    );
+                }else{
+                    loadingEditPostScreen(false);
+                    Toast.makeText(getApplicationContext(), "Enter valid location", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -111,9 +117,7 @@ public class EditPostActivity extends AppCompatActivity {
         if(loading){
             spinner.setVisibility(View.VISIBLE);
             editPost.setVisibility(View.GONE);
-            editCaption.setClickable(false);
             editCaption.setFocusable(false);
-            editLocation.setClickable(false);
             editLocation.setFocusable(false);
         }else{
             spinner.setVisibility(View.GONE);
@@ -122,6 +126,8 @@ public class EditPostActivity extends AppCompatActivity {
             editCaption.setFocusable(true);
             editLocation.setClickable(true);
             editLocation.setFocusable(true);
+            editLocation.setFocusableInTouchMode(true);
+            editCaption.setFocusableInTouchMode(true);
         }
     }
 }

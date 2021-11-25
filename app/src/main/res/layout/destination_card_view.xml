@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,23 +15,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="center">
 
         <ImageView
             android:id="@+id/destination_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/location_destination" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primary_color_tint"
+            android:scaleType="centerCrop" />
 
         <ImageView
+            android:layout_marginTop="2dp"
             android:id="@+id/destination_overlay"
-            android:layout_width="295dp"
-            android:layout_height="63dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:scaleX = "1.35"
-            app:srcCompat="@drawable/overlay" />
+            android:alpha="0.9"
+            app:srcCompat="@drawable/destination_card_gradient" />
 
         <TextView
             android:id="@+id/destination_location"
@@ -45,6 +45,4 @@
             android:textStyle="bold" />
 
     </com.google.android.material.card.MaterialCardView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

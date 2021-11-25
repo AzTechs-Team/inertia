@@ -1,28 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_marginVertical="20dp">
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_header"
+        android:layout_width="321dp"
+        android:layout_height="56dp"
+        android:layout_marginVertical="8dp"
+        app:cardBackgroundColor="@color/primary_color_light"
+        app:cardCornerRadius="13dp"
+        app:layout_constraintBottom_toTopOf="@+id/card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95"
+        app:cardElevation="15dp"
+        android:layout_gravity="center">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/post_dialog_profilepic"
+            android:layout_width="40dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="4dp"
+            android:src="@color/primary_color_tint"
+            app:civ_border_color="@color/accent_color"
+            app:civ_border_width="2dp" />
+
+        <TextView
+            android:id="@+id/post_dialog_username"
+            android:layout_width="251dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:paddingTop="12dp"
+            android:text="username"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
         android:layout_width="320dp"
         android:layout_height="400dp"
-        app:cardBackgroundColor="#C8CCCF"
+        app:cardBackgroundColor="@color/primary_color_light"
         app:cardCornerRadius="13dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.631">
-
+        app:layout_constraintVertical_bias="0.631"
+        app:cardElevation="15dp"
+        android:layout_gravity="center">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#C8CCCF"
             android:orientation="vertical"
             android:paddingHorizontal="20dp">
 
@@ -37,17 +76,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/post_dialog_image"
-                    android:layout_width="match_parent"
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
                     android:layout_height="290dp"
-                    android:contentDescription="content_description_media"
+                    app:cardBackgroundColor="@color/primary_color_light"
+                    app:cardCornerRadius="13dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/dp" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/post_dialog_image"
+                        android:layout_width="290dp"
+                        android:layout_height="290dp"
+                        android:scaleX="1.03"
+                        android:scaleY="1.03"
+                        android:background="@color/primary_color_tint"/>
+                </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/post_dialog_location"
@@ -68,7 +115,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/post_dialog_caption"
@@ -76,8 +124,8 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="2dp"
                     android:text="title"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -122,45 +170,6 @@
                     app:lottie_rawRes="@raw/like_animation" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
-
     </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_header"
-        android:layout_width="321dp"
-        android:layout_height="56dp"
-        android:layout_margin="13dp"
-        app:cardBackgroundColor="#C8CCCF"
-        app:cardCornerRadius="13dp"
-        app:layout_constraintBottom_toTopOf="@+id/card"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/post_dialog_profilepic"
-            android:layout_width="40dp"
-            android:layout_height="38dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="4dp"
-            android:src="@drawable/dpstock"
-            app:civ_border_color="@color/blue_900"
-            app:civ_border_width="2dp" />
-
-        <TextView
-            android:id="@+id/post_dialog_username"
-            android:layout_width="251dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:paddingTop="12dp"
-            android:text="username"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
-    </com.google.android.material.card.MaterialCardView>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
