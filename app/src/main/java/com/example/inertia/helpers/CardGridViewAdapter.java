@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CardGridViewAdapter extends ArrayAdapter<FeedImageModel> {
     String id;
+    private ArrayList<String> likesList;
     public CardGridViewAdapter(@NonNull Context context, ArrayList<FeedImageModel> courseModelArrayList, String id) {
         super(context, 0, courseModelArrayList);
         this.id = id;
