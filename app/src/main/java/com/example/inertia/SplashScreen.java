@@ -47,6 +47,14 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+//
+        homeFeedPosts = new HomeFeedPosts();
+//        Idk idk = new Idk();
+//        idk.start();
+
+        GetUserData alUserHomeFeed = new GetUserData();
+        alUserHomeFeed.getHomeFeedData();
+        allUsers = alUserHomeFeed.getUsers();
 
         loginBtn = findViewById(R.id.loginBtn);
         signupBtn = findViewById(R.id.signupBtn);
@@ -95,11 +103,15 @@ public class SplashScreen extends AppCompatActivity {
 
         if (mAuth != null) {
             currentUser = mAuth.getCurrentUser();
-            homeFeedPosts = new HomeFeedPosts();
-            GetUserData alUserHomeFeed = new GetUserData();
-            alUserHomeFeed.getHomeFeedData();
-            allUsers = alUserHomeFeed.getUsers();
+//            homeFeedPosts = new HomeFeedPosts();
+//            GetUserData alUserHomeFeed = new GetUserData();
+//            alUserHomeFeed.getHomeFeedData();
+//            allUsers = alUserHomeFeed.getUsers();
         }
+
+//        GetUserData alUserHomeFeed = new GetUserData();
+//        alUserHomeFeed.getHomeFeedData();
+//        allUsers = alUserHomeFeed.getUsers();
 
         new Handler().postDelayed(new Runnable() {
             @Override

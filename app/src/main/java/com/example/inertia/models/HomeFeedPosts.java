@@ -20,4 +20,8 @@ public class HomeFeedPosts {
     public void setMainActivityLoaded(boolean mainActivityLoaded) {
         isMainActivityLoaded = mainActivityLoaded;
     }
+
+    public List<Map<String, Object>> getPosts() {
+        return posts;
+    }
 }

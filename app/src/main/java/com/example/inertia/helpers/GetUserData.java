@@ -79,9 +79,11 @@ public class GetUserData {
                         meta.put("uid", user.get("uid").toString());
 
                         if (y.getType().toString().equals("ADDED")) {
-                            posts.add(meta);
-                            allPostsIds.add(doc.get("id").toString());
-                            sortAndUpdatePosts("ADDED");
+                            if (!allPostsIds.contains(doc.get("id").toString())) {
+                                posts.add(meta);
+                                allPostsIds.add(doc.get("id").toString());
+                                sortAndUpdatePosts("ADDED");
+                            }
                         } else if (y.getType().toString().equals("MODIFIED")) {
                             findAndDeletePost(doc);
                             posts.add(meta);
@@ -91,7 +93,6 @@ public class GetUserData {
                             allPostsIds.remove(doc.getData().get("id"));
                             sortAndUpdatePosts("REMOVED");
                         }
-
                     }
                 }
             });
@@ -99,13 +100,13 @@ public class GetUserData {
 
     public void findAndDeletePost(QueryDocumentSnapshot doc){
         String id = (String) doc.getData().get("id");
-        Map<String, Object> temp= null;
+        Map<String, Object> temp = null;
         for(Map<String, Object>post: posts){
-            if(id.equals(post.get("id").toString())){
-                temp = post;
+            if(id.equals(post.get("id"))){
+                posts.remove(temp);
+                return;
             }
         }
-        posts.remove(temp);
     }
 
     public void sortAndUpdatePosts(String id){

@@ -9,14 +9,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
 
 import com.example.inertia.MainActivity;
 import com.example.inertia.R;
 import com.example.inertia.SplashScreen;
+import com.example.inertia.auth.LoginActivity;
+import com.example.inertia.helpers.RedirectToActivity;
 import com.example.inertia.map.MapFragment;
 import com.example.inertia.models.FeedImageModel;
 import com.example.inertia.helpers.CardGridViewAdapter;
@@ -25,6 +29,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class HomeFragment extends Fragment {
     static FragmentManager currentActivityFragment;
@@ -55,7 +60,7 @@ public class HomeFragment extends Fragment {
         });
         ArrayList<FeedImageModel> feedPostsList = new ArrayList<FeedImageModel>();
         if(SplashScreen.homeFeedPosts.posts != null) {
-            for (Map<String, Object> i : SplashScreen.homeFeedPosts.posts) {
+            for (Map<String, Object> i : SplashScreen.homeFeedPosts.getPosts()) {
                 feedPostsList.add(
                     new FeedImageModel(
                             i.get("photoURI").toString(),
@@ -70,6 +75,32 @@ public class HomeFragment extends Fragment {
                     )
                 );
             }
+        }else{
+            Button explore = (Button) rootView.findViewById(R.id.explore);
+            explore.setVisibility(View.VISIBLE);
+            explore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    feedPostsList.clear();
+                    explore.setVisibility(View.GONE);
+                    for (Map<String, Object> i : SplashScreen.homeFeedPosts.getPosts()) {
+                        feedPostsList.add(
+                            new FeedImageModel(
+                                i.get("photoURI").toString(),
+                                i.get("caption").toString(),
+                                i.get("location").toString(),
+                                i.get("id").toString(),
+                                i.get("username").toString(),
+                                i.get("userPFP").toString(),
+                                (ArrayList<String>) i.get("likes"),
+                                i.get("uid").toString(),
+                                (GeoPoint) i.get("coords")
+                            )
+                        );
+                    }
+                    MainActivity.refreshHomeFragment();
+                }
+            });
         }
 
         HomeFeedAdapter adapter = new HomeFeedAdapter(getContext(), feedPostsList);
