@@ -34,6 +34,6 @@ A social media platform for travellers
 
 ## Developers
 
-@ashwinadiga01 <br>
-@nimit2801 <br>
-@shreyaparadkar
+![@ashwinadiga01](https://github.com/shreyaparadkar) <br>
+![@nimit2801](https://github.com/nimit2801) <br>
+![@shreyaparadkar](https://github.com/shreyaparadkar)
